@@ -2,18 +2,16 @@ import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { Toolbar } from 'primeng/toolbar';
 import { AvatarModule } from 'primeng/avatar';
-import { Router, RouterModule } from '@angular/router';
-import ButtonComponent from '../shared/components/button/button.component';
-import { TableComponent } from '../shared/components/table/table.component';
-import { DataService } from '../core/services/util/data.service';
-import { ToastModule } from 'primeng/toast';
-import { NotificationService } from '../core/services/util/notificacion.service';
-import { DynamicFormComponent } from '../shared/components/dynamic-form/dynamic-form.component';
+import { Router } from '@angular/router';
 import { SelectModule } from 'primeng/select';
-import { FormsModule } from '@angular/forms';
-import { DynamicForm } from '../core/interfaces/util/dynamic-form.interface';
 import { CardModule } from 'primeng/card';
-import { SkeletonComponent } from '../shared/components/skeleton/skeleton.component';
+import { DynamicFormComponent } from '@components//dynamic-form/dynamic-form.component';
+import ButtonComponent from '@components//button/button.component';
+import { SkeletonComponent } from '@components//skeleton/skeleton.component';
+import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
+import { DataService } from '@services/util/data.service';
+import { NotificationService } from '@services/util/notificacion.service';
+import { TableComponent } from '@components//table/table.component';
 
 interface PageEvent {
   first: number;
@@ -28,12 +26,9 @@ interface PageEvent {
     Toolbar,
     AvatarModule,
     ButtonModule,
-    RouterModule,
     ButtonComponent,
     TableComponent,
-    ToastModule,
     DynamicFormComponent,
-    FormsModule,
     SelectModule,
     CardModule,
     SkeletonComponent,
@@ -156,7 +151,7 @@ export default class HomeComponent {
   constructor(
     private dataService: DataService,
     private router: Router,
-    private notificationService: NotificationService
+    private _notificationService: NotificationService
   ) {}
 
   onNavigate() {
@@ -193,7 +188,7 @@ export default class HomeComponent {
     this.dataService.getList(this.page, this.rows).subscribe((data) => {
       this.users = data.results;
       this.totalRecords = data.info.count;
-      this.notificationService.showSuccess(
+      this._notificationService.showSuccess(
         'The query has been successfully executed!',
         `We found ${data.results.length} results.`
       );

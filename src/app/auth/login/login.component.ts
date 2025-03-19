@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { DynamicFormComponent } from '@components//dynamic-form/dynamic-form.component';
+import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
+import { AuthService } from '@services/auth/auth.service';
+import { LoadingService } from '@services/util/loading.service';
+import { NotificationService } from '@services/util/notificacion.service';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
-import { DynamicFormComponent } from '../../shared/components/dynamic-form/dynamic-form.component';
-import { DynamicForm } from '../../core/interfaces/util/dynamic-form.interface';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +16,7 @@ import { DynamicForm } from '../../core/interfaces/util/dynamic-form.interface';
   styleUrl: './login.component.scss',
 })
 export default class LoginComponent {
-  loading = false;
-
+  private subscription: Subscription[] = [];
   formBtnConfig = [
     {
       label: 'Sign In',
@@ -38,7 +42,7 @@ export default class LoginComponent {
         required: true,
         email: true,
       },
-      column: 'col-12 md:col-4 lg:col-12',
+      column: 'col-12 md:col-6 lg:col-12',
     },
     {
       type: 'password',
@@ -51,17 +55,21 @@ export default class LoginComponent {
         required: true,
         minLength: 6,
       },
-      column: 'col-12 md:col-2 lg:col-12',
+      column: 'col-12 md:col-6 lg:col-12',
     },
   ];
+
+  constructor(
+    private _authService: AuthService,
+    private _router: Router,
+    private _loadingService: LoadingService,
+    private _notificationService: NotificationService
+  ) {}
 
   action(e: any) {
     switch (e.event) {
       case 'sign-in':
         this.onSignIn(e.form);
-        break;
-      case 'cancel':
-        this.cancel(e.form);
         break;
       default:
         break;
@@ -69,14 +77,49 @@ export default class LoginComponent {
   }
 
   onSignIn(e: any) {
-    this.formBtnConfig[0].loading = true;
-    setTimeout(() => {
-      this.formBtnConfig[0].loading = false;
-      console.log('sign-in', e);
-    }, 5000);
+    this.subscription.push(
+      this._authService.signIn(e.email, e.password).subscribe({
+        next: (res) => {
+          this._authService.setAuthorizationToken(res);
+          this.getUserProfile();
+        },
+      })
+    );
   }
 
-  cancel(e: any) {
-    console.log('cancel', e);
+  private getUserProfile() {
+    this.subscription.push(
+      this._authService.getUserProfile().subscribe({
+        next: (resp) => {
+          if (resp && resp.data) {
+            this._authService.updateLocalStorage(resp.data);
+            this.goTo();
+          }
+        },
+      })
+    );
+  }
+
+  private goTo() {
+    if (this._authService.getUserProfileStorage.status == 'verificar') {
+      this._router.navigate(['/verificacion']);
+    }
+    if (this._authService.getUserProfileStorage.status == 'activo') {
+      this._router.navigate(['/admin']);
+      this._notificationService.showSuccess(
+        `Hello ${this._authService.getUserProfileStorage.name}`,
+        'explore and enjoy to the fullest all our functionalities.'
+      );
+    }
+  }
+
+  ngOnInit(): void {
+    this._loadingService.loading$.subscribe((loading) => {
+      this.formBtnConfig[0].loading = loading;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.forEach((s) => s.unsubscribe());
   }
 }

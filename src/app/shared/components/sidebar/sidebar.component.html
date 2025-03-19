@@ -1,0 +1,53 @@
+<p-drawer [(visible)]="visible" [closable]="true" header="Menu">
+  <div
+    class="text-center flex flex-column align-items-center justify-content-center"
+  >
+    <p-avatar
+      image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+      shape="circle"
+      size="xlarge"
+      styleClass="m-auto text-center"
+    />
+    <h3 class="text-primary mb-0">Emma Wilson</h3>
+    <p class="m-0">Esp. Medico Internista</p>
+  </div>
+  <p-divider />
+  <p-accordion [value]="0">
+    @for (menu of menuPrincipal; track menu.title) {
+    <p-accordion-panel [value]="menu.title">
+      <p-accordion-header class="py-2 m-0">
+        <div class="flex align-items-center">
+          <i
+            class="bx bx-{{
+              menu.icon
+            }} bx-sm bx-border text-primary bg-primary-50 mr-2"
+          ></i>
+          <span>{{ menu.title }}</span>
+        </div>
+      </p-accordion-header>
+      <p-accordion-content>
+        <div class="flex">
+          <div class="vr"></div>
+          <ul class="nav">
+            <li
+              routerLinkActive="active"
+              *ngFor="let menuItem of menu.menuItems"
+              class="nav-item"
+            >
+              <a [routerLink]="[menuItem.path]">
+                <span>{{ menuItem.title | titlecase }}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </p-accordion-content>
+    </p-accordion-panel>
+    }
+  </p-accordion>
+  <ng-template #footer>
+    <div class="text-center py-3 text-black-alpha-60">
+      &copy;{{ fechaActual.getFullYear() }}, Todos los derechos reservados |
+      Vision App Web S.A.S.
+    </div>
+  </ng-template>
+</p-drawer>

@@ -1,13 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
-import { CommonModule } from '@angular/common';
 import ButtonComponent from '../button/button.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-table',
@@ -16,11 +15,10 @@ import { InputIconModule } from 'primeng/inputicon';
     ButtonComponent,
     CardModule,
     PaginatorModule,
-    CommonModule,
     InputTextModule,
-    FormsModule,
     IconFieldModule,
     InputIconModule,
+    CommonModule,
   ],
   templateUrl: './table.component.html',
 })

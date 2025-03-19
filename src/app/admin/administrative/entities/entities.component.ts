@@ -5,4 +5,4 @@ import { Component } from '@angular/core';
   imports: [],
   templateUrl: './entities.component.html',
 })
-export class EntitiesComponent {}
+export default class EntitiesComponent {}

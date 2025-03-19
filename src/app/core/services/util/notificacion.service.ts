@@ -42,4 +42,13 @@ export class NotificationService {
       life: 3000,
     });
   }
+
+  showDanger(summary: string, detail: string): void {
+    this.messageService.add({
+      severity: 'error',
+      summary,
+      detail,
+      life: 3000,
+    });
+  }
 }
