@@ -6,7 +6,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-table',
@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
     IconFieldModule,
     InputIconModule,
     CommonModule,
+    TitleCasePipe,
   ],
   templateUrl: './table.component.html',
 })

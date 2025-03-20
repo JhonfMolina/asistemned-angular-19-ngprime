@@ -107,8 +107,8 @@ export default class LoginComponent {
     if (this._authService.getUserProfileStorage.status == 'activo') {
       this._router.navigate(['/admin']);
       this._notificationService.showSuccess(
-        `Hello ${this._authService.getUserProfileStorage.name}`,
-        'explore and enjoy to the fullest all our functionalities.'
+        `Hola ${this._authService.getUserProfileStorage.name}!`,
+        'Explora y disfruta de todas nuestras funcionalidades.'
       );
     }
   }

@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { Toolbar } from 'primeng/toolbar';
 import { AvatarModule } from 'primeng/avatar';
-import { Router } from '@angular/router';
 import { SelectModule } from 'primeng/select';
 import { CardModule } from 'primeng/card';
 import { DynamicFormComponent } from '@components//dynamic-form/dynamic-form.component';
-import ButtonComponent from '@components//button/button.component';
 import { SkeletonComponent } from '@components//skeleton/skeleton.component';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { DataService } from '@services/util/data.service';
@@ -23,10 +20,8 @@ interface PageEvent {
 @Component({
   selector: 'app-home',
   imports: [
-    Toolbar,
     AvatarModule,
     ButtonModule,
-    ButtonComponent,
     TableComponent,
     DynamicFormComponent,
     SelectModule,
@@ -39,14 +34,17 @@ interface PageEvent {
 export default class HomeComponent {
   users: any[] = [];
 
-  toggle = false;
-
   columns: any[] = [
     { field: 'id', header: 'ID' },
     { field: 'name', header: 'Name' },
     { field: 'status', header: 'Status' },
     { field: 'gender', header: 'Gender' },
   ];
+
+  totalRecords: number = 0;
+  first: number = 0;
+  rows: number = 20;
+  page: number = 1;
 
   formConfig: DynamicForm[] = [
     {
@@ -143,32 +141,10 @@ export default class HomeComponent {
     },
   ];
 
-  totalRecords: number = 0;
-  first: number = 0;
-  rows: number = 20;
-  page: number = 1;
-
   constructor(
     private dataService: DataService,
-    private router: Router,
     private _notificationService: NotificationService
   ) {}
-
-  onNavigate() {
-    this.router.navigate(['/auth/sign-in']);
-  }
-
-  toogleDarkMode(): void {
-    this.toggle = !this.toggle;
-    const element = document.querySelector('html');
-    if (this.toggle) {
-      element!.classList.add('my-app-dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      element!.classList.remove('my-app-dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }
 
   onEdit(rowData: any): void {
     console.log('Edit:', rowData);
@@ -209,11 +185,6 @@ export default class HomeComponent {
   }
 
   ngOnInit(): void {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      this.toggle = true;
-      document.querySelector('html')!.classList.add('my-app-dark');
-    }
     this.getList();
   }
 

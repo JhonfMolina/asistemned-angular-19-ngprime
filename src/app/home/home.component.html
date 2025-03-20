@@ -1,36 +1,4 @@
 <div class="container">
-  <p-toolbar styleClass="shadow-2 mb-5">
-    <ng-template #start>
-      <img
-        src="assets/logo/logo-nombre-verde-512px.png"
-        alt=""
-        srcset=""
-        class="w-10rem"
-      />
-    </ng-template>
-
-    <ng-template #end>
-      <div class="flex align-items-center gap-2">
-        <div class="flex align-items-center">
-          <app-button
-            [appearance]="'rounded'"
-            [variant]="'outlined'"
-            [color]="toggle ? 'success' : 'warn'"
-            [icon]="toggle ? 'moon' : 'sun'"
-            (click)="toogleDarkMode()"
-          ></app-button>
-        </div>
-
-        <app-button
-          [label]="'Sign In'"
-          [appearance]="'rounded'"
-          [color]="'primary'"
-          [icon]="'door-open bx-sm'"
-          (click)="onNavigate()"
-        ></app-button>
-      </div>
-    </ng-template>
-  </p-toolbar>
   <div class="grid">
     <div class="col-12 md:col-4">
       <p-card header="Dynamic Form" styleClass="mb-5">

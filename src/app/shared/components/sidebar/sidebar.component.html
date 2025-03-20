@@ -3,13 +3,13 @@
     class="text-center flex flex-column align-items-center justify-content-center"
   >
     <p-avatar
-      image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+      [image]="'' | defaultImage"
       shape="circle"
       size="xlarge"
       styleClass="m-auto text-center"
     />
-    <h3 class="text-primary mb-0">Emma Wilson</h3>
-    <p class="m-0">Esp. Medico Internista</p>
+    <h3 class="text-primary mb-0">{{ profile.name }}</h3>
+    <p class="m-0">{{ profile.email }}</p>
   </div>
   <p-divider />
   <p-accordion [value]="0">
@@ -45,7 +45,7 @@
     }
   </p-accordion>
   <ng-template #footer>
-    <div class="text-center py-3 text-black-alpha-60">
+    <div class="text-center py-3">
       &copy;{{ fechaActual.getFullYear() }}, Todos los derechos reservados |
       Vision App Web S.A.S.
     </div>

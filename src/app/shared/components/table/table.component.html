@@ -1,4 +1,4 @@
-<p-card styleClass="shadow-2">
+<p-card>
   <p-table
     #dt2
     [value]="data"
@@ -23,13 +23,28 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th *ngFor="let col of columns">{{ col.header }}</th>
+        <th *ngFor="let col of columns">{{ col.header | titlecase }}</th>
         <th>Actions</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData>
       <tr>
-        <td *ngFor="let col of columns">{{ rowData[col.field] }}</td>
+        <td *ngFor="let column of columns">
+          <ng-container *ngIf="column.template; else onlyText">
+            <ng-container
+              *ngTemplateOutlet="
+                column.template;
+                context: {
+                  $implicit: rowData,
+                  colName: column.header
+                }
+              "
+            ></ng-container>
+          </ng-container>
+          <ng-template #onlyText>
+            {{ rowData[column.field] }}
+          </ng-template>
+        </td>
         <td>
           <app-button
             [appearance]="'rounded'"

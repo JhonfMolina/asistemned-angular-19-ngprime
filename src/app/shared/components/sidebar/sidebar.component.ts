@@ -1,10 +1,12 @@
-import { Component, Input, input } from '@angular/core';
+import { Component, inject, Input, input } from '@angular/core';
 import { AvatarModule } from 'primeng/avatar';
 import { DrawerModule } from 'primeng/drawer';
 import { DividerModule } from 'primeng/divider';
 import { CommonModule } from '@angular/common';
 import { AccordionModule } from 'primeng/accordion';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '@services/auth/auth.service';
+import { DefaultImagePipe } from '../../pipes/default-image.pipe';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,6 +17,7 @@ import { RouterModule } from '@angular/router';
     AccordionModule,
     CommonModule,
     RouterModule,
+    DefaultImagePipe,
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
@@ -22,6 +25,8 @@ import { RouterModule } from '@angular/router';
 export class SidebarComponent {
   @Input() visible: boolean = true;
   protected fechaActual = new Date();
+  private _authService = inject(AuthService);
+  profile = this._authService.getUserProfileStorage;
   menuPrincipal = [
     {
       title: 'Administración',

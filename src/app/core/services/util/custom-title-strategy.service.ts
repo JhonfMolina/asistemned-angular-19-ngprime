@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import {
-  RouterStateSnapshot,
-  TitleStrategy,
-} from '@angular/router';
+import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +12,7 @@ export class CustomTitleStrategy extends TitleStrategy {
   updateTitle(routerState: RouterStateSnapshot): void {
     const title = this.buildTitle(routerState);
     if (title) {
-      this.title.setTitle(`Myapp | ${title}`);
+      this.title.setTitle(`Asistenmed | ${title}`);
     }
   }
 }

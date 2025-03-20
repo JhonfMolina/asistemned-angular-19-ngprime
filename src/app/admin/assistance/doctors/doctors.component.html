@@ -1,1 +1,19 @@
-<p>doctors works!</p>
+<app-table
+  [data]="doctors"
+  [columns]="columns"
+  [rows]="rows"
+  [first]="first"
+  [totalRecords]="totalRecords"
+  (edit)="onEdit($event)"
+  (delete)="onDelete($event)"
+  (pageChange)="onPageChange($event)"
+></app-table>
+<ng-template #statusTemplate let-item let-col="colName">
+  <i
+    class="bx bx-{{
+      item.estado == 'activo'
+        ? 'check-circle bx-sm text-primary-100'
+        : 'x-circle bx-sm text-red-100'
+    }}"
+  ></i>
+</ng-template>

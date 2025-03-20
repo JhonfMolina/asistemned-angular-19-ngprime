@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { GlobalService } from '@services/util/global.service';
-import { ApiResponse } from '@interfaces/util/response.models';
+import {
+  ApiResponse,
+  PaginatedApiResponse,
+} from '@interfaces/util/response.models';
 import { Doctors } from '@interfaces/admin/doctors.interfaces';
 
 @Injectable({
@@ -9,30 +12,19 @@ import { Doctors } from '@interfaces/admin/doctors.interfaces';
 })
 export class DoctorsService extends GlobalService {
   getlist(params: any) {
-    return this._http
-      .get<ApiResponse<Doctors[]>>(
-        `${this.apiUrl}/asistencial/medicos/index-where`,
-        {
-          params: this._setHttpRequest.setHttpParams(params),
-        }
-      )
-      .pipe(
-        map((res) => {
-          return res.data.map((item) => {
-            return {
-              ...item,
-              nombre_completo: `${item.primer_nombre} ${item.primer_apellido} ${item.segundo_apellido}`,
-            };
-          });
-        })
-      );
+    return this._http.get<PaginatedApiResponse<Doctors>>(
+      `${this.apiUrl}/asistencial/medicos/index-where`,
+      {
+        params: this.setHttpParams(params),
+      }
+    );
   }
 
   public getId(params: any) {
     return this._http.get<ApiResponse<Doctors>>(
       `${this.apiUrl}/asistencial/medicos/search-where`,
       {
-        params: this._setHttpRequest.setHttpParams(params),
+        params: this.setHttpParams(params),
       }
     );
   }

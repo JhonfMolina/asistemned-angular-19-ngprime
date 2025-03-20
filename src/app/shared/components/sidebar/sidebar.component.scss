@@ -4,7 +4,7 @@
   padding: 0;
   li {
     a {
-      color: #000;
+      color: var(--p-text-500);
       margin: 2px 0px;
       border-width: 0;
       border-top-left-radius: 0;
@@ -30,14 +30,15 @@
 }
 .active {
   a {
-    background-color: var(--p-primary-600);
+    background-color: var(--p-primary-700);
     color: #fff !important;
   }
 }
 
 .vr {
-  border-left: 2px solid var(--p-primary-600);
+  border-left: 3px solid var(--p-primary-600);
   margin-left: 35px;
+  margin-right: 2px;
   height: auto;
   align-self: stretch;
 }
