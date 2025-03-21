@@ -1,4 +1,4 @@
-<p-card>
+<p-card *ngIf="data.length > 0; else skeleton">
   <p-table
     #dt2
     [value]="data"
@@ -24,7 +24,7 @@
     <ng-template pTemplate="header">
       <tr>
         <th *ngFor="let col of columns">{{ col.header | titlecase }}</th>
-        <th>Actions</th>
+        <th>Acciones</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData>
@@ -74,3 +74,7 @@
     [showJumpToPageDropdown]="true"
   />
 </p-card>
+
+<ng-template #skeleton>
+  <app-skeleton [type]="'table'" [columns]="columns"></app-skeleton>
+</ng-template>

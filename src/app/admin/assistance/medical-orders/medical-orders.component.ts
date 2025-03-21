@@ -4,6 +4,5 @@ import { Component } from '@angular/core';
   selector: 'app-medical-orders',
   imports: [],
   templateUrl: './medical-orders.component.html',
-  styleUrl: './medical-orders.component.scss',
 })
 export default class MedicalOrdersComponent {}

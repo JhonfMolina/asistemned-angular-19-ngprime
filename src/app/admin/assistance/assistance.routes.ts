@@ -3,33 +3,27 @@ import { Routes } from '@angular/router';
 export default [
   {
     path: 'doctors',
-    loadComponent: () => import('./doctors/doctors.component'),
+    loadChildren: () => import('./doctors/doctors.routes'),
     title: 'Doctors',
   },
   {
     path: 'patients',
-    loadComponent: () => import('./patients/patients.component'),
+    loadChildren: () => import('./patients/patients.routes'),
     title: 'Patients',
   },
   {
     path: 'pharmacies',
-    loadComponent: () => import('./pharmacies/pharmacies.component'),
+    loadChildren: () => import('./pharmacies/pharmacies.routes'),
     title: 'Pharmacies',
   },
   {
-    path: 'clinical-histories',
-    loadComponent: () =>
-      import('./clinical-histories/clinical-histories.component'),
-    title: 'Clinical Histories',
-  },
-  {
     path: 'imaging-centers',
-    loadComponent: () => import('./imaging-centers/imaging-centers.component'),
+    loadChildren: () => import('./imaging-centers/imaging-centers.routes'),
     title: 'Imaging Centers',
   },
   {
     path: 'laboratories',
-    loadComponent: () => import('./laboratories/laboratories.component'),
+    loadChildren: () => import('./laboratories/laboratories.routes'),
     title: 'Laboratories',
   },
   {
@@ -42,5 +36,11 @@ export default [
     loadComponent: () =>
       import('./medical-consultations/medical-consultations.component'),
     title: 'Medical Consultations',
+  },
+  {
+    path: 'clinical-histories',
+    loadComponent: () =>
+      import('./clinical-histories/clinical-histories.component'),
+    title: 'Clinical Histories',
   },
 ] as Routes;

@@ -7,6 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { CommonModule, TitleCasePipe } from '@angular/common';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
 
 @Component({
   selector: 'app-table',
@@ -20,6 +21,7 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
     InputIconModule,
     CommonModule,
     TitleCasePipe,
+    SkeletonComponent,
   ],
   templateUrl: './table.component.html',
 })

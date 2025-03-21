@@ -1,9 +1,14 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { DoctorsService } from '@services/admin/doctors.service';
 import { AuthService } from '@services/auth/auth.service';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { TableComponent } from '../../../shared/components/table/table.component';
 import { Doctors } from '@interfaces/admin/doctors.interfaces';
+import { TableComponent } from '../../../../shared/components/table/table.component';
 
 interface PageEvent {
   first: number;
@@ -13,12 +18,11 @@ interface PageEvent {
 }
 
 @Component({
-  selector: 'app-doctors',
+  selector: 'app-doctors-list',
   imports: [TableComponent],
-  templateUrl: './doctors.component.html',
-  styleUrl: './doctors.component.scss',
+  templateUrl: './doctors-list.component.html',
 })
-export default class DoctorsComponent {
+export default class DoctorsListComponent {
   private subscription: Subscription[] = [];
   @ViewChild('statusTemplate') statusTemplate!: TemplateRef<any>;
 
@@ -31,7 +35,8 @@ export default class DoctorsComponent {
   page: number = 1;
   constructor(
     private _doctorsService: DoctorsService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit() {
@@ -46,6 +51,7 @@ export default class DoctorsComponent {
         template: this.statusTemplate,
       },
     ];
+    this.cdr.detectChanges();
   }
 
   onEdit(rowData: any): void {
@@ -74,7 +80,6 @@ export default class DoctorsComponent {
         if (res) {
           this.doctors = res.data.data;
           this.totalRecords = res.data.total;
-          console.log(this.columns);
         }
       })
     );
