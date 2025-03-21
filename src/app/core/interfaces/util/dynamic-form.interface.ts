@@ -12,6 +12,7 @@ export interface DynamicForm {
   showClear?: boolean;
   options?: any[];
   selectedItems?: any[];
+  onChange?: (event: any) => void;
 }
 
 export interface Validators {
@@ -19,4 +20,5 @@ export interface Validators {
   minLength?: number;
   maxLength?: number;
   email?: boolean;
+  pattern?: string;
 }

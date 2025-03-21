@@ -4,7 +4,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "@components/*": ["./src/app/shared/components*"],
+      "@components/*": ["./src/app/shared/components/*"],
       "@services/*": ["./src/app/core/services/*"],
       "@interfaces/*": ["./src/app/core/interfaces/*"],
       "@guards/*": ["./src/app/core/guards/*"],

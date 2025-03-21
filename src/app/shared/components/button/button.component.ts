@@ -22,7 +22,13 @@ import { ButtonModule } from 'primeng/button';
 })
 export default class ButtonComponent {
   @Input() width!: string;
-  @Input() label!: 'Sign In' | 'Cancel' | 'Save' | 'Update' | 'Delete';
+  @Input() label!:
+    | 'Sign In'
+    | 'Cancelar'
+    | 'Guardar'
+    | 'Actualizar'
+    | 'Eliminar'
+    | 'Nuevo';
   @Input() action!: string;
   @Input() visible!: boolean;
   @Input() appearance!: 'base' | 'raised' | 'rounded' | 'text';

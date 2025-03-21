@@ -28,9 +28,11 @@ import { SkeletonComponent } from '../skeleton/skeleton.component';
 export class TableComponent {
   @Input() data: any[] = [];
   @Input() columns: any[] = [];
+  @Input() titleList: string = '';
   @Input() totalRecords: number = 0;
   @Input() first: number = 0;
   @Input() rows: number = 0;
+  @Output() navigate = new EventEmitter<any>();
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
   @Output() pageChange = new EventEmitter<any>();
@@ -38,6 +40,10 @@ export class TableComponent {
 
   filteredData: any[] = [];
   filterColumn: string[] = [];
+
+  onNavigate(): void {
+    this.navigate.emit();
+  }
 
   onEdit(rowData: any): void {
     this.edit.emit(rowData);

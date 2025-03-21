@@ -11,7 +11,7 @@ import { NotificationService } from '@services/util/notificacion.service';
 import { ValidatorsFormComponent } from '../validators-form/validators-form.component';
 import { FormConfigService } from '@services/util/form-config.service';
 import ButtonComponent from '../button/button.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -28,6 +28,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    JsonPipe,
   ],
   templateUrl: './dynamic-form.component.html',
 })
@@ -42,6 +43,14 @@ export class DynamicFormComponent {
     private _notificationService: NotificationService
   ) {}
 
+  onChange(event: any, field: DynamicForm) {
+    console.log('kkk');
+
+    if (field.onChange) {
+      field.onChange(event);
+    }
+  }
+
   ngOnInit(): void {
     this.form = this.formConfigService.createFormGroup(this.formConfig);
   }
@@ -53,8 +62,8 @@ export class DynamicFormComponent {
       this.form.markAllAsTouched();
       this.form.updateValueAndValidity();
       this._notificationService.showDanger(
-        'Incomplete form',
-        'Please complete the required fields'
+        'Formulario incompleto',
+        'Por favor complete los campos requeridos'
       );
     }
   }

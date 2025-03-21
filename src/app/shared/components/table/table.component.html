@@ -7,18 +7,29 @@
     [globalFilterFields]="filterColumn"
   >
     <ng-template #caption>
-      <div class="flex justify-content-end mb-3">
-        <p-iconfield iconPosition="left" class="col-12 md:col-4">
-          <input
-            pInputText
-            type="text"
-            (input)="applyFilterGlobal($event)"
-            placeholder="Search keyword"
-          />
-          <p-inputicon>
-            <i class="bx bx-search"></i>
-          </p-inputicon>
-        </p-iconfield>
+      <div class="flex justify-content-between align-items-center mb-3">
+        <h3 class="text-primary-600">{{ titleList }}</h3>
+        <div class="flex gap-3">
+          <p-iconfield iconPosition="left">
+            <input
+              pInputText
+              type="text"
+              (input)="applyFilterGlobal($event)"
+              placeholder="Buscar"
+            />
+            <p-inputicon>
+              <i class="bx bx-search"></i>
+            </p-inputicon>
+          </p-iconfield>
+          <app-button
+            [label]="'Nuevo'"
+            [appearance]="'rounded'"
+            [variant]="'outlined'"
+            [color]="'primary'"
+            [icon]="'plus-circle'"
+            (onClick)="onNavigate()"
+          ></app-button>
+        </div>
       </div>
     </ng-template>
     <ng-template pTemplate="header">

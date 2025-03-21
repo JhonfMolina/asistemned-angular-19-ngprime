@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { DynamicFormComponent } from '@components//dynamic-form/dynamic-form.component';
+import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { AuthService } from '@services/auth/auth.service';
 import { LoadingService } from '@services/util/loading.service';

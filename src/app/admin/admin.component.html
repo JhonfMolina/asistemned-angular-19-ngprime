@@ -1,48 +1,46 @@
-<p-toolbar styleClass="mb-3">
-  <ng-template #start>
-    <img
-      src="assets/images/logo-nombre-verde-512px.png"
-      alt=""
-      srcset=""
-      class="w-10rem"
-    />
-    <app-button
-      [appearance]="'rounded'"
-      variant="text"
-      [color]="'primary'"
-      [icon]="'book-content bx-sm'"
-      (click)="onNavigate()"
-    ></app-button>
-  </ng-template>
-
-  <ng-template #end>
-    <div class="flex align-items-center gap-2">
+<div class="container">
+  <p-toolbar styleClass="my-3 w-full">
+    <ng-template #start>
+      <img
+        src="assets/images/logo-nombre-verde-512px.png"
+        alt=""
+        srcset=""
+        class="w-10rem"
+      />
       <app-button
         [appearance]="'rounded'"
-        [variant]="'text'"
-        [color]="toggle ? 'success' : 'warn'"
-        [icon]="toggle ? 'moon bx-sm' : 'sun bx-sm'"
-        (click)="toogleDarkMode()"
+        variant="text"
+        [color]="'primary'"
+        [icon]="'book-content bx-sm'"
+        (click)="onNavigate()"
       ></app-button>
-      <div>
-        <p-menu #menu [model]="items" [popup]="true" />
+    </ng-template>
+
+    <ng-template #end>
+      <div class="flex align-items-center gap-2">
         <app-button
           [appearance]="'rounded'"
           [variant]="'text'"
-          [color]="'primary'"
-          [icon]="'category-alt bx-sm'"
-          (click)="menu.toggle($event)"
+          [color]="toggle ? 'success' : 'warn'"
+          [icon]="toggle ? 'moon bx-sm' : 'sun bx-sm'"
+          (click)="toogleDarkMode()"
         ></app-button>
+        <div>
+          <p-menu #menu [model]="items" [popup]="true" />
+          <app-button
+            [appearance]="'rounded'"
+            [variant]="'text'"
+            [color]="'primary'"
+            [icon]="'category-alt bx-sm'"
+            (click)="menu.toggle($event)"
+          ></app-button>
+        </div>
       </div>
-    </div>
-  </ng-template>
-</p-toolbar>
-<div class="flex flex-column min-h-full">
-  <div class="flex flex-grow-1">
-    <app-sidebar></app-sidebar>
+    </ng-template>
+  </p-toolbar>
+  <app-sidebar></app-sidebar>
 
-    <main class="flex-grow-1 px-3">
-      <router-outlet></router-outlet>
-    </main>
-  </div>
+  <main class="flex-grow-1">
+    <router-outlet></router-outlet>
+  </main>
 </div>

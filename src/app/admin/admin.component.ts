@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { SidebarComponent } from '../shared/components/sidebar/sidebar.component';
 import { ButtonModule } from 'primeng/button';
 import { Toolbar } from 'primeng/toolbar';
-import ButtonComponent from '../shared/components/button/button.component';
 import { Menu } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
+import ButtonComponent from '@components//button/button.component';
+import { SidebarComponent } from '@components//sidebar/sidebar.component';
 
 @Component({
   selector: 'app-admin',

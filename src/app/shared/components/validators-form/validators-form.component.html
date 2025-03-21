@@ -7,19 +7,19 @@
     "
   >
     <small *ngIf="form[field.name].hasError('required')"
-      >This field is required*</small
-    >
+      >This field is required*
+    </small>
     <small *ngIf="form[field.name].hasError('email')"
-      >Invalid email address!</small
-    >
+      >Invalid email address!
+    </small>
     <small *ngIf="form[field.name].hasError('pattern')"
-      >Invalid text entered!</small
-    >
+      >Invalid text entered!
+    </small>
     <small *ngIf="form[field.name].hasError('minlength')"
       >Minimum length is {{ field.validators.minLength }}!
     </small>
     <small *ngIf="form[field.name].hasError('maxlength')"
-      >Maximum length is {{ field.validators.maxLength }}!</small
-    >
+      >Maximum length is {{ field.validators.maxLength }}!
+    </small>
   </div>
 </div>

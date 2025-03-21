@@ -1,5 +1,55 @@
 <form class="grid" [formGroup]="form">
   <div class="{{ field.column }}" *ngFor="let field of formConfig">
+    <div *ngIf="field.type === 'number'">
+      <p-floatlabel variant="on">
+        <p-iconfield>
+          <input
+            [ngClass]="{
+              'ng-invalid ng-dirty':
+                form.get(field.name).invalid &&
+                (form.get(field.name).dirty || form.get(field.name).touched)
+            }"
+            pInputText
+            [id]="field.on_label"
+            [type]="field.type"
+            [formControlName]="field.name"
+            [placeholder]="field.placeholder"
+          />
+          <p-inputicon class="bx bxs-{{ field.icon }}" />
+        </p-iconfield>
+        <label [for]="field.on_label">{{ field.label }}</label>
+      </p-floatlabel>
+      <app-validators-form
+        [form]="form.controls"
+        [field]="field"
+      ></app-validators-form>
+    </div>
+
+    <div *ngIf="field.type === 'tel'">
+      <p-floatlabel variant="on">
+        <p-iconfield>
+          <input
+            [ngClass]="{
+              'ng-invalid ng-dirty':
+                form.get(field.name).invalid &&
+                (form.get(field.name).dirty || form.get(field.name).touched)
+            }"
+            pInputText
+            [id]="field.on_label"
+            [type]="field.type"
+            [formControlName]="field.name"
+            [placeholder]="field.placeholder"
+          />
+          <p-inputicon class="bx bxs-{{ field.icon }}" />
+        </p-iconfield>
+        <label [for]="field.on_label">{{ field.label }}</label>
+      </p-floatlabel>
+      <app-validators-form
+        [form]="form.controls"
+        [field]="field"
+      ></app-validators-form>
+    </div>
+
     <div *ngIf="field.type === 'text'">
       <p-floatlabel variant="on">
         <p-iconfield>
@@ -117,12 +167,13 @@
           [showClear]="field.showClear"
           [placeholder]="field.placeholder"
           class="w-full"
+          (change)="onChange($event, field)"
         >
           <ng-template #selectedItem let-selectedOption>
-            <div>{{ selectedOption.name }}</div>
+            <div>{{ selectedOption.nombre }}</div>
           </ng-template>
-          <ng-template let-country #item>
-            <div>{{ country.name }}</div>
+          <ng-template let-data #item>
+            <div>{{ data.nombre }}</div>
           </ng-template>
         </p-select>
         <label [for]="field.on_label">{{ field.label }}</label>

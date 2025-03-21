@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
 import { GlobalService } from '@services/util/global.service';
 import {
   ApiResponse,

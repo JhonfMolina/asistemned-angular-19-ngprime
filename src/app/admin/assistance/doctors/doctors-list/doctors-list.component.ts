@@ -8,7 +8,9 @@ import { DoctorsService } from '@services/admin/doctors.service';
 import { AuthService } from '@services/auth/auth.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Doctors } from '@interfaces/admin/doctors.interfaces';
-import { TableComponent } from '../../../../shared/components/table/table.component';
+import { Chip } from 'primeng/chip';
+import { Router } from '@angular/router';
+import { TableComponent } from '@components/table/table.component';
 
 interface PageEvent {
   first: number;
@@ -19,7 +21,7 @@ interface PageEvent {
 
 @Component({
   selector: 'app-doctors-list',
-  imports: [TableComponent],
+  imports: [TableComponent, Chip],
   templateUrl: './doctors-list.component.html',
 })
 export default class DoctorsListComponent {
@@ -36,7 +38,8 @@ export default class DoctorsListComponent {
   constructor(
     private _doctorsService: DoctorsService,
     private _authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private _router: Router
   ) {}
 
   ngAfterViewInit() {
@@ -52,6 +55,10 @@ export default class DoctorsListComponent {
       },
     ];
     this.cdr.detectChanges();
+  }
+
+  onNavigate() {
+    this._router.navigate(['admin/assistance/doctors/doctors-create']);
   }
 
   onEdit(rowData: any): void {
