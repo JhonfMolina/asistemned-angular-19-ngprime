@@ -1,1 +1,8 @@
-<p>doctors-update works!</p>
+<p-card>
+  <h3 class="text-primary-600 mb-3">Crear nuevo medico</h3>
+  <app-dynamic-form
+    [formConfig]="formConfig"
+    [formBtnConfig]="formBtnConfig"
+    (onClick)="put($event)"
+  ></app-dynamic-form>
+</p-card>

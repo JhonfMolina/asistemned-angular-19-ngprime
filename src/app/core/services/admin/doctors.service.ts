@@ -19,7 +19,7 @@ export class DoctorsService extends GlobalService {
     );
   }
 
-  public getId(params: any) {
+  public getById(params: any) {
     return this._http.get<ApiResponse<Doctors>>(
       `${this.apiUrl}/asistencial/medicos/search-where`,
       {

@@ -167,7 +167,7 @@
           [showClear]="field.showClear"
           [placeholder]="field.placeholder"
           class="w-full"
-          (change)="onChange($event, field)"
+          (onChange)="onChange($event, field)"
         >
           <ng-template #selectedItem let-selectedOption>
             <div>{{ selectedOption.nombre }}</div>
@@ -182,6 +182,19 @@
         [form]="form.controls"
         [field]="field"
       ></app-validators-form>
+    </div>
+    <div *ngIf="field.type === 'date'">
+      <p-floatlabel variant="on">
+        <p-datepicker
+          styleClass="w-full"
+          [id]="field.on_label"
+          [formControlName]="field.name"
+          [iconDisplay]="'input'"
+          [showIcon]="true"
+          inputId="icondisplay"
+        />
+        <label [for]="field.on_label">{{ field.label }}</label>
+      </p-floatlabel>
     </div>
   </div>
 </form>

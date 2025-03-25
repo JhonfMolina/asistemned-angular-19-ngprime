@@ -1,6 +1,6 @@
 export interface Doctors {
-  ma_entidad_id: number;
-  utilidad_tipo_identificacion_id: number;
+  ma_entidad_id: string;
+  utilidad_tipo_identificacion_id: string;
   identificacion: string;
   rethus: string;
   primer_nombre: string;
@@ -9,8 +9,8 @@ export interface Doctors {
   segundo_apellido: string;
   fecha_nacimiento: Date;
   sexo: string;
-  utilidad_departamento_id: number;
-  utilidad_ciudad_id: number;
+  utilidad_departamento_id: string;
+  utilidad_ciudad_id: string;
   direccion: string;
   contactos: string;
   correo: string;

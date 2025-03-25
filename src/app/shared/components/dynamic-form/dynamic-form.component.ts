@@ -11,7 +11,8 @@ import { NotificationService } from '@services/util/notificacion.service';
 import { ValidatorsFormComponent } from '../validators-form/validators-form.component';
 import { FormConfigService } from '@services/util/form-config.service';
 import ButtonComponent from '../button/button.component';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { DatePickerModule } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -28,7 +29,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    JsonPipe,
+    DatePickerModule,
   ],
   templateUrl: './dynamic-form.component.html',
 })
@@ -38,16 +39,18 @@ export class DynamicFormComponent {
   @Input() formBtnConfig: any[] = [];
   form: FormGroup | any;
 
+  date2: Date | undefined;
+
   constructor(
     private formConfigService: FormConfigService,
     private _notificationService: NotificationService
   ) {}
 
   onChange(event: any, field: DynamicForm) {
-    console.log('kkk');
-
     if (field.onChange) {
-      field.onChange(event);
+      if (event.value != null) {
+        field.onChange(event);
+      }
     }
   }
 
@@ -66,5 +69,15 @@ export class DynamicFormComponent {
         'Por favor complete los campos requeridos'
       );
     }
+  }
+
+  resetForm(): void {
+    this.form.reset();
+  }
+
+  setFormData(form: any): void {
+    console.log(form);
+
+    this.form.patchValue(form);
   }
 }
