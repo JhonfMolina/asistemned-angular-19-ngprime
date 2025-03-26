@@ -8,10 +8,10 @@
         class="w-10rem"
       />
       <app-button
-        [appearance]="'rounded'"
+        [appearance]="'base'"
         variant="text"
         [color]="'primary'"
-        [icon]="'book-content bx-sm'"
+        [icon]="'bx bx-menu bx-sm'"
         (click)="onNavigate()"
       ></app-button>
     </ng-template>
@@ -19,19 +19,19 @@
     <ng-template #end>
       <div class="flex align-items-center gap-2">
         <app-button
-          [appearance]="'rounded'"
+          [appearance]="'base'"
           [variant]="'text'"
           [color]="toggle ? 'success' : 'warn'"
-          [icon]="toggle ? 'moon bx-sm' : 'sun bx-sm'"
+          [icon]="toggle ? 'bx bx-moon bx-sm' : 'bx bx-sun bx-sm'"
           (click)="toogleDarkMode()"
         ></app-button>
         <div>
           <p-menu #menu [model]="items" [popup]="true" />
           <app-button
-            [appearance]="'rounded'"
+            [appearance]="'base'"
             [variant]="'text'"
             [color]="'primary'"
-            [icon]="'category-alt bx-sm'"
+            [icon]="'bx bx-category-alt bx-sm'"
             (click)="menu.toggle($event)"
           ></app-button>
         </div>

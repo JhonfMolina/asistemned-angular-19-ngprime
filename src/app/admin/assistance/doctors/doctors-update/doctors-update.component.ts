@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { Doctors } from '@interfaces/admin/doctors.interfaces';
-import { Department } from '@interfaces/util/department.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { DoctorsService } from '@services/admin/doctors.service';
 import { AuthService } from '@services/auth/auth.service';
+import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
@@ -13,17 +14,17 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-doctors-update',
-  imports: [DynamicFormComponent, CardModule],
+  imports: [DynamicFormComponent, CardModule, ButtonComponent],
   templateUrl: './doctors-update.component.html',
 })
 export default class DoctorsUpdateComponent {
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private subscription: Subscription[] = [];
-  private doctorId = 'ab5b8989-950f-4862-8798-19f63716fa15';
+  private doctorId = '';
   formBtnConfig = [
     {
       label: 'Actualizar',
-      icon: 'minus-circle bx-sm',
+      icon: 'bx bx-refresh bx-sm',
       visible: true,
       width: 'w-full',
       appearance: 'base',
@@ -141,11 +142,11 @@ export default class DoctorsUpdateComponent {
       options: [
         {
           nombre: 'Masculino',
-          valor: 'M',
+          id: 'M',
         },
         {
           nombre: 'Femenino',
-          valor: 'F',
+          id: 'F',
         },
       ],
       selectedItems: [],
@@ -256,6 +257,13 @@ export default class DoctorsUpdateComponent {
       },
       column: 'col-12 md:col-4 lg:col-4',
     },
+    {
+      type: 'checkbox',
+      name: 'estado',
+      label: 'Estado',
+      on_label: 'estado',
+      column: 'col-12 md:col-4 lg:col-4',
+    },
   ];
 
   constructor(
@@ -263,15 +271,28 @@ export default class DoctorsUpdateComponent {
     private _notificationService: NotificationService,
     private _doctorsService: DoctorsService,
     private _authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _loadingService: LoadingService,
+    private _router: Router
   ) {
-    // this.doctorId = this.route.snapshot.paramMap.get('id')!;
+    this.doctorId = this.route.snapshot.paramMap.get('id')!;
   }
 
   ngOnInit(): void {
+    this._loadingService.loading$.subscribe((loading) => {
+      this.formBtnConfig.find((btn) => btn.label === 'Actualizar')!.loading =
+        loading;
+    });
     this.getListadoTipoIdentificacion();
     this.getListadoDepartamentos();
+  }
+
+  ngAfterViewInit() {
     this.getById();
+  }
+
+  goToReturnUrl(): void {
+    this._router.navigate(['admin/assistance/doctors']);
   }
 
   getListadoTipoIdentificacion(): void {
@@ -294,12 +315,12 @@ export default class DoctorsUpdateComponent {
       });
   }
 
-  onDepartamentoChange(department: Department): void {
-    if (department) {
+  onDepartamentoChange(departmentId: string): void {
+    if (departmentId) {
       this._utilidadesService
         .getListadoCiudadesPorDepartamento({
           estados: ['activo'],
-          utilidad_departamento_id: department.id,
+          utilidad_departamento_id: departmentId,
         })
         .subscribe((response) => {
           this.formConfig.find(
@@ -310,7 +331,6 @@ export default class DoctorsUpdateComponent {
   }
 
   getById(): void {
-    console.log('jjj', this.doctorId);
     if (this.doctorId) {
       this._doctorsService
         .getById({
@@ -318,30 +338,12 @@ export default class DoctorsUpdateComponent {
           id: this.doctorId,
           ma_entidad_id: this._authService.getEntityStorage.id.toString(),
         })
-        .subscribe((doct) => {
-          const doctor = {
-            ...doct.data,
-            utilidad_tipo_identificacion_id: this.formConfig
-              .find((field) => field.name === 'utilidad_tipo_identificacion_id')
-              ?.options?.find(
-                (res) => res.id == doct.data.utilidad_tipo_identificacion_id
-              ),
-            sexo: this.formConfig
-              .find((field) => field.name === 'sexo')
-              ?.options?.find((res) => res.valor == doct.data.sexo),
-
-            utilidad_departamento_id: this.formConfig
-              .find((field) => field.name === 'utilidad_departamento_id')
-              ?.options?.find(
-                (res) => res.id == doct.data.utilidad_departamento_id
-              ),
-            utilidad_ciudad_id: this.formConfig
-              .find((field) => field.name === 'utilidad_ciudad_id')
-              ?.options?.find((res) => res.id == doct.data.utilidad_ciudad_id),
-          };
-          this.onDepartamentoChange(doctor.utilidad_departamento_id);
-          console.log(doctor);
-          this.dynamicFormComponent.setFormData(doctor);
+        .subscribe((doctor) => {
+          this.dynamicFormComponent.setFormData({
+            ...doctor.data,
+            estado: doctor.data.estado == 'activo' ? true : false,
+          });
+          this.onDepartamentoChange(doctor.data.utilidad_departamento_id);
         });
     }
   }
@@ -349,19 +351,15 @@ export default class DoctorsUpdateComponent {
   put(data: any): void {
     const doctor: Doctors = {
       ...data.form,
-      utilidad_tipo_identificacion_id:
-        data.form.utilidad_tipo_identificacion_id.id,
-      utilidad_departamento_id: data.form.utilidad_departamento_id.id,
-      utilidad_ciudad_id: data.form.utilidad_ciudad_id.id,
-      sexo: data.form.sexo.valor,
+      estado: data.form.estado ? 'activo' : 'inactivo',
       ma_entidad_id: this._authService.getEntityStorage.id.toString(),
     };
+    console.log(doctor);
 
-    this.subscription
-      .push
-      // this._doctorsService.put(doctor).subscribe((res) => {
-      //   this._notificationService.showSuccess(res.message);
-      // })
-      ();
+    this.subscription.push(
+      this._doctorsService.put(this.doctorId, doctor).subscribe((res) => {
+        this._notificationService.showSuccess(res.message);
+      })
+    );
   }
 }

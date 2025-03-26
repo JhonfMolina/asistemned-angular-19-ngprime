@@ -4,8 +4,8 @@ export interface DynamicForm {
   name: string;
   label: string;
   on_label: string;
-  placeholder: string;
-  validators: Validators;
+  placeholder?: string;
+  validators?: Validators;
   column: string;
   filter?: boolean;
   filterBy?: string;

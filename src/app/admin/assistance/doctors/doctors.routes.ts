@@ -12,7 +12,7 @@ export default [
     title: 'Doctors',
   },
   {
-    path: 'doctors-update',
+    path: 'doctors-update/:id',
     loadComponent: () => import('./doctors-update/doctors-update.component'),
     title: 'Doctors',
   },

@@ -1,4 +1,4 @@
-<form class="grid" [formGroup]="form">
+<form class="grid align-items-center" [formGroup]="form">
   <div class="{{ field.column }}" *ngFor="let field of formConfig">
     <div *ngIf="field.type === 'number'">
       <p-floatlabel variant="on">
@@ -152,6 +152,7 @@
     <div *ngIf="field.type === 'select'">
       <p-floatlabel variant="on">
         <p-select
+          size="small"
           [ngClass]="{
             'ng-invalid ng-dirty':
               form.get(field.name).invalid &&
@@ -166,6 +167,7 @@
           [filterBy]="field.filterBy"
           [showClear]="field.showClear"
           [placeholder]="field.placeholder"
+          optionValue="id"
           class="w-full"
           (onChange)="onChange($event, field)"
         >
@@ -183,6 +185,7 @@
         [field]="field"
       ></app-validators-form>
     </div>
+
     <div *ngIf="field.type === 'date'">
       <p-floatlabel variant="on">
         <p-datepicker
@@ -192,9 +195,19 @@
           [iconDisplay]="'input'"
           [showIcon]="true"
           inputId="icondisplay"
+          dateFormat="yy-mm-dd"
         />
         <label [for]="field.on_label">{{ field.label }}</label>
       </p-floatlabel>
+    </div>
+
+    <div *ngIf="field.type === 'checkbox'">
+      <p-checkbox
+        [formControlName]="field.name"
+        [binary]="true"
+        inputId="{{ field.on_label }}"
+      />
+      <label [for]="field.on_label" class="ml-2">{{ field.label }}</label>
     </div>
   </div>
 </form>

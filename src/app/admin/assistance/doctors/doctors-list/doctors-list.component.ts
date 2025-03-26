@@ -62,7 +62,10 @@ export default class DoctorsListComponent {
   }
 
   onEdit(rowData: any): void {
-    console.log('Edit:', rowData);
+    this._router.navigate([
+      'admin/assistance/doctors/doctors-update',
+      rowData.id,
+    ]);
   }
 
   onDelete(rowData: any): void {

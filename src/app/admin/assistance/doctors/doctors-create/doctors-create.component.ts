@@ -9,10 +9,12 @@ import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { Router } from '@angular/router';
+import ButtonComponent from '@components/button/button.component';
 
 @Component({
   selector: 'app-doctors-create',
-  imports: [DynamicFormComponent, CardModule],
+  imports: [DynamicFormComponent, CardModule, ButtonComponent],
   templateUrl: './doctors-create.component.html',
 })
 export default class DoctorsCreateComponent {
@@ -139,11 +141,11 @@ export default class DoctorsCreateComponent {
       options: [
         {
           nombre: 'Masculino',
-          valor: 'M',
+          id: 'M',
         },
         {
           nombre: 'Femenino',
-          valor: 'F',
+          id: 'F',
         },
       ],
       selectedItems: [],
@@ -260,12 +262,17 @@ export default class DoctorsCreateComponent {
     private _utilidadesService: UtilidadesService,
     private _notificationService: NotificationService,
     private _doctorsService: DoctorsService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _router: Router
   ) {}
 
   ngOnInit(): void {
     this.getListadoTipoIdentificacion();
     this.getListadoDepartamentos();
+  }
+
+  goToReturnUrl(): void {
+    this._router.navigate(['admin/assistance/doctors']);
   }
 
   getListadoTipoIdentificacion(): void {
@@ -293,7 +300,7 @@ export default class DoctorsCreateComponent {
       this._utilidadesService
         .getListadoCiudadesPorDepartamento({
           estados: ['activo'],
-          utilidad_departamento_id: department.id,
+          utilidad_departamento_id: department,
         })
         .subscribe((response) => {
           this.formConfig.find(
@@ -306,14 +313,8 @@ export default class DoctorsCreateComponent {
   post(data: any): void {
     const doctor: Doctors = {
       ...data.form,
-      utilidad_tipo_identificacion_id:
-        data.form.utilidad_tipo_identificacion_id.id,
-      utilidad_departamento_id: data.form.utilidad_departamento_id.id,
-      utilidad_ciudad_id: data.form.utilidad_ciudad_id.id,
-      sexo: data.form.sexo.valor,
       ma_entidad_id: this._authService.getEntityStorage.id.toString(),
     };
-
     this.subscription.push(
       this._doctorsService.post(doctor).subscribe((res) => {
         this._notificationService.showSuccess(res.message);

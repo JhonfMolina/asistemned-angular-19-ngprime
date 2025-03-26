@@ -13,6 +13,7 @@ import { FormConfigService } from '@services/util/form-config.service';
 import ButtonComponent from '../button/button.component';
 import { CommonModule } from '@angular/common';
 import { DatePickerModule } from 'primeng/datepicker';
+import { Checkbox } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -30,6 +31,7 @@ import { DatePickerModule } from 'primeng/datepicker';
     FormsModule,
     ReactiveFormsModule,
     DatePickerModule,
+    Checkbox,
   ],
   templateUrl: './dynamic-form.component.html',
 })
@@ -75,9 +77,7 @@ export class DynamicFormComponent {
     this.form.reset();
   }
 
-  setFormData(form: any): void {
-    console.log(form);
-
-    this.form.patchValue(form);
+  setFormData(data: any): void {
+    this.form.patchValue(data);
   }
 }

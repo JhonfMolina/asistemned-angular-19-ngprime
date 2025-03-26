@@ -4,7 +4,7 @@
   [rounded]="appearance == 'rounded'"
   [raised]="appearance == 'raised'"
   [variant]="variant"
-  icon="bx bxs-{{ icon }}"
+  [icon]="icon"
   (click)="handleButtonClick($event)"
   [attr.disabled]="disabled ? true : null"
   [attr.tabindex]="disabled ? -1 : null"
