@@ -1,27 +1,529 @@
-<div class="container">
-  <div class="grid">
-    <div class="col-12 md:col-4">
-      <p-card header="Dynamic Form" styleClass="mb-5">
-        <app-dynamic-form
-          [formConfig]="formConfig"
-          (onClick)="post($event)"
-        ></app-dynamic-form>
-      </p-card>
-      <app-skeleton [type]="'table'" [columns]="columns"></app-skeleton>
+<!-- Sección de Servicios Médicos -->
+<div class="pt-8 surface-0">
+  <div class="grid container">
+    <!-- Columna 1: Descripción General -->
+    <div class="col-12 md:col-5 text-center md:text-right">
+      <img
+        src="../../assets/images/home/img-servicios.png"
+        class="w-10"
+        alt=""
+      />
     </div>
 
-    <div class="col-12 md:col-8">
-      <app-table
-        [data]="users"
-        [columns]="columns"
-        [rows]="rows"
-        [first]="first"
-        [totalRecords]="totalRecords"
-        (edit)="onEdit($event)"
-        (delete)="onDelete($event)"
-        (filtered)="get($event)"
-        (pageChange)="onPageChange($event)"
-      ></app-table>
+    <!-- Columna 2: Lista de Servicios -->
+    <div class="col-12 md:col-7">
+      <h2 class="text-4xl text-primary">¿Qué tiene Asistenmed para mí?</h2>
+
+      <p>
+        En el mundo actual de la atención médica, la eficiencia y la
+        organización son esenciales para el éxito de cualquier consultorio. Un
+        software médico adecuado puede ser la herramienta perfecta para
+        optimizar tu flujo de trabajo, mejorar la atención al paciente y
+        aumentar la rentabilidad de tu negocio.
+      </p>
+
+      <div class="grid">
+        <!-- Servicio 1 -->
+        <div
+          class="col-12 md:col-6 mb-4 flex justify-content-start align-items-start gap-3"
+        >
+          <div>
+            <i class="bx bx-clipboard bx-border text-primary text-4xl mt-4"></i>
+          </div>
+          <div>
+            <h3 class="text-xl text-primary">Historia Clinica</h3>
+            <p class="text-secondary">
+              Seguimiento cronológico de las condiciones de salud del paciente,
+              antecendentes personales y familiares, los actos médicos y los
+              demás procedimientos ejecutados por el equipo de salud.
+            </p>
+          </div>
+        </div>
+
+        <!-- Servicio 2 -->
+        <div
+          class="col-12 md:col-6 mb-4 flex justify-content-start align-items-start gap-3"
+        >
+          <div>
+            <i class="bx bxs-file-pdf bx-border text-primary text-4xl mt-4"></i>
+          </div>
+          <div>
+            <h3 class="text-xl text-primary">Generación de RIPS y Reportes</h3>
+            <p class="text-secondary">
+              Relación de datos mínimos y básicos que se requieren para hacer
+              seguimiento al Sistema de Prestaciones de Salud en el SGSSS.
+            </p>
+          </div>
+        </div>
+
+        <!-- Servicio 3 -->
+        <div
+          class="col-12 md:col-6 mb-4 flex justify-content-start align-items-start gap-3"
+        >
+          <div>
+            <i
+              class="bx bxs-user-detail bx-border text-primary text-4xl mt-4"
+            ></i>
+          </div>
+          <div>
+            <h3 class="text-xl text-primary">Consultas Medicas</h3>
+            <p class="text-secondary">
+              Seguimiento en la atención integral brindada al paciente, llevando
+              registro del motivo de consulta, la revisión del estado de físico,
+              el diagnóstico y la formulación de medicamentos y estudios
+              médicos.
+            </p>
+          </div>
+        </div>
+
+        <!-- Servicio 4 -->
+        <div
+          class="col-12 md:col-6 mb-4 flex justify-content-start align-items-start gap-3"
+        >
+          <div>
+            <i
+              class="bx bxs-file-find bx-border text-primary text-4xl mt-4"
+            ></i>
+          </div>
+          <div>
+            <h3 class="text-xl text-primary">CIE 10 y CUPS</h3>
+            <p class="text-secondary">
+              Clasificación por referencia del diagnóstico principal y
+              diagnósticos secundarios. Nominación de la Clasificación Única de
+              Procedimientos en Salud-CUPS.
+            </p>
+          </div>
+        </div>
+
+        <!-- Servicio 5 -->
+        <div
+          class="col-12 md:col-6 mb-4 flex justify-content-start align-items-start gap-3"
+        >
+          <div>
+            <i
+              class="bx bxs-briefcase bx-border text-primary text-4xl mt-4"
+            ></i>
+          </div>
+          <div>
+            <h3 class="text-xl text-primary">Administradoras / EPS</h3>
+            <p class="text-secondary">
+              Relación de convenios y contratos con entidades promotoras de
+              salud EPS.
+            </p>
+          </div>
+        </div>
+
+        <!-- Servicio 6 -->
+        <div
+          class="col-12 md:col-6 mb-4 flex justify-content-start align-items-start gap-3"
+        >
+          <div>
+            <i class="bx bxs-detail bx-border text-primary text-4xl mt-4"></i>
+          </div>
+          <div>
+            <h3 class="text-xl text-primary">Ordenes Medicas</h3>
+            <p class="text-secondary">
+              Emisión de órdenes médicas para estudios de imagenología, exámenes
+              de laboratorio y recetario de medicamentos.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<div class="bg-primary">
+  <div class="curved-section">
+    <div class="curve-top surface-0"></div>
+
+    <!-- Características Destacadas -->
+    <div class="text-center">
+      <div class="py-8">
+        <h2 class="text-4xl text-white">Características Destacadas</h2>
+        <p class="text-lg text-secondary mb-0">
+          Descubre las mejores herramientas para gestionar tus proyectos de
+          manera eficiente.
+        </p>
+      </div>
+      <div class="grid mt-6 container">
+        <div class="col-12 md:col-4 text-center shadow-1">
+          <img
+            src="../../assets/images/home/img-proteccion-datos.svg"
+            alt=""
+            class="w-13rem"
+          />
+          <h3 class="text-xl text-white mt-0">Protección de datos</h3>
+          <p class="text-300 px-4">
+            Te brindamos seguridad e integridad de tu información, datos
+            estructurados y sincronizados en tiempo real.
+          </p>
+        </div>
+        <div class="col-12 md:col-4 text-center shadow-1">
+          <img
+            src="../../assets/images/home/img-ciberseguridad.svg"
+            alt=""
+            class="w-13rem"
+          />
+          <h3 class="text-xl text-white mt-0">Seguridad</h3>
+          <p class="text-300 px-4">
+            Acceso seguro a través de comunicación cifrada, y credenciales
+            individuales para cada usuario.
+          </p>
+        </div>
+        <div class="col-12 md:col-4 text-center shadow-1">
+          <img
+            src="../../assets/images/home/img-respuesta-agil.svg"
+            alt=""
+            class="w-13rem"
+          />
+          <h3 class="text-xl text-white mt-0">Respuesta ágil</h3>
+          <p class="text-300 px-4">
+            La ejecución de procesos y registros se hace en unos pocos minutos e
+            incluso segundos.
+          </p>
+        </div>
+
+        <div class="col-12 md:col-4 text-center shadow-1">
+          <img
+            src="../../assets/images/home/img-sincronizacion-nube.svg"
+            alt=""
+            class="w-13rem"
+          />
+          <h3 class="text-xl text-white mt-0">Sincronización en la nube</h3>
+          <p class="text-300 px-4">
+            Almacenamos tus datos y archivos en servicios de Cloud de alta
+            disponibilidad.
+          </p>
+        </div>
+        <div class="col-12 md:col-4 text-center shadow-1">
+          <img
+            src="../../assets/images/home/img-informes-oportunos.svg"
+            alt=""
+            class="w-13rem"
+          />
+          <h3 class="text-xl text-white mt-0">Informes oportunos</h3>
+          <p class="text-300 px-4">
+            Generación Registros Individuales de Prestación de Servicios de
+            Salud RIPS.
+          </p>
+        </div>
+        <div class="col-12 md:col-4 text-center shadow-1">
+          <img
+            src="../../assets/images/home/img-alta-disponibilidad.svg"
+            alt=""
+            class="w-13rem"
+          />
+          <h3 class="text-xl text-white mt-0">Alta disponibilidad</h3>
+          <p class="text-300 px-4">
+            Acceso seguro y eficiente en todo momento, solo necesitas acceso a
+            internet.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Llamado de accion -->
+    <div class="py-8 mt-8">
+      <div class="text-center">
+        <h2 class="text-3xl text-white mt-0">¿Listo para comenzar?</h2>
+        <p class="text-lg text-300 mb-4">
+          Únete a miles de usuarios que ya están disfrutando de nuestra
+          plataforma, <br />
+          optimiza tu flujo de trabajo, mejora la atención al paciente con
+          nuestro software médico intuitivo y fácil de usar.
+        </p>
+        <i class="bx bxs-chevrons-down bx-fade-down bx-md"></i>
+      </div>
+    </div>
+
+    <div class="curve-bottom"></div>
+  </div>
+</div>
+
+<!-- Sección de Planes y Precios -->
+<div class="bg-primary-50">
+  <div class="pb-4 text-center">
+    <h2 class="text-4xl font-bold text-primary mt-0">Planes y Precios</h2>
+    <p class="text-lg text-secondary mb-0">
+      Elige el plan que mejor se adapte a tus necesidades.
+    </p>
+  </div>
+
+  <div class="grid container">
+    <!-- Plan Básico -->
+    <div class="col-12 md:col-4 p-4">
+      <p-card styleClass="px-4">
+        <ng-template #header>
+          <h3 class="text-2xl text-primary mb-0">Licencia básica</h3>
+          <p-divider />
+        </ng-template>
+
+        <p class="mt-0">
+          Úselo usted o su cliente en un único producto final, sin costo alguno
+          para los usuarios finales .
+        </p>
+        <ul class="list-none p-0">
+          <li class="mb-2">
+            <i class="bx bx-check-circle text-primary mr-2"></i>Acceso limitado
+          </li>
+          <li class="mb-2">
+            <i class="bx bx-check-circle text-primary mr-2"></i>1 usuario
+          </li>
+          <li class="mb-2">
+            <i class="bx bx-check-circle text-primary mr-2"></i>Soporte básico
+          </li>
+        </ul>
+        <p class="text-4xl font-bold text-primary mt-3">
+          $9.99 <span class="text-300">/ mes</span>
+        </p>
+
+        <app-button
+          [label]="'Adquirir ahora'"
+          [color]="'primary'"
+          [icon]="'bx bx-cart-alt'"
+        ></app-button>
+      </p-card>
+    </div>
+    <!-- Plan Profesional -->
+    <div class="col-12 md:col-4 p-4">
+      <p-card styleClass="px-4">
+        <ng-template #header>
+          <h3 class="text-2xl text-primary mb-0">Licencia profesional</h3>
+          <p-divider />
+        </ng-template>
+
+        <p class="mt-0">
+          Úselo usted o su cliente en un único producto final, sin costo alguno
+          para los usuarios finales .
+        </p>
+        <ul class="list-none p-0">
+          <li class="mb-2">
+            <i class="bx bx-check-circle text-primary mr-2"></i>Acceso completo
+          </li>
+          <li class="mb-2">
+            <i class="bx bx-check-circle text-primary mr-2"></i>5 usuarios
+          </li>
+          <li class="mb-2">
+            <i class="bx bx-check-circle text-primary mr-2"></i>Soporte
+            prioritario
+          </li>
+        </ul>
+        <p class="text-4xl font-bold text-primary mt-3">
+          $29.99 <span class="text-300">/ mes</span>
+        </p>
+
+        <app-button
+          [label]="'Adquirir ahora'"
+          [color]="'primary'"
+          [icon]="'bx bx-cart-alt'"
+        ></app-button>
+      </p-card>
+    </div>
+    <!-- Plan Empresarial -->
+    <div class="col-12 md:col-4 p-4">
+      <p-card styleClass="px-4">
+        <ng-template #header>
+          <h3 class="text-2xl text-primary mb-0">Licencia empresarial</h3>
+          <p-divider />
+        </ng-template>
+
+        <p class="mt-0">
+          Úselo usted o su cliente en un único producto final, sin costo alguno
+          para los usuarios finales .
+        </p>
+        <ul class="list-none p-0">
+          <li class="mb-2">
+            <i class="bx bx-check-circle text-primary mr-2"></i>Acceso completo
+          </li>
+          <li class="mb-2">
+            <i class="bx bx-check-circle text-primary mr-2"></i>Usuarios
+            ilimitados
+          </li>
+          <li class="mb-2">
+            <i class="bx bx-check-circle text-primary mr-2"></i>Soporte dedicado
+          </li>
+        </ul>
+        <p class="text-4xl font-bold text-primary mt-3">
+          $99.99 <span class="text-300">/ mes</span>
+        </p>
+
+        <app-button
+          [label]="'Adquirir ahora'"
+          [color]="'primary'"
+          [icon]="'bx bx-cart-alt'"
+        ></app-button>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Carrusel de Clientes -->
+  <div class="my-8 pt-8 text-center">
+    <h2 class="text-4xl text-primary mt-0">Nuestros Clientes</h2>
+    <p class="text-lg text-secondary mb-0">
+      Conoce algunos de los consultorios médicos que confían en nosotros.
+    </p>
+  </div>
+
+  <p-carousel
+    [value]="clients"
+    [numVisible]="5"
+    [numScroll]="1"
+    [circular]="true"
+    [responsiveOptions]="responsiveOptions"
+    class="custom-carousel pb-8"
+  >
+    <ng-template let-client #item>
+      <div class="client-card text-center p-4">
+        <img [src]="client.logo" alt="{{ client.name }}" class="w-8rem" />
+        <h3 class="text-xl text-primary">{{ client.name }}</h3>
+        <p>{{ client.description }}</p>
+      </div>
+    </ng-template>
+  </p-carousel>
+</div>
+
+<!-- Sección de Preguntas Frecuentes -->
+<div class="curved-section bg-primary-50">
+  <div class="curve-bottom surface-0"></div>
+</div>
+<div class="pb-4 pt-6 text-center">
+  <h2 class="text-4xl font-bold text-primary mt-0">Preguntas Frecuentes</h2>
+  <p class="text-lg text-secondary mb-0">
+    Encuentra respuestas a las preguntas más comunes sobre nuestra plataforma.
+  </p>
+</div>
+<div class="grid container mb-8 pb-8">
+  <div class="col-12 md:col-8 md:col-offset-2">
+    <p-accordion [value]="['0']" [multiple]="true">
+      <p-accordion-panel value="0">
+        <p-accordion-header>¿Qué incluye el plan básico?</p-accordion-header>
+        <p-accordion-content>
+          <p class="m-0">
+            El plan básico incluye acceso limitado a las funcionalidades
+            principales, soporte básico y la posibilidad de agregar un usuario.
+          </p>
+        </p-accordion-content>
+      </p-accordion-panel>
+      <p-accordion-panel value="1">
+        <p-accordion-header
+          >¿Puedo cambiar de plan en cualquier momento?</p-accordion-header
+        >
+        <p-accordion-content>
+          <p class="m-0">
+            Sí, puedes cambiar de plan en cualquier momento desde la
+            configuración de tu cuenta. El cambio se aplicará de forma
+            inmediata.
+          </p>
+        </p-accordion-content>
+      </p-accordion-panel>
+      <p-accordion-panel value="2">
+        <p-accordion-header
+          >¿Cómo funciona el soporte dedicado?</p-accordion-header
+        >
+        <p-accordion-content>
+          <p class="m-0">
+            El soporte dedicado está disponible para los usuarios del plan
+            empresarial. Incluye atención personalizada y resolución prioritaria
+            de incidencias.
+          </p>
+        </p-accordion-content>
+      </p-accordion-panel>
+      <p-accordion-panel value="3">
+        <p-accordion-header>¿Mis datos están seguros?</p-accordion-header>
+        <p-accordion-content>
+          <p class="m-0">
+            Sí, utilizamos protocolos de seguridad avanzados para garantizar la
+            protección de tus datos. Toda la información está cifrada y
+            almacenada en servidores seguros.
+          </p>
+        </p-accordion-content>
+      </p-accordion-panel>
+    </p-accordion>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-primary text-white">
+  <div class="grid container">
+    <!-- Columna 1: Información de la Empresa -->
+    <div class="col-12 md:col-3 text-center md:text-left">
+      <img
+        src="../../assets/images/logo-nombre-blanco-512px.png"
+        class="w-13rem mt-3"
+        alt=""
+      />
+      <p class="text-300">
+        Lleva tus registros y el control de tu operación administrativa, Con una
+        amplia gama de funcionalidades, una interfaz intuitiva y un equipo de
+        soporte dedicado.
+      </p>
+    </div>
+
+    <!-- Columna 2: Enlaces Rápidos -->
+    <div class="col-6 md:col-3 text-center">
+      <h3 class="text-xl mb-3">Enlaces Rápidos</h3>
+      <ul class="list-none p-0">
+        <li class="mb-2">
+          <a href="#" class="text-white">Inicio</a>
+        </li>
+        <li class="mb-2">
+          <a href="#" class="text-white">Planes y Precios</a>
+        </li>
+        <li class="mb-2">
+          <a href="#" class="text-white">Preguntas Frecuentes</a>
+        </li>
+        <li class="mb-2">
+          <a href="#" class="text-white">Contacto</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Columna 2: Enlaces Rápidos -->
+    <div class="col-6 md:col-3 text-center">
+      <h3 class="text-xl mb-3">Enlaces Rápidos</h3>
+      <ul class="list-none p-0">
+        <li class="mb-2">
+          <a href="#" class="text-white">Inicio</a>
+        </li>
+        <li class="mb-2">
+          <a href="#" class="text-white">Planes y Precios</a>
+        </li>
+        <li class="mb-2">
+          <a href="#" class="text-white">Preguntas Frecuentes</a>
+        </li>
+        <li class="mb-2">
+          <a href="#" class="text-white">Contacto</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Columna 3: Redes Sociales -->
+    <div class="col-12 md:col-3 text-center md:text-right">
+      <h3 class="text-xl mb-3">Síguenos</h3>
+      <div class="flex justify-content-center md:justify-content-end gap-3">
+        <a href="#" class="text-white text-2xl">
+          <i class="bx bxl-facebook"></i>
+        </a>
+        <a href="#" class="text-white text-2xl">
+          <i class="bx bxl-twitter"></i>
+        </a>
+        <a href="#" class="text-white text-2xl">
+          <i class="bx bxl-instagram"></i>
+        </a>
+        <a href="#" class="text-white text-2xl">
+          <i class="bx bxl-linkedin"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <p-divider></p-divider>
+
+  <!-- Derechos Reservados -->
+  <div class="text-center">
+    <p class="text-300 pb-3 mb-0">
+      &copy; Vision app Web | Todos los derechos reservados.
+    </p>
+  </div>
+</footer>

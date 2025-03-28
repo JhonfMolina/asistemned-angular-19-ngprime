@@ -19,6 +19,7 @@ import ButtonComponent from '@components/button/button.component';
 })
 export default class DoctorsCreateComponent {
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
+
   private subscription: Subscription[] = [];
   formBtnConfig = [
     {
@@ -210,7 +211,8 @@ export default class DoctorsCreateComponent {
         required: true,
       },
       column: 'col-12 md:col-4 lg:col-4',
-      onChange: (event: any) => this.onDepartamentoChange(event.value),
+      onChange: (event: any) =>
+        this.getListadoCiudadesPorDepartamento(event.value),
     },
     {
       type: 'select',
@@ -266,11 +268,6 @@ export default class DoctorsCreateComponent {
     private _router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.getListadoTipoIdentificacion();
-    this.getListadoDepartamentos();
-  }
-
   goToReturnUrl(): void {
     this._router.navigate(['admin/assistance/doctors']);
   }
@@ -295,7 +292,7 @@ export default class DoctorsCreateComponent {
       });
   }
 
-  onDepartamentoChange(department: Department): void {
+  getListadoCiudadesPorDepartamento(department: Department): void {
     if (department) {
       this._utilidadesService
         .getListadoCiudadesPorDepartamento({
@@ -318,8 +315,27 @@ export default class DoctorsCreateComponent {
     this.subscription.push(
       this._doctorsService.post(doctor).subscribe((res) => {
         this._notificationService.showSuccess(res.message);
-        this.dynamicFormComponent.resetForm();
+        setTimeout(() => {
+          this._notificationService.confirmation({
+            message: '¿Desea crear otro medico?',
+            accept: () => {
+              this.dynamicFormComponent.resetForm();
+            },
+            reject: () => {
+              this.goToReturnUrl();
+            },
+          });
+        }, 2000);
       })
     );
+  }
+
+  ngOnInit(): void {
+    this.getListadoTipoIdentificacion();
+    this.getListadoDepartamentos();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.forEach((s) => s.unsubscribe());
   }
 }

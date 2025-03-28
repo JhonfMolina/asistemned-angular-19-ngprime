@@ -211,7 +211,8 @@ export default class DoctorsUpdateComponent {
         required: true,
       },
       column: 'col-12 md:col-4 lg:col-4',
-      onChange: (event: any) => this.onDepartamentoChange(event.value),
+      onChange: (event: any) =>
+        this.getListadoCiudadesPorDepartamento(event.value),
     },
     {
       type: 'select',
@@ -278,6 +279,87 @@ export default class DoctorsUpdateComponent {
     this.doctorId = this.route.snapshot.paramMap.get('id')!;
   }
 
+  goToReturnUrl(): void {
+    this._router.navigate(['admin/assistance/doctors']);
+  }
+
+  getListadoTipoIdentificacion(): void {
+    this.subscription.push(
+      this._utilidadesService
+        .getListadoTipoIdentificacion({ estados: ['activo'] })
+        .subscribe((response) => {
+          this.formConfig.find(
+            (field) => field.name === 'utilidad_tipo_identificacion_id'
+          )!.options = response.data;
+        })
+    );
+  }
+
+  getListadoDepartamentos(): void {
+    this.subscription.push(
+      this._utilidadesService
+        .getListadoDepartamentos({ estados: ['activo'] })
+        .subscribe((response) => {
+          this.formConfig.find(
+            (field) => field.name === 'utilidad_departamento_id'
+          )!.options = response.data;
+        })
+    );
+  }
+
+  getListadoCiudadesPorDepartamento(departmentId: string): void {
+    if (departmentId) {
+      this.subscription.push(
+        this._utilidadesService
+          .getListadoCiudadesPorDepartamento({
+            estados: ['activo'],
+            utilidad_departamento_id: departmentId,
+          })
+          .subscribe((response) => {
+            this.formConfig.find(
+              (field) => field.name === 'utilidad_ciudad_id'
+            )!.options = response.data;
+          })
+      );
+    }
+  }
+
+  getById(): void {
+    if (this.doctorId) {
+      this.subscription.push(
+        this._doctorsService
+          .getById({
+            estados: ['activo'],
+            id: this.doctorId,
+            ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+          })
+          .subscribe((doctor) => {
+            this.dynamicFormComponent.setFormData({
+              ...doctor.data,
+              estado: doctor.data.estado == 'activo' ? true : false,
+            });
+            this.getListadoCiudadesPorDepartamento(
+              doctor.data.utilidad_departamento_id
+            );
+          })
+      );
+    }
+  }
+
+  put(data: any): void {
+    const doctor: Doctors = {
+      ...data.form,
+      estado: data.form.estado ? 'activo' : 'inactivo',
+      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+    };
+    this.subscription.push(
+      this._doctorsService.put(this.doctorId, doctor).subscribe((res) => {
+        this._notificationService.showSuccess(res.message);
+        this.goToReturnUrl();
+      })
+    );
+  }
+
   ngOnInit(): void {
     this._loadingService.loading$.subscribe((loading) => {
       this.formBtnConfig.find((btn) => btn.label === 'Actualizar')!.loading =
@@ -291,75 +373,7 @@ export default class DoctorsUpdateComponent {
     this.getById();
   }
 
-  goToReturnUrl(): void {
-    this._router.navigate(['admin/assistance/doctors']);
-  }
-
-  getListadoTipoIdentificacion(): void {
-    this._utilidadesService
-      .getListadoTipoIdentificacion({ estados: ['activo'] })
-      .subscribe((response) => {
-        this.formConfig.find(
-          (field) => field.name === 'utilidad_tipo_identificacion_id'
-        )!.options = response.data;
-      });
-  }
-
-  getListadoDepartamentos(): void {
-    this._utilidadesService
-      .getListadoDepartamentos({ estados: ['activo'] })
-      .subscribe((response) => {
-        this.formConfig.find(
-          (field) => field.name === 'utilidad_departamento_id'
-        )!.options = response.data;
-      });
-  }
-
-  onDepartamentoChange(departmentId: string): void {
-    if (departmentId) {
-      this._utilidadesService
-        .getListadoCiudadesPorDepartamento({
-          estados: ['activo'],
-          utilidad_departamento_id: departmentId,
-        })
-        .subscribe((response) => {
-          this.formConfig.find(
-            (field) => field.name === 'utilidad_ciudad_id'
-          )!.options = response.data;
-        });
-    }
-  }
-
-  getById(): void {
-    if (this.doctorId) {
-      this._doctorsService
-        .getById({
-          estados: ['activo'],
-          id: this.doctorId,
-          ma_entidad_id: this._authService.getEntityStorage.id.toString(),
-        })
-        .subscribe((doctor) => {
-          this.dynamicFormComponent.setFormData({
-            ...doctor.data,
-            estado: doctor.data.estado == 'activo' ? true : false,
-          });
-          this.onDepartamentoChange(doctor.data.utilidad_departamento_id);
-        });
-    }
-  }
-
-  put(data: any): void {
-    const doctor: Doctors = {
-      ...data.form,
-      estado: data.form.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
-    };
-    console.log(doctor);
-
-    this.subscription.push(
-      this._doctorsService.put(this.doctorId, doctor).subscribe((res) => {
-        this._notificationService.showSuccess(res.message);
-      })
-    );
+  ngOnDestroy(): void {
+    this.subscription.forEach((s) => s.unsubscribe());
   }
 }

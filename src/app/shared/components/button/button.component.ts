@@ -27,6 +27,7 @@ export default class ButtonComponent {
     | 'Cancelar'
     | 'Guardar'
     | 'Actualizar'
+    | 'Adquirir ahora'
     | 'Eliminar'
     | 'Nuevo';
   @Input() action!: string;

@@ -42,21 +42,6 @@ export default class DoctorsListComponent {
     private _router: Router
   ) {}
 
-  ngAfterViewInit() {
-    this.columns = [
-      { field: 'nombre_completo', header: 'Nombre Del Medico' },
-      { field: 'identificacion', header: 'Identificación' },
-      { field: 'correo', header: 'Correo Electrónico' },
-      { field: 'contactos', header: 'Contacto' },
-      {
-        field: 'estado',
-        header: 'Estado',
-        template: this.statusTemplate,
-      },
-    ];
-    this.cdr.detectChanges();
-  }
-
   onNavigate() {
     this._router.navigate(['admin/assistance/doctors/doctors-create']);
   }
@@ -88,6 +73,8 @@ export default class DoctorsListComponent {
     this.subscription.push(
       this._doctorsService.getlist(params).subscribe((res) => {
         if (res) {
+          console.log(res);
+
           this.doctors = res.data.data;
           this.totalRecords = res.data.total;
         }
@@ -97,5 +84,24 @@ export default class DoctorsListComponent {
 
   ngOnInit() {
     this.getList();
+  }
+
+  ngAfterViewInit() {
+    this.columns = [
+      { field: 'nombre_completo', header: 'Nombre Del Medico' },
+      { field: 'identificacion', header: 'Identificación' },
+      { field: 'correo', header: 'Correo Electrónico' },
+      { field: 'contactos', header: 'Contacto' },
+      {
+        field: 'estado',
+        header: 'Estado',
+        template: this.statusTemplate,
+      },
+    ];
+    this.cdr.detectChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.forEach((s) => s.unsubscribe());
   }
 }

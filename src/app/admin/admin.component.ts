@@ -6,7 +6,8 @@ import { Toolbar } from 'primeng/toolbar';
 import { Menu } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import ButtonComponent from '@components//button/button.component';
-import { SidebarComponent } from '@components//sidebar/sidebar.component';
+import { SidebarComponent } from '@components/sidebar/sidebar.component';
+import { SidebarService } from '@services/util/sidebar.service';
 
 @Component({
   selector: 'app-admin',
@@ -27,7 +28,7 @@ export default class AdminComponent {
   toggle = false;
   items: MenuItem[] | undefined;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private sidebarService: SidebarService) {
     this.items = [
       {
         label: 'Opciones',
@@ -43,6 +44,10 @@ export default class AdminComponent {
         ],
       },
     ];
+  }
+
+  openSidebar(): void {
+    this.sidebarService.open();
   }
 
   toogleDarkMode(): void {

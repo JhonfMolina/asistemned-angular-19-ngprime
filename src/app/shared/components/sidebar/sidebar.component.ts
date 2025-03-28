@@ -7,6 +7,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
 import { DefaultImagePipe } from '../../pipes/default-image.pipe';
+import { SidebarService } from '@services/util/sidebar.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -23,10 +24,23 @@ import { DefaultImagePipe } from '../../pipes/default-image.pipe';
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
-  @Input() visible: boolean = true;
   protected fechaActual = new Date();
   private _authService = inject(AuthService);
   profile = this._authService.getUserProfileStorage;
+  visible = false;
+
+  constructor(private _sidebarService: SidebarService) {}
+
+  ngOnInit(): void {
+    this._sidebarService.visible$.subscribe((isVisible) => {
+      this.visible = isVisible;
+    });
+  }
+
+  closeSidebar(): void {
+    this._sidebarService.close();
+  }
+
   menuPrincipal = [
     {
       title: 'Administración',

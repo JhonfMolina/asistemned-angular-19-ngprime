@@ -34,7 +34,7 @@
               *ngFor="let menuItem of menu.menuItems"
               class="nav-item"
             >
-              <a [routerLink]="[menuItem.path]">
+              <a [routerLink]="[menuItem.path]" (click)="closeSidebar()">
                 <span>{{ menuItem.title | titlecase }}</span>
               </a>
             </li>

@@ -1,194 +1,100 @@
 import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { AvatarModule } from 'primeng/avatar';
-import { SelectModule } from 'primeng/select';
+import ButtonComponent from '@components/button/button.component';
+import { AccordionModule } from 'primeng/accordion';
 import { CardModule } from 'primeng/card';
-import { DynamicFormComponent } from '@components//dynamic-form/dynamic-form.component';
-import { SkeletonComponent } from '@components//skeleton/skeleton.component';
-import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
-import { DataService } from '@services/util/data.service';
-import { NotificationService } from '@services/util/notificacion.service';
-import { TableComponent } from '@components//table/table.component';
-
-interface PageEvent {
-  first: number;
-  rows: number;
-  page: number;
-  pageCount: number;
-}
+import { DividerModule } from 'primeng/divider';
+import { CarouselModule } from 'primeng/carousel';
 
 @Component({
   selector: 'app-home',
   imports: [
-    AvatarModule,
-    ButtonModule,
-    TableComponent,
-    DynamicFormComponent,
-    SelectModule,
     CardModule,
-    SkeletonComponent,
+    DividerModule,
+    ButtonComponent,
+    AccordionModule,
+    CarouselModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export default class HomeComponent {
-  users: any[] = [];
+  clients: { name: string; logo: string; description: string }[] = [];
+  responsiveOptions: any[] | undefined;
 
-  columns: any[] = [
-    { field: 'id', header: 'ID' },
-    { field: 'name', header: 'Name' },
-    { field: 'status', header: 'Status' },
-    { field: 'gender', header: 'Gender' },
-  ];
+  constructor() {}
 
-  totalRecords: number = 0;
-  first: number = 0;
-  rows: number = 20;
-  page: number = 1;
-
-  formConfig: DynamicForm[] = [
-    {
-      type: 'text',
-      icon: 'id-card',
-      name: 'dni',
-      label: 'DNI',
-      on_label: 'dni',
-      placeholder: '',
-      validators: {
-        required: true,
-        minLength: 3,
-        maxLength: 20,
+  ngOnInit() {
+    // Datos de ejemplo para los clientes
+    this.clients = [
+      {
+        name: 'Consultorio Médico Jaller',
+        logo: 'https://www.clinicajaller.com/images/Logo_.png',
+        description: 'Especialistas en medicina general y pediatría.',
       },
-      column: 'col-12 md:col-2 lg:col-12',
-    },
-    {
-      type: 'text',
-      icon: 'user',
-      name: 'username',
-      label: 'Username',
-      on_label: 'username',
-      placeholder: '',
-      validators: {
-        required: true,
-        minLength: 3,
-        maxLength: 20,
+      {
+        name: 'Clínica San Rafael',
+        logo: 'https://www.clinicassanrafael.com/wp-content/uploads/logo-san-rafael.svg',
+        description: 'Atención integral en salud y bienestar.',
       },
-      column: 'col-12 md:col-4 lg:col-12',
-    },
-    {
-      type: 'email',
-      icon: 'envelope',
-      name: 'email',
-      label: 'Email',
-      on_label: 'Email',
-      placeholder: '',
-      validators: {
-        required: true,
-        email: true,
+      {
+        name: 'Centro Médico La Misericordia',
+        logo: 'https://www.clinicajaller.com/images/Logo_.png',
+        description: 'Cuidado especializado en cardiología y nutrición.',
       },
-      column: 'col-12 md:col-4 lg:col-12',
-    },
-    {
-      type: 'password',
-      icon: 'key',
-      name: 'password',
-      label: 'Password',
-      on_label: 'password',
-      placeholder: '',
-      validators: {
-        required: true,
-        minLength: 6,
+      {
+        name: 'Consultorio Dental Bright Smile',
+        logo: 'https://www.clinicassanrafael.com/wp-content/uploads/logo-san-rafael.svg',
+        description: 'Expertos en odontología estética y ortodoncia.',
       },
-      column: 'col-12 md:col-2 lg:col-12',
-    },
-    {
-      type: 'select',
-      name: 'country',
-      label: 'Country',
-      on_label: 'country',
-      placeholder: '',
-      filter: true,
-      filterBy: 'name',
-      showClear: true,
-      options: [
-        { name: 'Australia', code: 'AU' },
-        { name: 'Brazil', code: 'BR' },
-        { name: 'China', code: 'CN' },
-        { name: 'Egypt', code: 'EG' },
-        { name: 'France', code: 'FR' },
-        { name: 'Germany', code: 'DE' },
-        { name: 'India', code: 'IN' },
-        { name: 'Japan', code: 'JP' },
-        { name: 'Spain', code: 'ES' },
-        { name: 'United States', code: 'US' },
-      ],
-      selectedItems: [],
-      validators: {
-        required: true,
+      {
+        name: 'Clínica de Especialidades Médicas',
+        logo: 'https://www.clinicajaller.com/images/Logo_.png',
+        description: 'Servicios médicos avanzados en diversas especialidades.',
       },
-      column: 'col-12 md:col-4 lg:col-12',
-    },
-    {
-      type: 'textarea',
-      name: 'bio',
-      label: 'bio',
-      on_label: 'bio',
-      placeholder: '',
-      validators: {
-        maxLength: 200,
+      {
+        name: 'Clínica San Rafael',
+        logo: 'https://www.clinicassanrafael.com/wp-content/uploads/logo-san-rafael.svg',
+        description: 'Atención integral en salud y bienestar.',
       },
-      column: 'col-12 md:col-8 lg:col-12',
-    },
-  ];
+      {
+        name: 'Centro Médico La Misericordia',
+        logo: 'https://www.clinicajaller.com/images/Logo_.png',
+        description: 'Cuidado especializado en cardiología y nutrición.',
+      },
+      {
+        name: 'Consultorio Dental Bright Smile',
+        logo: 'https://www.clinicassanrafael.com/wp-content/uploads/logo-san-rafael.svg',
+        description: 'Expertos en odontología estética y ortodoncia.',
+      },
+      {
+        name: 'Clínica de Especialidades Médicas',
+        logo: 'https://www.clinicajaller.com/images/Logo_.png',
+        description: 'Servicios médicos avanzados en diversas especialidades.',
+      },
+    ];
 
-  constructor(
-    private dataService: DataService,
-    private _notificationService: NotificationService
-  ) {}
-
-  onEdit(rowData: any): void {
-    console.log('Edit:', rowData);
-  }
-
-  onDelete(rowData: any): void {
-    console.log('Delete:', rowData);
-  }
-
-  onPageChange(event: PageEvent): void {
-    this.page = event.page + 1;
-    this.rows = event.rows;
-    this.getList();
-  }
-
-  getList(): void {
-    this.dataService.getList(this.page, this.rows).subscribe((data) => {
-      this.users = data.results;
-      this.totalRecords = data.info.count;
-      this._notificationService.showSuccess(
-        'The query has been successfully executed!',
-        `We found ${data.results.length} results.`
-      );
-    });
-  }
-
-  get(filterValue?: string): void {
-    if (filterValue) {
-      this.dataService.getId(filterValue, 'Alive').subscribe((data) => {
-        console.log(filterValue);
-        if (data && data.results) {
-          this.users = data.results;
-        } else {
-          this.getList();
-        }
-      });
-    }
-  }
-
-  ngOnInit(): void {
-    this.getList();
-  }
-
-  post(dataForm: any): void {
-    console.log(dataForm);
+    // Opciones responsivas para el carrusel
+    this.responsiveOptions = [
+      {
+        breakpoint: '1400px',
+        numVisible: 3,
+        numScroll: 1,
+      },
+      {
+        breakpoint: '1199px',
+        numVisible: 2,
+        numScroll: 1,
+      },
+      {
+        breakpoint: '767px',
+        numVisible: 2,
+        numScroll: 1,
+      },
+      {
+        breakpoint: '575px',
+        numVisible: 1,
+        numScroll: 1,
+      },
+    ];
   }
 }

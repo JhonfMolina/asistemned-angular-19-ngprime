@@ -12,7 +12,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { CustomTitleStrategy } from './core/services/util/custom-title-strategy.service';
 import MyPreset from './theme/mypresent';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { headersInterceptor } from './core/interceptors/headers.interceptor';
 import { requestInterceptor } from './core/interceptors/request.interceptor';
 
@@ -38,5 +38,6 @@ export const appConfig: ApplicationConfig = {
       ripple: true,
     }),
     MessageService,
+    ConfirmationService,
   ],
 };
