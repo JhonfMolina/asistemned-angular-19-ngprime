@@ -2,17 +2,11 @@ import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/c
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
 import { Patients } from '@interfaces/assistance/patients.interfaces';
+import { PageEvent } from '@interfaces/util/page-event.interfaces';
 import { PatientsService } from '@services/assistance/patients.service';
 import { AuthService } from '@services/auth/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
-
-interface PageEvent {
-  first: number;
-  rows: number;
-  page: number;
-  pageCount: number;
-}
 
 @Component({
   selector: 'app-patients-list',

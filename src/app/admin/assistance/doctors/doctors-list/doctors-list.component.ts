@@ -11,13 +11,7 @@ import { Doctors } from '@interfaces/admin/doctors.interfaces';
 import { Chip } from 'primeng/chip';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
-
-interface PageEvent {
-  first: number;
-  rows: number;
-  page: number;
-  pageCount: number;
-}
+import { PageEvent } from '@interfaces/util/page-event.interfaces';
 
 @Component({
   selector: 'app-doctors-list',

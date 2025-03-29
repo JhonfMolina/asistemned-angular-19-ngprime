@@ -186,7 +186,6 @@ export default class PatientsCreateComponent {
       },
       column: 'col-12 md:col-6 lg:col-3',
     },
-    
     {
       type: 'text',
       icon: 'location-plus',
