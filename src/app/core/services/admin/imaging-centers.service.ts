@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GlobalService } from '@services/util/global.service';
 import { ApiResponse } from '@interfaces/util/response.models';
-import { ImagingCenters } from '@interfaces/assistance/imaging-centers.interfaces';
+import { ImagingCenters } from '@interfaces/admin/imaging-centers.interfaces';
 
 @Injectable({
   providedIn: 'root',

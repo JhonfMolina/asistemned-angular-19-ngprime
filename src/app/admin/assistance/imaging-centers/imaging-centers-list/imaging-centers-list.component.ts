@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
-import { ImagingCenters } from '@interfaces/assistance/imaging-centers.interfaces';
+import { ImagingCenters } from '@interfaces/admin/imaging-centers.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
-import { ImagingCentersService } from '@services/assistance/imaging-centers.service';
+import { ImagingCentersService } from '@services/admin/imaging-centers.service';
 import { AuthService } from '@services/auth/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
