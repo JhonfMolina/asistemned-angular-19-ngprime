@@ -14,7 +14,7 @@ export default [
     title: 'Imaging Centers',
   },
   {
-    path: 'imaging-centers-update',
+    path: 'imaging-centers-update/:id',
     loadComponent: () =>
       import('./imaging-centers-update/imaging-centers-update.component'),
     title: 'Imaging Centers',

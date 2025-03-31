@@ -13,7 +13,7 @@ export default [
     title: 'Pharmacies',
   },
   {
-    path: 'pharmacies-update',
+    path: 'pharmacies-update/:id',
     loadComponent: () =>
       import('./pharmacies-update/pharmacies-update.component'),
     title: 'Pharmacies',

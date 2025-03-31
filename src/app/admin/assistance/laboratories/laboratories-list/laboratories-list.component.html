@@ -1,1 +1,22 @@
-<p>laboratories-list works!</p>
+<app-table
+  [titleList]="'Listado de laboratorios'"
+  [data]="laboratories"
+  [columns]="columns"
+  [rows]="rows"
+  [first]="first"
+  [totalRecords]="totalRecords"
+  (navigate)="onNavigate()"
+  (edit)="onEdit($event)"
+  (delete)="onDelete($event)"
+  (pageChange)="onPageChange($event)"
+></app-table>
+<ng-template #statusTemplate let-item let-col="colName">
+  <p-chip
+    label="{{ item.estado }}"
+    icon="bx bx-{{
+      item.estado == 'activo'
+        ? 'check-circle text-primary-600'
+        : 'x-circle text-red-600'
+    }}"
+  />
+</ng-template>

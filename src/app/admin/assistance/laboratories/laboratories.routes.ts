@@ -14,7 +14,7 @@ export default [
     title: 'Laboratories',
   },
   {
-    path: 'laboratories-update',
+    path: 'laboratories-update/:id',
     loadComponent: () =>
       import('./laboratories-update/laboratories-update.component'),
     title: 'Laboratories',
