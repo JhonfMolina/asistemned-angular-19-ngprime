@@ -2,9 +2,10 @@ import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
-import { Entities } from '@interfaces/admin/entities.interfaces';
+import { Erp } from '@interfaces/admin/erp.interfaces';
+import { Department } from '@interfaces/util/department.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
-import { EntitiesService } from '@services/admin/entities.service';
+import { ErpService } from '@services/admin/erp.service';
 import { AuthService } from '@services/auth/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
@@ -13,22 +14,23 @@ import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
-  selector: 'app-entities',
+  selector: 'app-erp-create',
   imports: [DynamicFormComponent, CardModule, ButtonComponent],
-  templateUrl: './entities.component.html',
+  templateUrl: './erp-create.component.html',
 })
-export default class EntitiesComponent {
+export default class ErpCreateComponent {
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
+
   private subscription: Subscription[] = [];
   formBtnConfig = [
     {
-      label: 'Actualizar',
-      icon: 'bx bx-refresh bx-sm',
+      label: 'Guardar',
+      icon: 'save bx-sm',
       visible: true,
       width: 'w-full',
       appearance: 'base',
       color: 'primary',
-      action: 'actualizar',
+      action: 'guardar',
       disabled: false,
       loading: false,
     },
@@ -140,113 +142,86 @@ export default class EntitiesComponent {
       },
       column: 'col-12 md:col-4 lg:col-4',
     },
-    {
-      type: 'checkbox',
-      name: 'estado',
-      label: 'Estado',
-      on_label: 'estado',
-      column: 'col-12 md:col-4 lg:col-4',
-    },
   ];
 
   constructor(
     private _utilidadesService: UtilidadesService,
     private _notificationService: NotificationService,
-    private _entitiesService: EntitiesService,
+    private _erpService: ErpService,
     private _authService: AuthService,
     private _loadingService: LoadingService,
     private _router: Router
   ) {}
 
   goToReturnUrl(): void {
-    this._router.navigate(['admin/administrative/entities']);
+    this._router.navigate(['admin/administrative/erp']);
   }
 
   getListadoTipoIdentificacion(): void {
-    this.subscription.push(
-      this._utilidadesService
-        .getListadoTipoIdentificacion({ estados: ['activo'] })
-        .subscribe((response) => {
-          this.formConfig.find(
-            (field) => field.name === 'utilidad_tipo_identificacion_id'
-          )!.options = response.data;
-        })
-    );
+    this._utilidadesService
+      .getListadoTipoIdentificacion({ estados: ['activo'] })
+      .subscribe((response) => {
+        this.formConfig.find(
+          (field) => field.name === 'utilidad_tipo_identificacion_id'
+        )!.options = response.data;
+      });
   }
 
   getListadoDepartamentos(): void {
-    this.subscription.push(
-      this._utilidadesService
-        .getListadoDepartamentos({ estados: ['activo'] })
-        .subscribe((response) => {
-          this.formConfig.find(
-            (field) => field.name === 'utilidad_departamento_id'
-          )!.options = response.data;
-        })
-    );
+    this._utilidadesService
+      .getListadoDepartamentos({ estados: ['activo'] })
+      .subscribe((response) => {
+        this.formConfig.find(
+          (field) => field.name === 'utilidad_departamento_id'
+        )!.options = response.data;
+      });
   }
 
-  getListadoCiudadesPorDepartamento(departmentId: string): void {
-    if (departmentId) {
-      this.subscription.push(
-        this._utilidadesService
-          .getListadoCiudadesPorDepartamento({
-            estados: ['activo'],
-            utilidad_departamento_id: departmentId,
-          })
-          .subscribe((response) => {
-            this.formConfig.find(
-              (field) => field.name === 'utilidad_ciudad_id'
-            )!.options = response.data;
-          })
-      );
+  getListadoCiudadesPorDepartamento(department: Department): void {
+    if (department) {
+      this._utilidadesService
+        .getListadoCiudadesPorDepartamento({
+          estados: ['activo'],
+          utilidad_departamento_id: department,
+        })
+        .subscribe((response) => {
+          this.formConfig.find(
+            (field) => field.name === 'utilidad_ciudad_id'
+          )!.options = response.data;
+        });
     }
   }
 
-  getById(): void {
-    this.subscription.push(
-      this._entitiesService
-        .getById({
-          estados: ['activo'],
-          ma_entidad_id: this._authService.getEntityStorage.id.toString(),
-        })
-        .subscribe((erp) => {
-          this.dynamicFormComponent.setFormData({
-            ...erp.data,
-            estado: erp.data.estado == 'activo' ? true : false,
-          });
-          this.getListadoCiudadesPorDepartamento(
-            erp.data.utilidad_departamento_id
-          );
-        })
-    );
-  }
-
-  put(data: any): void {
-    const entities: Entities = {
+  post(data: any): void {
+    const erp: Erp = {
       ...data.form,
-      estado: data.form.estado ? 'activo' : 'inactivo',
       ma_entidad_id: this._authService.getEntityStorage.id.toString(),
     };
     this.subscription.push(
-      this._entitiesService.put('', entities).subscribe((res) => {
+      this._erpService.post(erp).subscribe((res) => {
         this._notificationService.showSuccess(res.message);
-        this.goToReturnUrl();
+        setTimeout(() => {
+          this._notificationService.confirmation({
+            message: '¿Desea crear otra erp?',
+            accept: () => {
+              this.dynamicFormComponent.resetForm();
+            },
+            reject: () => {
+              this.goToReturnUrl();
+            },
+          });
+        }, 2000);
       })
     );
   }
 
   ngOnInit(): void {
     this._loadingService.loading$.subscribe((loading) => {
-      this.formBtnConfig.find((btn) => btn.label === 'Actualizar')!.loading =
+      this.formBtnConfig.find((btn) => btn.label === 'Guardar')!.loading =
         loading;
     });
     this.getListadoTipoIdentificacion();
     this.getListadoDepartamentos();
-  }
-
-  ngAfterViewInit() {
-    this.getById();
   }
 
   ngOnDestroy(): void {

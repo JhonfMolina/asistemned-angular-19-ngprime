@@ -1,5 +1,6 @@
-<p-card *ngIf="data.length > 0; else skeleton">
+<p-card>
   <p-table
+    *ngIf="!isLoading; else skeleton"
     #dt2
     [value]="data"
     [tableStyle]="{ 'min-width': '50rem' }"
@@ -74,7 +75,13 @@
         </td>
       </tr>
     </ng-template>
+    <ng-template pTemplate="footer" *ngIf="data.length == 0">
+      <small>No existen registros actualmente.</small>
+    </ng-template>
   </p-table>
+  <ng-template #skeleton>
+    <app-skeleton [type]="'table'" [columns]="columns"></app-skeleton>
+  </ng-template>
   <p-paginator
     (onPageChange)="onPageChange($event)"
     [first]="first"
@@ -85,7 +92,3 @@
     [showJumpToPageDropdown]="true"
   />
 </p-card>
-
-<ng-template #skeleton>
-  <app-skeleton [type]="'table'" [columns]="columns"></app-skeleton>
-</ng-template>

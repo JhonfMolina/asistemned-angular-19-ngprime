@@ -13,7 +13,7 @@ export default [
   },
   {
     path: 'erp',
-    loadComponent: () => import('./erp/erp.component'),
+    loadChildren: () => import('./erp/erp.routes'),
     title: 'Erp',
   },
 ] as Routes;

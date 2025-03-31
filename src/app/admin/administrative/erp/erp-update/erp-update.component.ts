@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
-import { Entities } from '@interfaces/admin/entities.interfaces';
+import { Erp } from '@interfaces/admin/erp.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
-import { EntitiesService } from '@services/admin/entities.service';
+import { ErpService } from '@services/admin/erp.service';
 import { AuthService } from '@services/auth/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
@@ -13,13 +13,14 @@ import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
-  selector: 'app-entities',
+  selector: 'app-erp-update',
   imports: [DynamicFormComponent, CardModule, ButtonComponent],
-  templateUrl: './entities.component.html',
+  templateUrl: './erp-update.component.html',
 })
-export default class EntitiesComponent {
+export default class ErpUpdateComponent {
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private subscription: Subscription[] = [];
+  private erpId = '';
   formBtnConfig = [
     {
       label: 'Actualizar',
@@ -152,14 +153,17 @@ export default class EntitiesComponent {
   constructor(
     private _utilidadesService: UtilidadesService,
     private _notificationService: NotificationService,
-    private _entitiesService: EntitiesService,
+    private _erpService: ErpService,
     private _authService: AuthService,
+    private route: ActivatedRoute,
     private _loadingService: LoadingService,
     private _router: Router
-  ) {}
+  ) {
+    this.erpId = this.route.snapshot.paramMap.get('id')!;
+  }
 
   goToReturnUrl(): void {
-    this._router.navigate(['admin/administrative/entities']);
+    this._router.navigate(['admin/administrative/erp']);
   }
 
   getListadoTipoIdentificacion(): void {
@@ -204,32 +208,35 @@ export default class EntitiesComponent {
   }
 
   getById(): void {
-    this.subscription.push(
-      this._entitiesService
-        .getById({
-          estados: ['activo'],
-          ma_entidad_id: this._authService.getEntityStorage.id.toString(),
-        })
-        .subscribe((erp) => {
-          this.dynamicFormComponent.setFormData({
-            ...erp.data,
-            estado: erp.data.estado == 'activo' ? true : false,
-          });
-          this.getListadoCiudadesPorDepartamento(
-            erp.data.utilidad_departamento_id
-          );
-        })
-    );
+    if (this.erpId) {
+      this.subscription.push(
+        this._erpService
+          .getById({
+            estados: ['activo'],
+            id: this.erpId,
+            ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+          })
+          .subscribe((erp) => {
+            this.dynamicFormComponent.setFormData({
+              ...erp.data,
+              estado: erp.data.estado == 'activo' ? true : false,
+            });
+            this.getListadoCiudadesPorDepartamento(
+              erp.data.utilidad_departamento_id
+            );
+          })
+      );
+    }
   }
 
   put(data: any): void {
-    const entities: Entities = {
+    const erp: Erp = {
       ...data.form,
       estado: data.form.estado ? 'activo' : 'inactivo',
       ma_entidad_id: this._authService.getEntityStorage.id.toString(),
     };
     this.subscription.push(
-      this._entitiesService.put('', entities).subscribe((res) => {
+      this._erpService.put(this.erpId, erp).subscribe((res) => {
         this._notificationService.showSuccess(res.message);
         this.goToReturnUrl();
       })

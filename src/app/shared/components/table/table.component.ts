@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import ButtonComponent from '../button/button.component';
@@ -8,6 +8,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
+import { LoadingService } from '@services/util/loading.service';
 
 @Component({
   selector: 'app-table',
@@ -25,7 +26,7 @@ import { SkeletonComponent } from '../skeleton/skeleton.component';
   ],
   templateUrl: './table.component.html',
 })
-export class TableComponent {
+export class TableComponent implements OnInit {
   @Input() data: any[] = [];
   @Input() columns: any[] = [];
   @Input() titleList: string = '';
@@ -40,6 +41,9 @@ export class TableComponent {
 
   filteredData: any[] = [];
   filterColumn: string[] = [];
+  isLoading: boolean = true;
+
+  constructor(private _loadingService: LoadingService) {}
 
   onNavigate(): void {
     this.navigate.emit();
@@ -58,6 +62,9 @@ export class TableComponent {
   }
 
   ngOnInit(): void {
+    this._loadingService.loading$.subscribe((loading) => {
+      this.isLoading = loading;
+    });
     this.filterColumn = this.columns.map((col) => col.field);
   }
 

@@ -1,4 +1,3 @@
-<p>entities works!</p>
 <p-card>
   <ng-template #header>
     <div class="flex justify-content-start align-items-center gap-1">
@@ -10,12 +9,13 @@
         [classList]="'ml-2'"
         (onClick)="goToReturnUrl()"
       ></app-button>
-      <h3 class="text-primary-600">Información de la Entidad de Salud</h3>
+      <h3 class="text-primary-600">Crear erp</h3>
     </div>
   </ng-template>
+
   <app-dynamic-form
     [formConfig]="formConfig"
     [formBtnConfig]="formBtnConfig"
-    (onClick)="put($event)"
+    (onClick)="post($event)"
   ></app-dynamic-form>
 </p-card>
