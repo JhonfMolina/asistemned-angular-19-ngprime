@@ -1,6 +1,4 @@
-import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import ButtonComponent from '@components/button/button.component';
+import { Component, inject, ViewChild } from '@angular/core';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { Entities } from '@interfaces/admin/entities.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
@@ -15,7 +13,7 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-entities',
-  imports: [DynamicFormComponent, CardModule, ButtonComponent],
+  imports: [DynamicFormComponent, CardModule],
   templateUrl: './entities.component.html',
 })
 export default class EntitiesComponent {
@@ -173,14 +171,8 @@ export default class EntitiesComponent {
     private _utilidadesService: UtilidadesService,
     private _notificationService: NotificationService,
     private _entitiesService: EntitiesService,
-    private _loadingService: LoadingService,
-    private cdr: ChangeDetectorRef,
-    private _router: Router
+    private _loadingService: LoadingService
   ) {}
-
-  goToReturnUrl(): void {
-    this._router.navigate(['admin/administrative/entities']);
-  }
 
   getListadoTipoIdentificacion(): void {
     this.subscription.push(

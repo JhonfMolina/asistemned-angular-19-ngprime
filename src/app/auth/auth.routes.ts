@@ -1,8 +1,10 @@
 import { Routes } from '@angular/router';
+import { RedirectGuard } from '@guards/redirect.guard';
 
 export default [
   {
     path: 'sign-in',
+    canActivate: [RedirectGuard],
     loadComponent: () => import('./login/login.component'),
     title: 'Sign in',
   },

@@ -10,12 +10,14 @@ import {
 } from '@interfaces/auth/auth.interface';
 import { environment } from '../../../../environments/environment';
 import { EncryptionService } from '@services/util/encryption.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService extends GlobalService {
   private encryptionService = inject(EncryptionService);
+  private _router = inject(Router);
 
   signIn(email: string, password: string): Observable<AuthResponse> {
     const url = `${this.apiUrl}/seguridad/login`;
@@ -59,10 +61,8 @@ export class AuthService extends GlobalService {
   onSignUp(): void {
     const url = `${this.apiUrl}/seguridad/logout`;
     this._http.post(url, {}).subscribe();
-
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/login';
+    localStorage.clear();
+    location.reload();
   }
 
   public setAuthorizationToken(resp: any): void {

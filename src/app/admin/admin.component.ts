@@ -8,6 +8,8 @@ import { MenuItem } from 'primeng/api';
 import ButtonComponent from '@components//button/button.component';
 import { SidebarComponent } from '@components/sidebar/sidebar.component';
 import { SidebarService } from '@services/util/sidebar.service';
+import { NotificationService } from '@services/util/notificacion.service';
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'app-admin',
@@ -28,7 +30,12 @@ export default class AdminComponent {
   toggle = false;
   items: MenuItem[] | undefined;
 
-  constructor(private router: Router, private sidebarService: SidebarService) {
+  constructor(
+    private router: Router,
+    private sidebarService: SidebarService,
+    _notificationService: NotificationService,
+    private _authService: AuthService
+  ) {
     this.items = [
       {
         label: 'Opciones',
@@ -40,6 +47,17 @@ export default class AdminComponent {
           {
             label: 'Cerrar sesion',
             icon: 'bx bx-exit',
+            command: () => {
+              _notificationService.confirmation({
+                message: '¿Esta seguro en salir de la aplicacion?',
+                accept: () => {
+                  _authService.onSignUp();
+                },
+                reject: () => {
+                  return;
+                },
+              });
+            },
           },
         ],
       },
