@@ -1,12 +1,13 @@
 export interface DynamicForm {
   type: string;
   icon?: string;
+  visible?: boolean;
   name: string;
-  label: string;
+  label?: string;
   on_label: string;
   placeholder?: string;
   validators?: Validators;
-  column: string;
+  column?: string;
   filter?: boolean;
   filterBy?: string;
   showClear?: boolean;

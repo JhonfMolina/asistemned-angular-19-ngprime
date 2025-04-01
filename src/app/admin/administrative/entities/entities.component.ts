@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
@@ -11,6 +11,7 @@ import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-entities',
@@ -20,15 +21,17 @@ import { Subscription } from 'rxjs/internal/Subscription';
 export default class EntitiesComponent {
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private subscription: Subscription[] = [];
+  private _authService = inject(AuthService);
+  private entitiesId = this._authService.getEntityStorage.id;
   formBtnConfig = [
     {
-      label: 'Actualizar',
-      icon: 'bx bx-refresh bx-sm',
+      label: this.entitiesId ? 'Actualizar' : 'Guardar',
+      icon: this.entitiesId ? 'bx bx-refresh bx-sm' : 'bx bx-save bx-sm',
       visible: true,
       width: 'w-full',
       appearance: 'base',
       color: 'primary',
-      action: 'actualizar',
+      action: this.entitiesId ? 'actualizar' : 'guardar',
       disabled: false,
       loading: false,
     },
@@ -74,14 +77,13 @@ export default class EntitiesComponent {
       validators: {
         required: true,
         minLength: 3,
-        maxLength: 20,
       },
       column: 'col-12 md:col-4 lg:col-4',
     },
     {
       type: 'tel',
       icon: 'phone',
-      name: 'telefono',
+      name: 'telefonos',
       label: 'Contactos',
       on_label: 'contactos',
       placeholder: '',
@@ -141,11 +143,29 @@ export default class EntitiesComponent {
       column: 'col-12 md:col-4 lg:col-4',
     },
     {
+      type: 'textarea',
+      icon: 'location-plus',
+      name: 'descripcion',
+      label: 'Descripcion',
+      on_label: 'descripcion',
+      placeholder: '',
+      validators: {
+        required: true,
+      },
+      column: 'col-12 md:col-12 lg:col-12',
+    },
+    {
       type: 'checkbox',
       name: 'estado',
+      visible: this.entitiesId ? true : false,
       label: 'Estado',
       on_label: 'estado',
       column: 'col-12 md:col-4 lg:col-4',
+    },
+    {
+      type: 'hidden',
+      name: 'sector',
+      on_label: 'sector',
     },
   ];
 
@@ -153,8 +173,8 @@ export default class EntitiesComponent {
     private _utilidadesService: UtilidadesService,
     private _notificationService: NotificationService,
     private _entitiesService: EntitiesService,
-    private _authService: AuthService,
     private _loadingService: LoadingService,
+    private cdr: ChangeDetectorRef,
     private _router: Router
   ) {}
 
@@ -203,50 +223,67 @@ export default class EntitiesComponent {
     }
   }
 
-  getById(): void {
-    this.subscription.push(
-      this._entitiesService
-        .getById({
-          estados: ['activo'],
-          ma_entidad_id: this._authService.getEntityStorage.id.toString(),
-        })
-        .subscribe((erp) => {
-          this.dynamicFormComponent.setFormData({
-            ...erp.data,
-            estado: erp.data.estado == 'activo' ? true : false,
-          });
-          this.getListadoCiudadesPorDepartamento(
-            erp.data.utilidad_departamento_id
-          );
-        })
-    );
-  }
-
   put(data: any): void {
     const entities: Entities = {
-      ...data.form,
-      estado: data.form.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ...data,
+      estado: data.estado ? 'activo' : 'inactivo',
+      ma_entidad_id: this.entitiesId.toString(),
     };
     this.subscription.push(
-      this._entitiesService.put('', entities).subscribe((res) => {
+      this._entitiesService.put(this.entitiesId, entities).subscribe((res) => {
         this._notificationService.showSuccess(res.message);
-        this.goToReturnUrl();
       })
     );
   }
 
+  post(data: any): void {
+    const entities: Entities = {
+      ...data,
+      sector: 'SALUD',
+    };
+    this.subscription.push(
+      this._entitiesService
+        .post({ ...entities, modulos: environment.MODULOS_VALIDOS_CREACION })
+        .subscribe((res) => {
+          this._notificationService.showSuccess(res.message);
+          this._authService.updateLocalStorage(data);
+        })
+    );
+  }
+
+  action(e: any) {
+    switch (e.event) {
+      case 'guardar':
+        this.post(e.form);
+        break;
+      case 'actualizar':
+        this.put(e.form);
+        break;
+      default:
+        break;
+    }
+  }
+
   ngOnInit(): void {
-    this._loadingService.loading$.subscribe((loading) => {
-      this.formBtnConfig.find((btn) => btn.label === 'Actualizar')!.loading =
-        loading;
-    });
     this.getListadoTipoIdentificacion();
     this.getListadoDepartamentos();
   }
 
   ngAfterViewInit() {
-    this.getById();
+    this._loadingService.loading$.subscribe((loading) => {
+      this.formBtnConfig[0].loading = loading;
+    });
+    if (this.entitiesId) {
+      this.dynamicFormComponent.setFormData({
+        ...this._authService.getEntityStorage,
+        contactos: this._authService.getEntityStorage.telefonos,
+        estado:
+          this._authService.getEntityStorage.estado === 'activo' ? true : false,
+      });
+      this.getListadoCiudadesPorDepartamento(
+        this._authService.getEntityStorage.utilidad_departamento_id
+      );
+    }
   }
 
   ngOnDestroy(): void {

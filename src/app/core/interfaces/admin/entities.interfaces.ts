@@ -9,4 +9,5 @@ export interface Entities {
   telefonos: string;
   descripcion: string;
   estado: string;
+  modulos?: Array<string>;
 }

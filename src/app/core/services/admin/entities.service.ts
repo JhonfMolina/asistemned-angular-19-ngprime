@@ -12,7 +12,7 @@ import { Entities } from '@interfaces/admin/entities.interfaces';
 export class EntitiesService extends GlobalService {
   getlist(params: any) {
     return this._http.get<PaginatedApiResponse<Entities>>(
-      `${this.apiUrl}/admin/clientes/index-where`,
+      `${this.apiUrl}/admin/entidades/index-where`,
       {
         params: this.setHttpParams(params),
       }
@@ -21,7 +21,7 @@ export class EntitiesService extends GlobalService {
 
   public getById(params: any) {
     return this._http.get<ApiResponse<Entities>>(
-      `${this.apiUrl}/admin/clientes/search-where`,
+      `${this.apiUrl}/admin/entidades/search-where`,
       {
         params: this.setHttpParams(params),
       }
@@ -30,14 +30,14 @@ export class EntitiesService extends GlobalService {
 
   public post(data: Entities) {
     return this._http.post<ApiResponse<Entities>>(
-      `${this.apiUrl}/admin/clientes`,
+      `${this.apiUrl}/admin/entidades`,
       data
     );
   }
 
   public put(id: string, data: Entities) {
     return this._http.put<ApiResponse<Entities>>(
-      `${this.apiUrl}/admin/clientes/${id}`,
+      `${this.apiUrl}/admin/entidades/${id}`,
       data
     );
   }

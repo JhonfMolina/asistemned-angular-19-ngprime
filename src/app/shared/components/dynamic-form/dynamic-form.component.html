@@ -201,7 +201,7 @@
       </p-floatlabel>
     </div>
 
-    <div *ngIf="field.type === 'checkbox'">
+    <div *ngIf="field.type === 'checkbox' && field.visible">
       <p-checkbox
         [formControlName]="field.name"
         [binary]="true"
