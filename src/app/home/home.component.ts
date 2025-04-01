@@ -4,6 +4,8 @@ import { AccordionModule } from 'primeng/accordion';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { CarouselModule } from 'primeng/carousel';
+import { Toolbar } from 'primeng/toolbar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +15,7 @@ import { CarouselModule } from 'primeng/carousel';
     ButtonComponent,
     AccordionModule,
     CarouselModule,
+    Toolbar,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -21,7 +24,15 @@ export default class HomeComponent {
   clients: { name: string; logo: string; description: string }[] = [];
   responsiveOptions: any[] | undefined;
 
-  constructor() {}
+  constructor(private readonly _router: Router) {}
+
+  navigateTo(sectionId: string): void {
+    this._router.navigate([], { fragment: sectionId });
+  }
+
+  onNavigate() {
+    this._router.navigate(['auth/login']);
+  }
 
   ngOnInit() {
     // Datos de ejemplo para los clientes

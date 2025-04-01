@@ -3,15 +3,15 @@ import { RedirectGuard } from '@guards/redirect.guard';
 
 export default [
   {
-    path: 'sign-in',
+    path: 'login',
     canActivate: [RedirectGuard],
     loadComponent: () => import('./login/login.component'),
-    title: 'Sign in',
+    title: 'Login',
   },
   {
-    path: 'sign-up',
+    path: 'register',
     loadComponent: () => import('./register/register.component'),
-    title: 'Sign up',
+    title: 'Register',
   },
   {
     path: 'forget-password',

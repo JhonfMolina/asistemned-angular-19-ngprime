@@ -21,6 +21,7 @@
     "@angular/router": "^19.2.0",
     "@primeng/themes": "^19.0.9",
     "boxicons": "^2.1.4",
+    "chart.js": "^4.4.8",
     "crypto-js": "^4.2.0",
     "primeflex": "^4.0.0",
     "primeng": "^19.0.9",

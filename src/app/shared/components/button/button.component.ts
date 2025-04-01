@@ -23,7 +23,7 @@ import { ButtonModule } from 'primeng/button';
 export default class ButtonComponent {
   @Input() width!: string;
   @Input() label!:
-    | 'Sign In'
+    | 'Iniciar sesion'
     | 'Cancelar'
     | 'Guardar'
     | 'Actualizar'

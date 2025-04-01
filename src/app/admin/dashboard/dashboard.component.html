@@ -1,1 +1,95 @@
-<p>dashboard works!</p>
+<!-- Dashboard -->
+<div class="dashboard-container p-4">
+  <div class="grid">
+    <!-- Tarjetas de Métricas -->
+    <div class="col-12 md:col-6 lg:col-3">
+      <p-card class="text-center">
+        <h3 class="text-primary">Usuarios Activos</h3>
+        <p class="text-4xl font-bold text-primary">1,245</p>
+      </p-card>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3">
+      <p-card class="text-center">
+        <h3 class="text-primary">Consultas Hoy</h3>
+        <p class="text-4xl font-bold text-primary">320</p>
+      </p-card>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3">
+      <p-card class="text-center">
+        <h3 class="text-primary">Ingresos Mensuales</h3>
+        <p class="text-4xl font-bold text-primary">$12,500</p>
+      </p-card>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3">
+      <p-card class="text-center">
+        <h3 class="text-primary">Nuevos Pacientes</h3>
+        <p class="text-4xl font-bold text-primary">85</p>
+      </p-card>
+    </div>
+
+    <!-- Gráfico de Polar Area -->
+    <div class="col-12 lg:col-3">
+      <p-card>
+        <h3 class="text-primary">Distribución de Consultas por Género</h3>
+        <p-chart
+          type="polarArea"
+          [data]="polarAreaChartData"
+          [options]="chartOptions"
+        ></p-chart>
+      </p-card>
+    </div>
+
+    <!-- Gráfico de Barras -->
+    <div class="col-12 lg:col-3">
+      <p-card>
+        <h3 class="text-primary">Consultas por Mes</h3>
+        <p-chart
+          type="bar"
+          [data]="barChartData"
+          [options]="chartOptions"
+        ></p-chart>
+      </p-card>
+    </div>
+
+    <!-- Gráfico de Líneas -->
+    <div class="col-12 lg:col-3">
+      <p-card>
+        <h3 class="text-primary">Ingresos por Mes</h3>
+        <p-chart
+          type="line"
+          [data]="lineChartData"
+          [options]="chartOptions"
+        ></p-chart>
+      </p-card>
+    </div>
+
+    <!-- Gráfico de Pastel -->
+    <div class="col-12 lg:col-3">
+      <p-card>
+        <h3 class="text-primary">Distribución de Pacientes</h3>
+        <p-chart
+          type="pie"
+          [data]="pieChartData"
+          [options]="chartOptions"
+        ></p-chart>
+      </p-card>
+    </div>
+
+    <!-- Gráfico de Radar -->
+    <div class="col-12 lg:col-6">
+      <p-card>
+        <h3 class="text-primary">Especialidades Médicas</h3>
+        <!-- <p-chart
+          type="radar"
+          [data]="radarChartData"
+          [options]="chartOptions"
+        ></p-chart> -->
+        <p-chart
+          type="radar"
+          [data]="radarChartData"
+          [options]="chartOptions"
+        />
+      </p-card>
+    </div>
+  </div>
+</div>

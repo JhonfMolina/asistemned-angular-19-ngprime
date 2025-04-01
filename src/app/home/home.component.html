@@ -1,5 +1,81 @@
+<section class="bg-primary text-white">
+  <div class="grid container">
+    <div class="col-12 md:col-3 pb-0">
+      <p class="text-300">Lleva tus registros</p>
+    </div>
+  </div>
+</section>
+<div class="container">
+  <p-toolbar styleClass="w-full border-0">
+    <ng-template #start>
+      <a href="#inicio" class="flex align-items-center">
+        <img
+          src="assets/images/logo-nombre-verde-512px.png"
+          alt="Logo"
+          class="w-10rem"
+        />
+      </a>
+    </ng-template>
+
+    <ng-template #end>
+      <div class="flex align-items-center gap-2">
+        <ul class="list-none flex gap-4 m-0 p-0">
+          <li>
+            <a
+              (click)="navigateTo('servicios')"
+              class="text-primary-800 hover:text-primary-600"
+              >Servicios</a
+            >
+          </li>
+          <li>
+            <a
+              (click)="navigateTo('caracteristicas')"
+              class="text-primary-800 hover:text-primary-600"
+              >Características</a
+            >
+          </li>
+          <li>
+            <a
+              (click)="navigateTo('planes')"
+              class="text-primary-800 hover:text-primary-600"
+              >Planes</a
+            >
+          </li>
+          <li>
+            <a
+              (click)="navigateTo('clientes')"
+              class="text-primary-800 hover:text-primary-600"
+              >Clientes</a
+            >
+          </li>
+          <li>
+            <a
+              (click)="navigateTo('faq')"
+              class="text-primary-800 hover:text-primary-600"
+              >FAQ</a
+            >
+          </li>
+          <li>
+            <a
+              (click)="navigateTo('contacto')"
+              class="text-primary-800 hover:text-primary-600"
+              >Contacto</a
+            >
+          </li>
+        </ul>
+        <app-button
+          [label]="'Iniciar sesion'"
+          [icon]="'bx bx-log-in bx-sm'"
+          (onClick)="onNavigate()"
+        ></app-button>
+      </div>
+    </ng-template>
+  </p-toolbar>
+</div>
+<p-divider styleClass="m-0" />
+
 <!-- Sección de Servicios Médicos -->
-<div class="pt-8 surface-0">
+<div id="servicios" class="pt-8 surface-0">
   <div class="grid container">
     <!-- Columna 1: Descripción General -->
     <div class="col-12 md:col-5 text-center md:text-right">
@@ -138,7 +214,7 @@
     <div class="curve-top surface-0"></div>
 
     <!-- Características Destacadas -->
-    <div class="text-center">
+    <div id="caracteristicas" class="text-center">
       <div class="py-8">
         <h2 class="text-4xl text-white">Características Destacadas</h2>
         <p class="text-lg text-secondary mb-0">
@@ -242,7 +318,7 @@
 </div>
 
 <!-- Sección de Planes y Precios -->
-<div class="bg-primary-50">
+<div id="planes" class="bg-primary-50">
   <div class="pb-4 text-center">
     <h2 class="text-4xl font-bold text-primary mt-0">Planes y Precios</h2>
     <p class="text-lg text-secondary mb-0">
@@ -358,7 +434,7 @@
   </div>
 
   <!-- Carrusel de Clientes -->
-  <div class="my-8 pt-8 text-center">
+  <div id="clientes" class="my-8 pt-8 text-center">
     <h2 class="text-4xl text-primary mt-0">Nuestros Clientes</h2>
     <p class="text-lg text-secondary mb-0">
       Conoce algunos de los consultorios médicos que confían en nosotros.
@@ -387,7 +463,7 @@
 <div class="curved-section bg-primary-50">
   <div class="curve-bottom surface-0"></div>
 </div>
-<div class="pb-4 pt-6 text-center">
+<div id="faq" class="pb-4 pt-6 text-center">
   <h2 class="text-4xl font-bold text-primary mt-0">Preguntas Frecuentes</h2>
   <p class="text-lg text-secondary mb-0">
     Encuentra respuestas a las preguntas más comunes sobre nuestra plataforma.
