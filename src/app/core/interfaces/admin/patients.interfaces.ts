@@ -19,4 +19,5 @@ export interface Patients {
   factor_sanguineo: string;
   correo: string;
   estado: string;
+  id: string;
 }
