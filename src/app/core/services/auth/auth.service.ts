@@ -6,7 +6,9 @@ import { catchError, map } from 'rxjs';
 import {
   AuthResponse,
   EntityStorage,
+  Login,
   Profile,
+  Register,
 } from '@interfaces/auth/auth.interface';
 import { environment } from '../../../../environments/environment';
 import { EncryptionService } from '@services/util/encryption.service';
@@ -19,23 +21,28 @@ export class AuthService extends GlobalService {
   private encryptionService = inject(EncryptionService);
   private _router = inject(Router);
 
-  signIn(email: string, password: string): Observable<AuthResponse> {
+  login(data: Login): Observable<AuthResponse> {
     const url = `${this.apiUrl}/seguridad/login`;
-    const body = { email, password };
-    return this._http.post<AuthResponse>(url, body);
+    return this._http.post<AuthResponse>(url, data);
+  }
+
+  register(data: Register): Observable<any> {
+    const url = `${this.apiUrl}/seguridad/register`;
+    return this._http.post<any>(url, data);
   }
 
   public getUserProfile() {
     return this._http.get<any>(
-      `${this.apiUrl}/seguridad/users/search-profile?ma_entidad_id=${
-        this.getEntityStorage.id || ''
-      }`
+      `${this.apiUrl}/seguridad/users/search-profile?ma_entidad_id`
     );
   }
 
   accountVerification(data: any) {
     return this._http.post<any>(`${this.apiUrl}/seguridad/verify`, data);
   }
+
+  resendCodeAccountVerification = () =>
+    this._http.post<any>(`${this.apiUrl}/seguridad/email/resend`, {});
 
   refreshToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refreshToken');
@@ -133,7 +140,7 @@ export class AuthService extends GlobalService {
   get getAccountVerificationStorage(): any {
     return this.encryptionService.getDataLocalStorage(
       environment.KEY_SESION_LOCAL_STORAGE,
-      'accountVerfication'
+      'status'
     );
   }
 }

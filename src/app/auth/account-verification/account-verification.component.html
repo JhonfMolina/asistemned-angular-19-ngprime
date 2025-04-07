@@ -1,1 +1,80 @@
-<p>account-verification works!</p>
+<div
+  class="container flex align-items-center justify-content-center min-h-screen"
+>
+  <p-card class="w-full md:w-10 lg:w-8">
+    <div class="grid align-items-center">
+      <div
+        class="col-12 md:col-6 lg:col-6 text-center hidden sm:hidden md:hidden lg:block"
+      >
+        <img
+          src="../../../assets/images/img-inicio-sesion.svg"
+          alt=""
+          class="w-full md:w-8 lg:w-full mx-auto"
+        />
+      </div>
+      <div class="col-12 md:col-12 lg:col-6">
+        <div class="text-center mb-3">
+          <img
+            src="assets/images/logo-verde-520px-espaciado.png"
+            alt="Image"
+            height="70"
+          />
+          <div class="text-900 text-3xl font-medium mb-3">
+            Verificación de cuenta
+          </div>
+          <p class="text-600 font-medium line-height-3">
+            Su cuenta debe ser verificada para garantizar la seguridad de sus
+            datos. Hemos enviado un mensaje con el código de verificación a la
+            dirección de correo electrónico registrada.
+          </p>
+        </div>
+        <div class="flex flex-column align-items-center mt-5">
+          <p-inputotp [(ngModel)]="code" [length]="6">
+            <ng-template #input let-token let-events="events" let-index="index">
+              <input
+                type="text"
+                [maxLength]="1"
+                (input)="events.input($event)"
+                (keydown)="events.keydown($event)"
+                [attr.value]="token"
+                class="custom-otp-input"
+              />
+              <div *ngIf="index === 3" class="px-2">
+                <i class="bx bx-minus"></i>
+              </div>
+            </ng-template>
+          </p-inputotp>
+          <div class="flex justify-between mt-8 self-stretch"></div>
+        </div>
+        <div class="flex justify-content-between align-items-center gap-2">
+          <div>
+            <app-button
+              [label]="'Reenviar'"
+              [icon]="'bx bx-refresh'"
+              [appearance]="'base'"
+              [variant]="'text'"
+              [color]="'primary'"
+              [disabled]="!canResendCode"
+              (click)="resendCodeAccountVerification()"
+            ></app-button>
+          </div>
+          <div>
+            <app-button
+              [label]="'Verificar'"
+              [icon]="'bx bx-check'"
+              [appearance]="'base'"
+              [color]="'primary'"
+              [loading]="loading"
+              [disabled]="!code || code.length < 6 ? true : false"
+              (click)="accountVerification()"
+            ></app-button>
+          </div>
+        </div>
+        <p *ngIf="!canResendCode" class="text-slave-400 mt-4">
+          Puedes reenviar el código en <br />
+          {{ timer }} segundos.
+        </p>
+      </div>
+    </div>
+  </p-card>
+</div>

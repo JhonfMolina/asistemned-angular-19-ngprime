@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
+import { Login } from '@interfaces/auth/auth.interface';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { AuthService } from '@services/auth/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
-import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
+import { CardModule } from 'primeng/card';
+
 import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-login',
-  imports: [ButtonModule, ToastModule, DynamicFormComponent],
+  imports: [DynamicFormComponent, CardModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -19,7 +20,7 @@ export default class LoginComponent {
   private subscription: Subscription[] = [];
   formBtnConfig = [
     {
-      label: 'Sign In',
+      label: 'Iniciar Sesión',
       icon: 'door-open bx-sm',
       visible: true,
       width: 'w-full',
@@ -61,24 +62,15 @@ export default class LoginComponent {
 
   constructor(
     private _authService: AuthService,
-    private _router: Router,
+    protected readonly _router: Router,
     private _loadingService: LoadingService,
     private _notificationService: NotificationService
   ) {}
 
-  action(e: any) {
-    switch (e.event) {
-      case 'sign-in':
-        this.onSignIn(e.form);
-        break;
-      default:
-        break;
-    }
-  }
-
-  onSignIn(e: any) {
+  login(e: any) {
+    const formdata: Login = e.form;
     this.subscription.push(
-      this._authService.signIn(e.email, e.password).subscribe({
+      this._authService.login(formdata).subscribe({
         next: (res) => {
           this._authService.setAuthorizationToken(res);
           this.getUserProfile();
@@ -101,10 +93,10 @@ export default class LoginComponent {
   }
 
   private goTo() {
-    if (this._authService.getUserProfileStorage.status == 'verificar') {
-      this._router.navigate(['/verificacion']);
+    if (this._authService.getAccountVerificationStorage == 'verificar') {
+      this._router.navigate(['/auth/verification']);
     }
-    if (this._authService.getUserProfileStorage.status == 'activo') {
+    if (this._authService.getAccountVerificationStorage == 'activo') {
       this._router.navigate(['/admin']);
       this._notificationService.showSuccess(
         `Hola ${this._authService.getUserProfileStorage.name}!`,

@@ -24,8 +24,6 @@
           </p-iconfield>
           <app-button
             [label]="'Nuevo'"
-            [appearance]="'rounded'"
-            [variant]="'outlined'"
             [color]="'primary'"
             [icon]="'bx bx-plus-circle'"
             (onClick)="onNavigate()"
@@ -59,14 +57,12 @@
         </td>
         <td>
           <app-button
-            [appearance]="'rounded'"
             [variant]="'text'"
             [color]="'success'"
             [icon]="'bx bx-edit'"
             (onClick)="onEdit(rowData)"
           ></app-button>
           <app-button
-            [appearance]="'rounded'"
             [variant]="'text'"
             [color]="'danger'"
             [icon]="'bx bx-trash'"

@@ -5,9 +5,15 @@ import { AuthService } from '@services/auth/auth.service';
 export const IsLoggeInGuard: CanActivateFn = () => {
   const token = inject(AuthService).getAuthorizationToken;
   const router = inject(Router);
+  const verification = inject(AuthService).getAccountVerificationStorage;
 
   if (!token) {
     router.navigate(['/']);
+    return false;
+  }
+
+  if (verification == 'verificar') {
+    router.navigate(['/auth/verification']);
     return false;
   }
 

@@ -29,6 +29,8 @@ export default class ButtonComponent {
     | 'Actualizar'
     | 'Adquirir ahora'
     | 'Eliminar'
+    | 'Reenviar'
+    | 'Verificar'
     | 'Nuevo';
   @Input() action!: string;
   @Input() visible!: boolean;

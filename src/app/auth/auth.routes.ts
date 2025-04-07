@@ -14,7 +14,13 @@ export default [
     title: 'Register',
   },
   {
-    path: 'forget-password',
+    path: 'verification',
+    loadComponent: () =>
+      import('./account-verification/account-verification.component'),
+    title: 'Verification',
+  },
+  {
+    path: 'recover-password',
     loadComponent: () => import('./forget-password/forget-password.component'),
     title: 'Recover password',
   },

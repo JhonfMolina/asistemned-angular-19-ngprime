@@ -1,45 +1,53 @@
 <div class="container">
-  <p-toolbar styleClass="my-3 w-full">
-    <ng-template #start>
-      <img
-        src="assets/images/logo-nombre-verde-512px.png"
-        alt=""
-        srcset=""
-        class="w-10rem"
-      />
-      <app-button
-        [appearance]="'base'"
-        variant="text"
-        [color]="'primary'"
-        [icon]="'bx bx-menu bx-sm'"
-        (click)="openSidebar()"
-      ></app-button>
-    </ng-template>
-
-    <ng-template #end>
-      <div class="flex align-items-center gap-2">
+  <p-card>
+    <p-toolbar styleClass="p-0 m-0 w-full border-0">
+      <ng-template #start>
+        <a
+          (click)="onNavigate()"
+          class="flex align-items-center gap-2 cursor-pointer"
+        >
+          <img
+            src="assets/images/logo-nombre-verde-512px.png"
+            alt=""
+            srcset=""
+            class="w-10rem"
+          />
+        </a>
         <app-button
           [appearance]="'base'"
-          [variant]="'text'"
-          [color]="toggle ? 'success' : 'warn'"
-          [icon]="toggle ? 'bx bx-moon bx-sm' : 'bx bx-sun bx-sm'"
-          (click)="toogleDarkMode()"
+          variant="text"
+          [color]="'primary'"
+          [icon]="'bx bx-menu bx-sm'"
+          (click)="openSidebar()"
         ></app-button>
-        <div>
-          <p-menu #menu [model]="items" [popup]="true" />
+      </ng-template>
+
+      <ng-template #end>
+        <div class="flex align-items-center gap-2">
           <app-button
             [appearance]="'base'"
             [variant]="'text'"
-            [color]="'primary'"
-            [icon]="'bx bx-category-alt bx-sm'"
-            (click)="menu.toggle($event)"
+            [color]="toggle ? 'success' : 'warn'"
+            [icon]="toggle ? 'bx bx-moon bx-sm' : 'bx bx-sun bx-sm'"
+            (click)="toogleDarkMode()"
           ></app-button>
+          <div>
+            <p-menu #menu [model]="items" [popup]="true" />
+            <app-button
+              [appearance]="'base'"
+              [variant]="'text'"
+              [color]="'primary'"
+              [icon]="'bx bx-category-alt bx-sm'"
+              (click)="menu.toggle($event)"
+            ></app-button>
+          </div>
         </div>
-      </div>
-    </ng-template>
-  </p-toolbar>
-  <app-sidebar></app-sidebar>
+      </ng-template>
+    </p-toolbar>
+  </p-card>
 
+  <app-sidebar></app-sidebar>
+  <p-divider />
   <main class="flex-grow-1">
     <router-outlet></router-outlet>
   </main>

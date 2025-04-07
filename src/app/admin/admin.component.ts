@@ -10,6 +10,8 @@ import { SidebarComponent } from '@components/sidebar/sidebar.component';
 import { SidebarService } from '@services/util/sidebar.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { AuthService } from '@services/auth/auth.service';
+import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-admin',
@@ -17,6 +19,8 @@ import { AuthService } from '@services/auth/auth.service';
     RouterOutlet,
     ButtonModule,
     CommonModule,
+    CardModule,
+    DividerModule,
     Toolbar,
     SidebarComponent,
     ButtonComponent,
@@ -81,7 +85,7 @@ export default class AdminComponent {
   }
 
   onNavigate() {
-    this.router.navigate(['/auth/sign-in']);
+    this.router.navigate(['/admin']);
   }
 
   ngOnInit(): void {

@@ -11,10 +11,18 @@ import { Patients } from '@interfaces/admin/patients.interfaces';
 import { Chip } from 'primeng/chip';
 import { TableComponent } from '@components/table/table.component';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
+import ButtonComponent from '../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CardModule, ChartModule, DropdownModule, TableComponent, Chip],
+  imports: [
+    CardModule,
+    ChartModule,
+    DropdownModule,
+    TableComponent,
+    Chip,
+    ButtonComponent,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

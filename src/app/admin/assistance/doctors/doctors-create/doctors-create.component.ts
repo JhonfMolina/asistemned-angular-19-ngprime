@@ -11,6 +11,7 @@ import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
+import { LoadingService } from '@services/util/loading.service';
 
 @Component({
   selector: 'app-doctors-create',
@@ -264,6 +265,7 @@ export default class DoctorsCreateComponent {
     private _utilidadesService: UtilidadesService,
     private _notificationService: NotificationService,
     private _doctorsService: DoctorsService,
+    private _loadingService: LoadingService,
     private _authService: AuthService,
     private _router: Router
   ) {}
@@ -331,6 +333,10 @@ export default class DoctorsCreateComponent {
   }
 
   ngOnInit(): void {
+    this._loadingService.loading$.subscribe((loading) => {
+      this.formBtnConfig.find((btn) => btn.label === 'Guardar')!.loading =
+        loading;
+    });
     this.getListadoTipoIdentificacion();
     this.getListadoDepartamentos();
   }

@@ -31,3 +31,16 @@ export interface Profile {
   email: string;
   status: string;
 }
+
+export interface Login {
+  email: string;
+  password: string;
+}
+
+export interface Register {
+  name: string;
+  identificacion: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}

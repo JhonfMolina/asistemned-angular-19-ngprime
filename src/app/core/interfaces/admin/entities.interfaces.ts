@@ -10,4 +10,6 @@ export interface Entities {
   descripcion: string;
   estado: string;
   modulos?: Array<string>;
+  id?: string;
+  ma_entidad_id?: string;
 }

@@ -220,6 +220,7 @@ export default class EntitiesComponent {
       ...data,
       estado: data.estado ? 'activo' : 'inactivo',
       ma_entidad_id: this.entitiesId.toString(),
+      id: this.entitiesId.toString(),
     };
     this.subscription.push(
       this._entitiesService.put(this.entitiesId, entities).subscribe((res) => {
