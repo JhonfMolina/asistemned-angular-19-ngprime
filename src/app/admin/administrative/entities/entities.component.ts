@@ -10,26 +10,28 @@ import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { environment } from '../../../../environments/environment';
+import { Message } from 'primeng/message';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-entities',
-  imports: [DynamicFormComponent, CardModule],
+  imports: [DynamicFormComponent, CardModule, Message, CommonModule],
   templateUrl: './entities.component.html',
 })
 export default class EntitiesComponent {
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private subscription: Subscription[] = [];
   private _authService = inject(AuthService);
-  private entitiesId = this._authService.getEntityStorage.id;
+  protected readonly entities = this._authService.getEntityStorage || null;
   formBtnConfig = [
     {
-      label: this.entitiesId ? 'Actualizar' : 'Guardar',
-      icon: this.entitiesId ? 'bx bx-refresh bx-sm' : 'bx bx-save bx-sm',
+      label: this.entities ? 'Actualizar' : 'Guardar',
+      icon: this.entities ? 'bx bx-refresh bx-sm' : 'bx bx-save bx-sm',
       visible: true,
       width: 'w-full',
       appearance: 'base',
       color: 'primary',
-      action: this.entitiesId ? 'actualizar' : 'guardar',
+      action: this.entities ? 'actualizar' : 'guardar',
       disabled: false,
       loading: false,
     },
@@ -155,7 +157,7 @@ export default class EntitiesComponent {
     {
       type: 'checkbox',
       name: 'estado',
-      visible: this.entitiesId ? true : false,
+      visible: this.entities ? true : false,
       label: 'Estado',
       on_label: 'estado',
       column: 'col-12 md:col-4 lg:col-4',
@@ -219,13 +221,18 @@ export default class EntitiesComponent {
     const entities: Entities = {
       ...data,
       estado: data.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this.entitiesId.toString(),
-      id: this.entitiesId.toString(),
+      ma_entidad_id: this.entities.id!.toString(),
+      id: this.entities.id!.toString(),
     };
     this.subscription.push(
-      this._entitiesService.put(this.entitiesId, entities).subscribe((res) => {
-        this._notificationService.showSuccess(res.message);
-      })
+      this._entitiesService
+        .put(this.entities.id!, entities)
+        .subscribe((res) => {
+          console.log(res);
+
+          this._notificationService.showSuccess(res.message);
+          this._authService.updateLocalStorage({ entidad: res.data });
+        })
     );
   }
 
@@ -239,7 +246,7 @@ export default class EntitiesComponent {
         .post({ ...entities, modulos: environment.MODULOS_VALIDOS_CREACION })
         .subscribe((res) => {
           this._notificationService.showSuccess(res.message);
-          this._authService.updateLocalStorage(data);
+          this._authService.updateLocalStorage({ entidad: res.data });
         })
     );
   }
@@ -266,15 +273,14 @@ export default class EntitiesComponent {
     this._loadingService.loading$.subscribe((loading) => {
       this.formBtnConfig[0].loading = loading;
     });
-    if (this.entitiesId) {
+    if (this.entities) {
       this.dynamicFormComponent.setFormData({
-        ...this._authService.getEntityStorage,
-        contactos: this._authService.getEntityStorage.telefonos,
-        estado:
-          this._authService.getEntityStorage.estado === 'activo' ? true : false,
+        ...this.entities,
+        contactos: this.entities.telefonos,
+        estado: this.entities.estado === 'activo' ? true : false,
       });
       this.getListadoCiudadesPorDepartamento(
-        this._authService.getEntityStorage.utilidad_departamento_id
+        this.entities.utilidad_departamento_id
       );
     }
   }

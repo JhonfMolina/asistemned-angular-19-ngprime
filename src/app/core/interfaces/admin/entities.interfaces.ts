@@ -12,4 +12,6 @@ export interface Entities {
   modulos?: Array<string>;
   id?: string;
   ma_entidad_id?: string;
+  nombre_departamento?: string;
+  nombre_ciudad?: string;
 }

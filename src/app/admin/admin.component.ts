@@ -85,7 +85,11 @@ export default class AdminComponent {
   }
 
   onNavigate() {
-    this.router.navigate(['/admin']);
+    if (this._authService.getEntityStorage == null) {
+      this.router.navigate(['/admin/administrative/entities']);
+    } else {
+      this.router.navigate(['/admin']);
+    }
   }
 
   ngOnInit(): void {
@@ -93,6 +97,9 @@ export default class AdminComponent {
     if (savedTheme === 'dark') {
       this.toggle = true;
       document.querySelector('html')!.classList.add('my-app-dark');
+    }
+    if (this._authService.getEntityStorage == null) {
+      this.router.navigate(['/admin/administrative/entities']);
     }
   }
 }

@@ -97,11 +97,15 @@ export default class LoginComponent {
       this._router.navigate(['/auth/verification']);
     }
     if (this._authService.getAccountVerificationStorage == 'activo') {
-      this._router.navigate(['/admin']);
       this._notificationService.showSuccess(
         `Hola ${this._authService.getUserProfileStorage.name}!`,
         'Explora y disfruta de todas nuestras funcionalidades.'
       );
+      if (this._authService.getEntityStorage == null) {
+        this._router.navigate(['/admin/administrative/entities']);
+      } else {
+        this._router.navigate(['/admin']);
+      }
     }
   }
 

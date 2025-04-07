@@ -30,13 +30,15 @@ export default class AccountVerificationComponent {
   timer: number = 60; // Tiempo de espera en segundos
   timerSubscription!: Subscription;
   loading: boolean = false;
-
+  private entitiesId: any;
   constructor(
     private _authService: AuthService,
     protected readonly _router: Router,
     private _loadingService: LoadingService,
     private _notificationService: NotificationService
-  ) {}
+  ) {
+    this.entitiesId = this._authService.getEntityStorage || null;
+  }
 
   ngOnInit() {
     this.startTimer();
@@ -91,7 +93,11 @@ export default class AccountVerificationComponent {
           next: () => {
             this._authService.updateLocalStorage({ status: 'activo' });
             setTimeout(() => {
-              this._router.navigate(['/admin']);
+              if (this.entitiesId) {
+                this._router.navigate(['/admin']);
+              } else {
+                this._router.navigate(['/admin/administrative/entities']);
+              }
               this._notificationService.showSuccess(
                 `Hola ${this._authService.getUserProfileStorage.name}!`,
                 'Explora y disfruta de todas nuestras funcionalidades.'

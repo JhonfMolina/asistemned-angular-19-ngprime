@@ -5,7 +5,6 @@ import { throwError } from 'rxjs/internal/observable/throwError';
 import { catchError, map } from 'rxjs';
 import {
   AuthResponse,
-  EntityStorage,
   Login,
   Profile,
   Register,
@@ -13,6 +12,7 @@ import {
 import { environment } from '../../../../environments/environment';
 import { EncryptionService } from '@services/util/encryption.service';
 import { Router } from '@angular/router';
+import { Entities } from '@interfaces/admin/entities.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -75,11 +75,12 @@ export class AuthService extends GlobalService {
   public setAuthorizationToken(resp: any): void {
     const DataStorage: AuthResponse = {
       token: resp.token,
-      expires_at: resp.expires_at,
-      success: resp.success,
+      succes: resp.success,
       message: resp.message,
       status: resp.status,
-      data: resp.data,
+      statusCode: resp.statusCode,
+      expires_at: resp.expires_at,
+      entidad: resp.entidad,
     };
     const localStorageData = JSON.stringify(DataStorage);
     this.setLocalStorage(localStorageData);
@@ -116,10 +117,10 @@ export class AuthService extends GlobalService {
     );
   }
 
-  get getEntityStorage(): EntityStorage {
+  get getEntityStorage(): Entities {
     return this.encryptionService.getDataLocalStorage(
       environment.KEY_SESION_LOCAL_STORAGE,
-      'data'
+      'entidad'
     );
   }
 
