@@ -8,6 +8,7 @@ import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { AuthService } from '@services/auth/auth.service';
 import { PermisosService } from '@services/security/permisos.service';
 import { RolesService } from '@services/security/roles.service';
+import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -57,6 +58,7 @@ export default class RolesCreateComponent {
     private readonly _notificationService: NotificationService,
     private readonly _rolesService: RolesService,
     private readonly _permisosService: PermisosService,
+    private readonly _loadingService: LoadingService,
     private readonly _authService: AuthService,
     private readonly _router: Router
   ) {}
@@ -117,6 +119,10 @@ export default class RolesCreateComponent {
   }
 
   ngOnInit(): void {
+    this._loadingService.loading$.subscribe((loading) => {
+      this.formBtnConfig.find((btn) => btn.label === 'Guardar')!.loading =
+        loading;
+    });
     this.getListadoPermisos();
   }
 }

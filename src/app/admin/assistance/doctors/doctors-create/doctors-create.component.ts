@@ -179,7 +179,6 @@ export default class DoctorsCreateComponent {
       validators: {
         required: true,
         minLength: 9,
-        maxLength: 14,
         pattern: '^(\\+\\d{1,3}[- ]?)?\\d{10}$',
       },
       column: 'col-12 md:col-6 lg:col-4',
@@ -241,7 +240,6 @@ export default class DoctorsCreateComponent {
       validators: {
         required: true,
         minLength: 3,
-        maxLength: 20,
       },
       column: 'col-12 md:col-4 lg:col-4',
     },
@@ -254,8 +252,7 @@ export default class DoctorsCreateComponent {
       placeholder: '',
       validators: {
         required: true,
-        minLength: 3,
-        maxLength: 20,
+        minLength: 4,
       },
       column: 'col-12 md:col-4 lg:col-4',
     },

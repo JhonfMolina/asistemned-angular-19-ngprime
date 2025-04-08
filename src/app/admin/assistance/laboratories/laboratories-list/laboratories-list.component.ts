@@ -1,7 +1,13 @@
-import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
 import { Laboratories } from '@interfaces/admin/laboratories.interfaces';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
 import { LaboratoriesService } from '@services/admin/laboratories.service';
 import { AuthService } from '@services/auth/auth.service';
@@ -14,12 +20,23 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './laboratories-list.component.html',
 })
 export default class LaboratoriesListComponent {
-
   @ViewChild('statusTemplate') statusTemplate!: TemplateRef<any>;
   private readonly subscription: Subscription[] = [];
 
   laboratories: Laboratories[] = [];
   columns: any[] = [];
+  actions: ActionButton[] = [
+    {
+      icon: 'bx bx-edit',
+      color: 'success',
+      callback: (row: any) => this.onEdit(row),
+    },
+    {
+      icon: 'bx bx-trash',
+      color: 'danger',
+      callback: (row: any) => this.onDelete(row),
+    },
+  ];
 
   totalRecords: number = 0;
   first: number = 0;
@@ -31,10 +48,12 @@ export default class LaboratoriesListComponent {
     private readonly _authService: AuthService,
     private readonly cdr: ChangeDetectorRef,
     private readonly _router: Router
-  ) { }
+  ) {}
 
   onNavigate() {
-    this._router.navigate(['admin/assistance/laboratories/laboratories-create']);
+    this._router.navigate([
+      'admin/assistance/laboratories/laboratories-create',
+    ]);
   }
 
   onEdit(rowData: any): void {

@@ -33,8 +33,8 @@ export default [
   },
   {
     path: 'medical-consultations',
-    loadComponent: () =>
-      import('./medical-consultations/medical-consultations.component'),
+    loadChildren: () =>
+      import('./medical-consultations/medical-consultations.routes'),
     title: 'Medical Consultations',
   },
   {

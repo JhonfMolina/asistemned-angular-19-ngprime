@@ -1,7 +1,13 @@
-import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
 import { ImagingCenters } from '@interfaces/admin/imaging-centers.interfaces';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
 import { ImagingCentersService } from '@services/admin/imaging-centers.service';
 import { AuthService } from '@services/auth/auth.service';
@@ -14,12 +20,23 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './imaging-centers-list.component.html',
 })
 export default class ImagingCentersListComponent {
-
   private readonly subscription: Subscription[] = [];
   @ViewChild('statusTemplate') statusTemplate!: TemplateRef<any>;
 
   imagingCenters: ImagingCenters[] = [];
   columns: any[] = [];
+  actions: ActionButton[] = [
+    {
+      icon: 'bx bx-edit',
+      color: 'success',
+      callback: (row: any) => this.onEdit(row),
+    },
+    {
+      icon: 'bx bx-trash',
+      color: 'danger',
+      callback: (row: any) => this.onDelete(row),
+    },
+  ];
 
   totalRecords: number = 0;
   first: number = 0;
@@ -31,10 +48,12 @@ export default class ImagingCentersListComponent {
     private readonly _authService: AuthService,
     private readonly cdr: ChangeDetectorRef,
     private readonly _router: Router
-  ) { }
+  ) {}
 
   onNavigate() {
-    this._router.navigate(['admin/assistance/imaging-centers/imaging-centers-create']);
+    this._router.navigate([
+      'admin/assistance/imaging-centers/imaging-centers-create',
+    ]);
   }
 
   onEdit(rowData: any): void {

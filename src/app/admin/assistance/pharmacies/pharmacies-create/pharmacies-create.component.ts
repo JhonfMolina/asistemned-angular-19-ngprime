@@ -7,6 +7,7 @@ import { Department } from '@interfaces/util/department.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { PharmaciesService } from '@services/admin/pharmacies.service';
 import { AuthService } from '@services/auth/auth.service';
+import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
@@ -160,6 +161,7 @@ export default class PharmaciesCreateComponent {
     private readonly _utilidadesService: UtilidadesService,
     private readonly _notificationService: NotificationService,
     private readonly _pharmaciesService: PharmaciesService,
+    private _loadingService: LoadingService,
     private readonly _authService: AuthService,
     private readonly _router: Router
   ) {}
@@ -227,6 +229,10 @@ export default class PharmaciesCreateComponent {
   }
 
   ngOnInit(): void {
+    this._loadingService.loading$.subscribe((loading) => {
+      this.formBtnConfig.find((btn) => btn.label === 'Guardar')!.loading =
+        loading;
+    });
     this.getListadoTipoIdentificacion();
     this.getListadoDepartamentos();
   }

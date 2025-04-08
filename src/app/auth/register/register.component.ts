@@ -137,7 +137,7 @@ export default class RegisterComponent {
             if (
               this._authService.getAccountVerificationStorage == 'verificar'
             ) {
-              this._router.navigate(['/verification']);
+              this._router.navigate(['/auth/verification']);
             }
           }
         },

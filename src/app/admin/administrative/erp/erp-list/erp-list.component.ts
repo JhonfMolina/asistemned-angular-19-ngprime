@@ -7,6 +7,7 @@ import {
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
 import { Erp } from '@interfaces/admin/erp.interfaces';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
 import { ErpService } from '@services/admin/erp.service';
 import { AuthService } from '@services/auth/auth.service';
@@ -24,6 +25,18 @@ export default class ErpListComponent {
 
   erp: Erp[] = [];
   columns: any[] = [];
+  actions: ActionButton[] = [
+    {
+      icon: 'bx bx-edit',
+      color: 'success',
+      callback: (row: any) => this.onEdit(row),
+    },
+    {
+      icon: 'bx bx-trash',
+      color: 'danger',
+      callback: (row: any) => this.onDelete(row),
+    },
+  ];
 
   totalRecords: number = 0;
   first: number = 0;

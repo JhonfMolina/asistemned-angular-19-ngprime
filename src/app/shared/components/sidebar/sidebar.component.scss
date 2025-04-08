@@ -42,3 +42,10 @@
   height: auto;
   align-self: stretch;
 }
+
+.p-accordion-tab:not(.p-accordion-tab-active) {
+  .p-toggleable-content {
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+}

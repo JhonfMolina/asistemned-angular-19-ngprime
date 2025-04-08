@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
 import { Roles } from '@interfaces/security/roles.interfaces';
@@ -12,10 +17,8 @@ import { Subscription } from 'rxjs/internal/Subscription';
   selector: 'app-roles-list',
   imports: [TableComponent, Chip],
   templateUrl: './roles-list.component.html',
-  styleUrl: './roles-list.component.scss'
 })
 export default class RolesListComponent {
-
   @ViewChild('statusTemplate') statusTemplate!: TemplateRef<any>;
   private readonly subscription: Subscription[] = [];
 
@@ -32,17 +35,14 @@ export default class RolesListComponent {
     private readonly _authService: AuthService,
     private readonly cdr: ChangeDetectorRef,
     private readonly _router: Router
-  ) { }
+  ) {}
 
   onNavigate() {
     this._router.navigate(['admin/security/roles/roles-create']);
   }
 
   onEdit(rowData: any): void {
-    this._router.navigate([
-      'admin/security/roles/roles-update',
-      rowData.id,
-    ]);
+    this._router.navigate(['admin/security/roles/roles-update', rowData.id]);
   }
 
   onDelete(rowData: any): void {

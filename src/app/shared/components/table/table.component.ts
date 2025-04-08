@@ -33,7 +33,8 @@ export class TableComponent implements OnInit {
   @Input() totalRecords: number = 0;
   @Input() first: number = 0;
   @Input() rows: number = 0;
-  @Output() navigate = new EventEmitter<any>();
+  @Input() actions: any[] = [];
+  @Output() addRow = new EventEmitter<any>();
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
   @Output() pageChange = new EventEmitter<any>();
@@ -45,17 +46,17 @@ export class TableComponent implements OnInit {
 
   constructor(private _loadingService: LoadingService) {}
 
-  onNavigate(): void {
-    this.navigate.emit();
+  onAddRow(): void {
+    this.addRow.emit();
   }
 
-  onEdit(rowData: any): void {
-    this.edit.emit(rowData);
-  }
+  // onEdit(rowData: any): void {
+  //   this.edit.emit(rowData);
+  // }
 
-  onDelete(rowData: any): void {
-    this.delete.emit(rowData);
-  }
+  // onDelete(rowData: any): void {
+  //   this.delete.emit(rowData);
+  // }
 
   onPageChange(event: any): void {
     this.pageChange.emit(event);

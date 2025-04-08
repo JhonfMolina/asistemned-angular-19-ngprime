@@ -26,7 +26,7 @@
             [label]="'Nuevo'"
             [color]="'primary'"
             [icon]="'bx bx-plus-circle'"
-            (onClick)="onNavigate()"
+            (onClick)="onAddRow()"
           ></app-button>
         </div>
       </div>
@@ -55,19 +55,17 @@
             {{ rowData[column.field] }}
           </ng-template>
         </td>
+        <!-- Columna de Acciones -->
         <td>
-          <app-button
-            [variant]="'text'"
-            [color]="'success'"
-            [icon]="'bx bx-edit'"
-            (onClick)="onEdit(rowData)"
-          ></app-button>
-          <app-button
-            [variant]="'text'"
-            [color]="'danger'"
-            [icon]="'bx bx-trash'"
-            (onClick)="onDelete(rowData)"
-          ></app-button>
+          <ng-container *ngFor="let action of actions">
+            <app-button
+              [variant]="'text'"
+              [color]="action.color"
+              [icon]="action.icon"
+              [label]="action.label"
+              (onClick)="action.callback(rowData)"
+            ></app-button>
+          </ng-container>
         </td>
       </tr>
     </ng-template>

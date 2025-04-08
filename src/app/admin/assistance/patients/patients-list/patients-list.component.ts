@@ -1,7 +1,13 @@
-import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
 import { Patients } from '@interfaces/admin/patients.interfaces';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
 import { PatientsService } from '@services/admin/patients.service';
 import { AuthService } from '@services/auth/auth.service';
@@ -19,6 +25,18 @@ export default class PatientsListComponent {
 
   patients: Patients[] = [];
   columns: any[] = [];
+  actions: ActionButton[] = [
+    {
+      icon: 'bx bx-edit',
+      color: 'success',
+      callback: (row: any) => this.onEdit(row),
+    },
+    {
+      icon: 'bx bx-trash',
+      color: 'danger',
+      callback: (row: any) => this.onDelete(row),
+    },
+  ];
 
   totalRecords: number = 0;
   first: number = 0;

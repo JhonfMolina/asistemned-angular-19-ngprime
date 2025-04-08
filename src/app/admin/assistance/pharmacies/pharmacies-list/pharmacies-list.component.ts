@@ -1,7 +1,13 @@
-import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
 import { Pharmacies } from '@interfaces/admin/pharmacies.interfaces';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
 import { PharmaciesService } from '@services/admin/pharmacies.service';
 import { AuthService } from '@services/auth/auth.service';
@@ -14,12 +20,23 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './pharmacies-list.component.html',
 })
 export default class PharmaciesListComponent {
-
   @ViewChild('statusTemplate') statusTemplate!: TemplateRef<any>;
   private readonly subscription: Subscription[] = [];
 
   pharmacies: Pharmacies[] = [];
   columns: any[] = [];
+  actions: ActionButton[] = [
+    {
+      icon: 'bx bx-edit',
+      color: 'success',
+      callback: (row: any) => this.onEdit(row),
+    },
+    {
+      icon: 'bx bx-trash',
+      color: 'danger',
+      callback: (row: any) => this.onDelete(row),
+    },
+  ];
 
   totalRecords: number = 0;
   first: number = 0;
@@ -31,7 +48,7 @@ export default class PharmaciesListComponent {
     private readonly _authService: AuthService,
     private readonly cdr: ChangeDetectorRef,
     private readonly _router: Router
-  ) { }
+  ) {}
 
   onNavigate() {
     this._router.navigate(['admin/assistance/pharmacies/pharmacies-create']);

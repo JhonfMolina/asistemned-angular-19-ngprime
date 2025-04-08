@@ -12,6 +12,7 @@ import { Chip } from 'primeng/chip';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 
 @Component({
   selector: 'app-doctors-list',
@@ -24,6 +25,18 @@ export default class DoctorsListComponent {
 
   doctors: Doctors[] = [];
   columns: any[] = [];
+  actions: ActionButton[] = [
+    {
+      icon: 'bx bx-edit',
+      color: 'success',
+      callback: (row: any) => this.onEdit(row),
+    },
+    {
+      icon: 'bx bx-trash',
+      color: 'danger',
+      callback: (row: any) => this.onDelete(row),
+    },
+  ];
 
   totalRecords: number = 0;
   first: number = 0;
@@ -67,8 +80,6 @@ export default class DoctorsListComponent {
     this.subscription.push(
       this._doctorsService.getlist(params).subscribe((res) => {
         if (res) {
-          console.log(res);
-
           this.doctors = res.data.data;
           this.totalRecords = res.data.total;
         }

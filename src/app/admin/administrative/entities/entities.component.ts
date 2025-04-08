@@ -12,6 +12,8 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { environment } from '../../../../environments/environment';
 import { Message } from 'primeng/message';
 import { CommonModule } from '@angular/common';
+import { routes } from '../../../app.routes';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-entities',
@@ -173,7 +175,8 @@ export default class EntitiesComponent {
     private _utilidadesService: UtilidadesService,
     private _notificationService: NotificationService,
     private _entitiesService: EntitiesService,
-    private _loadingService: LoadingService
+    private _loadingService: LoadingService,
+    private _router: Router
   ) {}
 
   getListadoTipoIdentificacion(): void {
@@ -228,8 +231,6 @@ export default class EntitiesComponent {
       this._entitiesService
         .put(this.entities.id!, entities)
         .subscribe((res) => {
-          console.log(res);
-
           this._notificationService.showSuccess(res.message);
           this._authService.updateLocalStorage({ entidad: res.data });
         })
@@ -247,6 +248,19 @@ export default class EntitiesComponent {
         .subscribe((res) => {
           this._notificationService.showSuccess(res.message);
           this._authService.updateLocalStorage({ entidad: res.data });
+          setTimeout(() => {
+            this._notificationService.confirmation({
+              message: '¿Desea crear un medico?',
+              accept: () => {
+                this._router.navigate([
+                  '/admin/assistance/doctors/doctors-create',
+                ]);
+              },
+              reject: () => {
+                window.location.href = '/admin/administrative/entities';
+              },
+            });
+          }, 2000);
         })
     );
   }

@@ -8,7 +8,7 @@ export default [
   },
   {
     path: 'users',
-    loadChildren: () => import('./users/roles.routes'),
+    loadChildren: () => import('./users/users.routes'),
     title: 'Users',
   },
 ] as Routes;

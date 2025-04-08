@@ -12,7 +12,12 @@
     <p class="m-0">{{ profile.email }}</p>
   </div>
   <p-divider />
-  <p-accordion [value]="0">
+  <p-accordion
+    *ngIf="visible"
+    [value]="0"
+    [multiple]="true"
+    [activeIndex]="null"
+  >
     @for (menu of menuPrincipal; track menu.title) {
     <p-accordion-panel [value]="menu.title">
       <p-accordion-header class="py-2 m-0">
