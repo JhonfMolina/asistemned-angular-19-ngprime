@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './laboratories-create.component.html',
 })
 export default class LaboratoriesCreateComponent {
-
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
 
   private readonly subscription: Subscription[] = [];
@@ -163,7 +162,7 @@ export default class LaboratoriesCreateComponent {
     private readonly _laboratoriesService: LaboratoriesService,
     private readonly _authService: AuthService,
     private readonly _router: Router
-  ) { }
+  ) {}
 
   goToReturnUrl(): void {
     this._router.navigate(['admin/assistance/laboratories']);
@@ -207,7 +206,7 @@ export default class LaboratoriesCreateComponent {
   post(data: any): void {
     const laboratories: Laboratories = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._laboratoriesService.post(laboratories).subscribe((res) => {

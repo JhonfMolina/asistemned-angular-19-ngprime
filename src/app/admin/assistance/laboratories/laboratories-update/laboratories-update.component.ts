@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './laboratories-update.component.html',
 })
 export default class LaboratoriesUpdateComponent {
-
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private readonly subscription: Subscription[] = [];
   private laboratorioId = '';
@@ -228,7 +227,7 @@ export default class LaboratoriesUpdateComponent {
           .getById({
             estados: ['activo'],
             id: this.laboratorioId,
-            ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+            ma_entidad_id: this._authService.getEntityStorage.id!,
           })
           .subscribe((laboratoro) => {
             this.dynamicFormComponent.setFormData({
@@ -247,13 +246,15 @@ export default class LaboratoriesUpdateComponent {
     const laboratorio: Laboratories = {
       ...data.form,
       estado: data.form.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
-      this._laboratoriesService.put(this.laboratorioId, laboratorio).subscribe((res) => {
-        this._notificationService.showSuccess(res.message);
-        this.goToReturnUrl();
-      })
+      this._laboratoriesService
+        .put(this.laboratorioId, laboratorio)
+        .subscribe((res) => {
+          this._notificationService.showSuccess(res.message);
+          this.goToReturnUrl();
+        })
     );
   }
 

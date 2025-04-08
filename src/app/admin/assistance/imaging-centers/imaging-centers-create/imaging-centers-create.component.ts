@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './imaging-centers-create.component.html',
 })
 export default class ImagingCentersCreateComponent {
-
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
 
   private readonly subscription: Subscription[] = [];
@@ -163,7 +162,7 @@ export default class ImagingCentersCreateComponent {
     private readonly _imagingCentersService: ImagingCentersService,
     private readonly _authService: AuthService,
     private readonly _router: Router
-  ) { }
+  ) {}
 
   goToReturnUrl(): void {
     this._router.navigate(['admin/assistance/imaging-centers']);
@@ -207,7 +206,7 @@ export default class ImagingCentersCreateComponent {
   post(data: any): void {
     const centroImagenes: ImagingCenters = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._imagingCentersService.post(centroImagenes).subscribe((res) => {

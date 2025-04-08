@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './imaging-centers-update.component.html',
 })
 export default class ImagingCentersUpdateComponent {
-
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private readonly subscription: Subscription[] = [];
   private centroImagenId = '';
@@ -228,7 +227,7 @@ export default class ImagingCentersUpdateComponent {
           .getById({
             estados: ['activo'],
             id: this.centroImagenId,
-            ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+            ma_entidad_id: this._authService.getEntityStorage.id!,
           })
           .subscribe((centroImagenes) => {
             this.dynamicFormComponent.setFormData({
@@ -247,13 +246,15 @@ export default class ImagingCentersUpdateComponent {
     const centroImagenes: ImagingCenters = {
       ...data.form,
       estado: data.form.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
-      this._imagingCentersService.put(this.centroImagenId, centroImagenes).subscribe((res) => {
-        this._notificationService.showSuccess(res.message);
-        this.goToReturnUrl();
-      })
+      this._imagingCentersService
+        .put(this.centroImagenId, centroImagenes)
+        .subscribe((res) => {
+          this._notificationService.showSuccess(res.message);
+          this.goToReturnUrl();
+        })
     );
   }
 

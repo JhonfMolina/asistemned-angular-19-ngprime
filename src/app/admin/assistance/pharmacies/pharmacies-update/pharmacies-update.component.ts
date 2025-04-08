@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './pharmacies-update.component.html',
 })
 export default class PharmaciesUpdateComponent {
-
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private readonly subscription: Subscription[] = [];
   private farmaciaId = '';
@@ -228,7 +227,7 @@ export default class PharmaciesUpdateComponent {
           .getById({
             estados: ['activo'],
             id: this.farmaciaId,
-            ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+            ma_entidad_id: this._authService.getEntityStorage.id!,
           })
           .subscribe((farmacia) => {
             this.dynamicFormComponent.setFormData({
@@ -247,13 +246,15 @@ export default class PharmaciesUpdateComponent {
     const farmacia: Pharmacies = {
       ...data.form,
       estado: data.form.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
-      this._pharmaciesService.put(this.farmaciaId, farmacia).subscribe((res) => {
-        this._notificationService.showSuccess(res.message);
-        this.goToReturnUrl();
-      })
+      this._pharmaciesService
+        .put(this.farmaciaId, farmacia)
+        .subscribe((res) => {
+          this._notificationService.showSuccess(res.message);
+          this.goToReturnUrl();
+        })
     );
   }
 

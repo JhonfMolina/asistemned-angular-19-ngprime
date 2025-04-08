@@ -312,7 +312,7 @@ export default class DoctorsCreateComponent {
   post(data: any): void {
     const doctor: Doctors = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._doctorsService.post(doctor).subscribe((res) => {

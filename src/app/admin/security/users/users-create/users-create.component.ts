@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './users-create.component.html',
 })
 export default class UsersCreateComponent {
-
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private readonly subscription: Subscription[] = [];
 
@@ -129,7 +128,7 @@ export default class UsersCreateComponent {
     private readonly _loadingService: LoadingService,
     private readonly _authService: AuthService,
     private readonly _router: Router
-  ) { }
+  ) {}
 
   goToReturnUrl(): void {
     this._router.navigate(['admin/security/users']);
@@ -139,20 +138,19 @@ export default class UsersCreateComponent {
     this._rolesService
       .getlist({
         estados: ['activo'],
-        ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+        ma_entidad_id: this._authService.getEntityStorage.id!,
       })
       .subscribe((response) => {
-        this.formConfig.find(
-          (field) => field.name === 'rol_id'
-        )!.options = response.data.data;
+        this.formConfig.find((field) => field.name === 'rol_id')!.options =
+          response.data.data;
       });
   }
 
   post(data: any): void {
     const laboratories: Users = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
-      acl_roles: [data.form.rol_id]
+      ma_entidad_id: this._authService.getEntityStorage.id!.toString(),
+      acl_roles: [data.form.rol_id],
     };
     this.subscription.push(
       this._usersService.post(laboratories).subscribe((res) => {

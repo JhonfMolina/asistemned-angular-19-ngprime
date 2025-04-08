@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs';
   templateUrl: './patients-update.component.html',
 })
 export default class PatientsUpdateComponent {
-
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private readonly subscription: Subscription[] = [];
   private pacienteId = '';
@@ -185,7 +184,7 @@ export default class PatientsUpdateComponent {
       },
       column: 'col-12 md:col-6 lg:col-3',
     },
-    
+
     {
       type: 'text',
       icon: 'location-plus',
@@ -349,7 +348,7 @@ export default class PatientsUpdateComponent {
       column: 'col-12 md:col-4 lg:col-3',
     },
   ];
-  
+
   constructor(
     private readonly _utilidadesService: UtilidadesService,
     private readonly _notificationService: NotificationService,
@@ -414,7 +413,7 @@ export default class PatientsUpdateComponent {
           .getById({
             estados: ['activo'],
             id: this.pacienteId,
-            ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+            ma_entidad_id: this._authService.getEntityStorage.id!,
           })
           .subscribe((paciente) => {
             this.dynamicFormComponent.setFormData({
@@ -433,7 +432,7 @@ export default class PatientsUpdateComponent {
     const paciente: Patients = {
       ...data.form,
       estado: data.form.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._patientsService.put(this.pacienteId, paciente).subscribe((res) => {

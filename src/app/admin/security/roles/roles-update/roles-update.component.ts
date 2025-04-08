@@ -17,10 +17,8 @@ import { Subscription } from 'rxjs/internal/Subscription';
   selector: 'app-roles-update',
   imports: [DynamicFormComponent, CardModule, ButtonComponent],
   templateUrl: './roles-update.component.html',
-  styleUrl: './roles-update.component.scss'
 })
 export default class RolesUpdateComponent {
-
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private readonly subscription: Subscription[] = [];
   private rolId = '';
@@ -85,12 +83,12 @@ export default class RolesUpdateComponent {
     this.subscription.push(
       this._permisosService
         .getlist({
-          ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+          ma_entidad_id: this._authService.getEntityStorage.id!.toString(),
         })
         .subscribe((response) => {
           this.permiso = {
             ...response.data.asistencial[0],
-            acciones: JSON.parse(response.data.asistencial[0].acciones)
+            acciones: JSON.parse(response.data.asistencial[0].acciones),
           };
         })
     );
@@ -103,7 +101,7 @@ export default class RolesUpdateComponent {
           .getById({
             estados: ['activo'],
             id: this.rolId,
-            ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+            ma_entidad_id: this._authService.getEntityStorage.id!.toString(),
           })
           .subscribe((rol) => {
             this.dynamicFormComponent.setFormData({
@@ -119,7 +117,7 @@ export default class RolesUpdateComponent {
     const rol: Roles = {
       ...data.form,
       estado: data.form.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!.toString(),
     };
     if (this.permiso) {
       const permiso = {
@@ -127,8 +125,8 @@ export default class RolesUpdateComponent {
         acciones: this.permiso.acciones,
         id: '',
         acl_rol_id: '',
-        estado: ''
-      }
+        estado: '',
+      };
       console.log(permiso);
       rol.permisos = [permiso];
     }

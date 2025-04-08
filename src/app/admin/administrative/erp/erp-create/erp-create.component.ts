@@ -195,7 +195,7 @@ export default class ErpCreateComponent {
   post(data: any): void {
     const erp: Erp = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._erpService.post(erp).subscribe((res) => {

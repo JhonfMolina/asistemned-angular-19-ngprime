@@ -214,7 +214,7 @@ export default class ErpUpdateComponent {
           .getById({
             estados: ['activo'],
             id: this.erpId,
-            ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+            ma_entidad_id: this._authService.getEntityStorage.id!,
           })
           .subscribe((erp) => {
             this.dynamicFormComponent.setFormData({
@@ -233,7 +233,7 @@ export default class ErpUpdateComponent {
     const erp: Erp = {
       ...data.form,
       estado: data.form.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._erpService.put(this.erpId, erp).subscribe((res) => {

@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './pharmacies-create.component.html',
 })
 export default class PharmaciesCreateComponent {
-
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
 
   private readonly subscription: Subscription[] = [];
@@ -163,7 +162,7 @@ export default class PharmaciesCreateComponent {
     private readonly _pharmaciesService: PharmaciesService,
     private readonly _authService: AuthService,
     private readonly _router: Router
-  ) { }
+  ) {}
 
   goToReturnUrl(): void {
     this._router.navigate(['admin/assistance/pharmacies']);
@@ -207,7 +206,7 @@ export default class PharmaciesCreateComponent {
   post(data: any): void {
     const pharmacies: Pharmacies = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._pharmaciesService.post(pharmacies).subscribe((res) => {

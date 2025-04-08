@@ -16,14 +16,12 @@ import { Subscription } from 'rxjs/internal/Subscription';
   selector: 'app-roles-create',
   imports: [DynamicFormComponent, CardModule, ButtonComponent],
   templateUrl: './roles-create.component.html',
-  styleUrl: './roles-create.component.scss'
 })
 export default class RolesCreateComponent {
-
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private readonly subscription: Subscription[] = [];
 
-  public permiso: Permisos|undefined;
+  public permiso: Permisos | undefined;
 
   formBtnConfig = [
     {
@@ -61,7 +59,7 @@ export default class RolesCreateComponent {
     private readonly _permisosService: PermisosService,
     private readonly _authService: AuthService,
     private readonly _router: Router
-  ) { }
+  ) {}
 
   goToReturnUrl(): void {
     this._router.navigate(['admin/security/roles']);
@@ -70,13 +68,13 @@ export default class RolesCreateComponent {
   getListadoPermisos(): void {
     this.subscription.push(
       this._permisosService
-        .getlist({ 
-          ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+        .getlist({
+          ma_entidad_id: this._authService.getEntityStorage.id!,
         })
         .subscribe((response) => {
           this.permiso = {
             ...response.data.asistencial[0],
-            acciones: JSON.parse(response.data.asistencial[0].acciones)
+            acciones: JSON.parse(response.data.asistencial[0].acciones),
           };
         })
     );
@@ -85,7 +83,7 @@ export default class RolesCreateComponent {
   post(data: any): void {
     const rol: Roles = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
 
     if (this.permiso) {
@@ -94,8 +92,8 @@ export default class RolesCreateComponent {
         acciones: this.permiso.acciones,
         id: '',
         acl_rol_id: '',
-        estado: ''
-      }
+        estado: '',
+      };
       console.log(permiso);
       rol.permisos = [permiso];
     }

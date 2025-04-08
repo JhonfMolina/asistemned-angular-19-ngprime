@@ -331,7 +331,7 @@ export default class DoctorsUpdateComponent {
           .getById({
             estados: ['activo'],
             id: this.doctorId,
-            ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+            ma_entidad_id: this._authService.getEntityStorage.id!,
           })
           .subscribe((doctor) => {
             this.dynamicFormComponent.setFormData({
@@ -350,7 +350,7 @@ export default class DoctorsUpdateComponent {
     const doctor: Doctors = {
       ...data.form,
       estado: data.form.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._doctorsService.put(this.doctorId, doctor).subscribe((res) => {

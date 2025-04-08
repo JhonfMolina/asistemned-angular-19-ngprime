@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './patients-create.component.html',
 })
 export default class PatientsCreateComponent {
-
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
 
   private readonly subscription: Subscription[] = [];
@@ -349,7 +348,7 @@ export default class PatientsCreateComponent {
     private readonly _patientsService: PatientsService,
     private readonly _authService: AuthService,
     private readonly _router: Router
-  ) { }
+  ) {}
 
   goToReturnUrl(): void {
     this._router.navigate(['admin/assistance/patients']);
@@ -393,7 +392,7 @@ export default class PatientsCreateComponent {
   post(data: any): void {
     const doctor: Patients = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id.toString(),
+      ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._patientsService.post(doctor).subscribe((res) => {
