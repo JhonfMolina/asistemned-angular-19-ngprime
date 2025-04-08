@@ -3,12 +3,12 @@ import { Routes } from '@angular/router';
 export default [
   {
     path: 'roles',
-    loadComponent: () => import('./roles/roles.component'),
+    loadChildren: () => import('./roles/roles.routes'),
     title: 'Roles',
   },
   {
     path: 'users',
-    loadComponent: () => import('./users/users.component'),
+    loadChildren: () => import('./users/roles.routes'),
     title: 'Users',
   },
 ] as Routes;
