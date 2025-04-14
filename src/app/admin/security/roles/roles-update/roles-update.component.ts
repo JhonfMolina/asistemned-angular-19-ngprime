@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,10 +7,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
-import { Roles } from '@interfaces/roles.interfaces';
-import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { AuthService } from '@services/auth.service';
 import { PermisosService } from '@services/permisos.service';
 import { RolesService } from '@services/roles.service';
@@ -49,7 +47,8 @@ export default class RolesUpdateComponent {
   public dataSeguridadPermisos: any = {};
   public form: FormGroup;
   public formControl = () => this.form.controls;
-  rolId = '';
+  private rolId = '';
+  dataSeguridadRol: any = {};
 
   constructor(
     private readonly _notificationService: NotificationService,
@@ -57,6 +56,7 @@ export default class RolesUpdateComponent {
     private readonly _permisosService: PermisosService,
     private readonly _loadingService: LoadingService,
     private readonly _authService: AuthService,
+    private readonly route: ActivatedRoute,
     private readonly _router: Router,
     private fb: FormBuilder
   ) {
@@ -64,24 +64,11 @@ export default class RolesUpdateComponent {
       id: [''],
       nombre: ['', Validators.required],
     });
+    this.rolId = this.route.snapshot.paramMap.get('id')!;
   }
 
   goToReturnUrl(): void {
     this._router.navigate(['admin/security/roles']);
-  }
-
-  getById(): void {
-    if (this.rolId) {
-      this.subscription.push(
-        this._rolesService
-          .getById({
-            estados: ['activo'],
-            id: this.rolId,
-            ma_entidad_id: this._authService.getEntityStorage.id!.toString(),
-          })
-          .subscribe((rol) => {})
-      );
-    }
   }
 
   getListadoPermisos(): void {
@@ -100,11 +87,11 @@ export default class RolesUpdateComponent {
   private getConsultaSeguridadRol() {
     this._rolesService
       .getById({
-        id: this.formControl()['id'].value,
+        id: this.rolId,
         ma_entidad_id: this._authService.getEntityStorage.id,
       })
       .subscribe((resp) => {
-        this.dataSeguridadPermisos = resp.data;
+        this.dataSeguridadRol = resp.data;
         this.formControl()['nombre'].setValue(resp.data.nombre);
         // this.formStateCliente.setValue(resp.data.estado === 'activo');
         this.getListadoPermisos();
@@ -143,64 +130,66 @@ export default class RolesUpdateComponent {
           const list: Array<any> = (
             JSON.parse(item.acciones) as Array<string>
           ).map((acc) => ({ titulo: acc, value: false }));
+
           const data: any = {
             permisoId: item.id,
             menu: item.recurso,
             acciones: list,
           };
+
           listDataTable.push(data);
         });
 
         this.listadoMudulosPermisos.push({
           titulo: modulo,
+          selectAll: false,
           displayedColumns: ['menu', 'acciones'],
           dataTable: listDataTable,
         });
       }
     );
-    this.clearValuesAccionesPermisosModulo();
-  }
-
-  private clearValuesAccionesPermisosModulo() {
-    /**Seteo de valores en falso del listado de permisos */
+    //Validar si el permiso esta asignado al rol y cambiar el valor de las acciones
     this.listadoMudulosPermisos.forEach((modulo) => {
-      modulo.dataTable.forEach((menu: any) => {
-        menu.acciones.forEach((accion: any) => (accion.value = false));
+      this.dataSeguridadRol.permisos[modulo.titulo]?.forEach((permiso: any) => {
+        if (modulo.titulo === permiso.acl_per_modulo) {
+          modulo.dataTable.forEach((menu: any) => {
+            if (menu.permisoId === permiso.acl_permiso_id) {
+              menu.acciones.forEach((accion: any) => {
+                if (permiso.acciones.includes(accion.titulo)) {
+                  accion.value = true;
+                }
+              });
+            }
+          });
+        }
       });
+    });
+
+    //Validar si todos los permisos de un modulo estan seleccionados y cambiar el valor del selectAll
+    this.listadoMudulosPermisos.forEach((modulo) => {
+      modulo.selectAll = modulo.dataTable.every((permiso: any) =>
+        permiso.acciones.every((accion: any) => accion.value)
+      );
     });
   }
 
   protected onCheckSeleccionarTodos(modulo: any, input: any) {
     modulo.dataTable.forEach((permiso: any) => {
       (permiso.acciones as Array<any>).forEach(
-        (accion) => (accion.value = input.checked)
+        (accion) => (accion.value = input.target.checked)
       );
     });
   }
 
   put(): void {
-    // const rol: Roles = {
-    //   ...formData,
-    //   estado: formData.estado ? 'activo' : 'inactivo',
-    //   ma_entidad_id: this._authService.getEntityStorage.id!.toString(),
-    // };
-    // if (this.permiso) {
-    //   const permiso = {
-    //     acl_permiso_id: this.permiso.id,
-    //     acciones: this.permiso.acciones,
-    //     id: '',
-    //     acl_rol_id: '',
-    //     estado: '',
-    //   };
-    //   console.log(permiso);
-    //   rol.permisos = [permiso];
-    // }
-    // this.subscription.push(
-    //   this._rolesService.put(this.rolId, rol).subscribe((res) => {
-    //     this._notificationService.showSuccess(res.message);
-    //     this.goToReturnUrl();
-    //   })
-    // );
+    this.subscription.push(
+      this._rolesService.put(this.rolId, this.getDataApi).subscribe(() => {
+        this._notificationService.showSuccess(
+          'Rol de seguridad actualizado exitosamente.'
+        );
+        this.goToReturnUrl();
+      })
+    );
   }
 
   ngOnInit(): void {

@@ -25,9 +25,9 @@
     </div>
     <div class="col-6 md:col-10 col-lg-11">
       <app-button
-        [label]="'Guardar'"
+        [label]="'Actualizar'"
         [color]="'primary'"
-        [icon]="'bx bx-save bx-sm'"
+        [icon]="'bx bx-refresh bx-sm'"
         [classList]="'ml-2'"
         (onClick)="put()"
         [loading]="loading"
@@ -43,7 +43,8 @@
         <div class="flex justify-content-start align-items-center gap-2">
           <p-checkbox
             [binary]="true"
-            (onChange)="onCheckSeleccionarTodos(resource, $event)"
+            (change)="onCheckSeleccionarTodos(resource, $event)"
+            [ngModel]="resource.selectAll"
           />
           <h2 class="text-primary-600">
             {{ resource.titulo | titlecase }}
