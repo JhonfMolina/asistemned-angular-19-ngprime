@@ -6,11 +6,11 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
-import { Pharmacies } from '@interfaces/admin/pharmacies.interfaces';
+import { Pharmacies } from '@interfaces/pharmacies.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
-import { PharmaciesService } from '@services/admin/pharmacies.service';
-import { AuthService } from '@services/auth/auth.service';
+import { PharmaciesService } from '@services/pharmacies.service';
+import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
 

@@ -2,11 +2,12 @@ import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
-import { Users } from '@interfaces/security/users.interfaces';
+import { Users } from '@interfaces/users.interfaces';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
-import { AuthService } from '@services/auth/auth.service';
-import { RolesService } from '@services/security/roles.service';
-import { UsersService } from '@services/security/users.service';
+import { AuthService } from '@services/auth.service';
+import { RolesService } from '@services/roles.service';
+import { UsersService } from '@services/users.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { CardModule } from 'primeng/card';
@@ -21,17 +22,18 @@ export default class UsersCreateComponent {
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private readonly subscription: Subscription[] = [];
 
-  formBtnConfig = [
+  formActionButton: ActionButton[] = [
     {
       label: 'Guardar',
       icon: 'save bx-sm',
       visible: true,
       width: 'w-full',
-      appearance: 'base',
       color: 'primary',
-      action: 'guardar',
       disabled: false,
       loading: false,
+      callback: (e: any) => {
+        this.post(e);
+      },
     },
   ];
 
@@ -172,7 +174,7 @@ export default class UsersCreateComponent {
 
   ngOnInit(): void {
     this._loadingService.loading$.subscribe((loading) => {
-      this.formBtnConfig.find((btn) => btn.label === 'Guardar')!.loading =
+      this.formActionButton.find((btn) => btn.label === 'Guardar')!.loading =
         loading;
     });
     this.getListadoRoles();

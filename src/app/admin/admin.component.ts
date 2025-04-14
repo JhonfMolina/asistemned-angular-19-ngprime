@@ -9,7 +9,7 @@ import ButtonComponent from '@components//button/button.component';
 import { SidebarComponent } from '@components/sidebar/sidebar.component';
 import { SidebarService } from '@services/util/sidebar.service';
 import { NotificationService } from '@services/util/notificacion.service';
-import { AuthService } from '@services/auth/auth.service';
+import { AuthService } from '@services/auth.service';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 

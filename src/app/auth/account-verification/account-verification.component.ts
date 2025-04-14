@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { InputOtpModule } from 'primeng/inputotp';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { AuthService } from '@services/auth/auth.service';
+import { AuthService } from '@services/auth.service';
 import { Router } from '@angular/router';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';

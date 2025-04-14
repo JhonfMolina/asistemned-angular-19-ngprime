@@ -6,10 +6,11 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
-import { Roles } from '@interfaces/security/roles.interfaces';
+import { Roles } from '@interfaces/roles.interfaces';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
-import { AuthService } from '@services/auth/auth.service';
-import { RolesService } from '@services/security/roles.service';
+import { AuthService } from '@services/auth.service';
+import { RolesService } from '@services/roles.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
 
@@ -24,6 +25,18 @@ export default class RolesListComponent {
 
   roles: Roles[] = [];
   columns: any[] = [];
+  actions: ActionButton[] = [
+    {
+      icon: 'bx bx-edit',
+      color: 'success',
+      callback: (row: any) => this.onEdit(row),
+    },
+    {
+      icon: 'bx bx-trash',
+      color: 'danger',
+      callback: (row: any) => this.onDelete(row),
+    },
+  ];
 
   totalRecords: number = 0;
   first: number = 0;

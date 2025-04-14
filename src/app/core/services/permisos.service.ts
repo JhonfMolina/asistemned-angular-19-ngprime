@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { GlobalService } from '@services/util/global.service';
-import { ApiResponse, PaginatedApiResponse } from '@interfaces/util/response.models';
-import { Permisos } from '@interfaces/security/permisos.interfaces';
+import {
+  ApiResponse,
+  PaginatedApiResponse,
+} from '@interfaces/util/response.models';
+import { Permisos } from '@interfaces/permisos.interfaces';
 
 @Injectable({
   providedIn: 'root',

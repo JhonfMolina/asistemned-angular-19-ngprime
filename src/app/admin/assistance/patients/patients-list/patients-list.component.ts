@@ -6,11 +6,11 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
-import { Patients } from '@interfaces/admin/patients.interfaces';
+import { Patients } from '@interfaces/patients.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
-import { PatientsService } from '@services/admin/patients.service';
-import { AuthService } from '@services/auth/auth.service';
+import { PatientsService } from '@services/patients.service';
+import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
 
@@ -81,8 +81,6 @@ export default class PatientsListComponent {
     this.subscription.push(
       this._patientsService.getlist(params).subscribe((res) => {
         if (res) {
-          console.log(res);
-
           this.patients = res.data.data;
           this.totalRecords = res.data.total;
         }

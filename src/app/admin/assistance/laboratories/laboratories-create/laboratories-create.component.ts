@@ -2,16 +2,17 @@ import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
-import { Laboratories } from '@interfaces/admin/laboratories.interfaces';
+import { Laboratories } from '@interfaces/laboratories.interfaces';
 import { Department } from '@interfaces/util/department.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
-import { LaboratoriesService } from '@services/admin/laboratories.service';
-import { AuthService } from '@services/auth/auth.service';
+import { LaboratoriesService } from '@services/laboratories.service';
+import { AuthService } from '@services/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 
 @Component({
   selector: 'app-laboratories-create',
@@ -23,17 +24,18 @@ export default class LaboratoriesCreateComponent {
 
   private readonly subscription: Subscription[] = [];
 
-  formBtnConfig = [
+  formActionButton: ActionButton[] = [
     {
       label: 'Guardar',
       icon: 'save bx-sm',
       visible: true,
       width: 'w-full',
-      appearance: 'base',
       color: 'primary',
-      action: 'guardar',
       disabled: false,
       loading: false,
+      callback: (data: any) => {
+        this.post(data);
+      },
     },
   ];
 
@@ -230,7 +232,7 @@ export default class LaboratoriesCreateComponent {
 
   ngOnInit(): void {
     this._loadingService.loading$.subscribe((loading) => {
-      this.formBtnConfig.find((btn) => btn.label === 'Guardar')!.loading =
+      this.formActionButton.find((btn) => btn.label === 'Guardar')!.loading =
         loading;
     });
     this.getListadoTipoIdentificacion();

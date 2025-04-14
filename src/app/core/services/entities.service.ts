@@ -4,7 +4,7 @@ import {
   ApiResponse,
   PaginatedApiResponse,
 } from '@interfaces/util/response.models';
-import { Entities } from '@interfaces/admin/entities.interfaces';
+import { Entities } from '@interfaces/entities.interfaces';
 
 @Injectable({
   providedIn: 'root',

@@ -6,11 +6,11 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
-import { Users } from '@interfaces/security/users.interfaces';
+import { Users } from '@interfaces/users.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
-import { AuthService } from '@services/auth/auth.service';
-import { UsersService } from '@services/security/users.service';
+import { AuthService } from '@services/auth.service';
+import { UsersService } from '@services/users.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
 

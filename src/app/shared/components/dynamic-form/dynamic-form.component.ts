@@ -14,6 +14,7 @@ import ButtonComponent from '../button/button.component';
 import { CommonModule } from '@angular/common';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Checkbox } from 'primeng/checkbox';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -38,7 +39,7 @@ import { Checkbox } from 'primeng/checkbox';
 export class DynamicFormComponent {
   @Output() onClick = new EventEmitter<any>();
   @Input() formConfig: DynamicForm[] = [];
-  @Input() formBtnConfig: any[] = [];
+  @Input() formBtnConfig: ActionButton[] = [];
   form: FormGroup | any;
 
   date2: Date | undefined;
@@ -60,9 +61,11 @@ export class DynamicFormComponent {
     this.form = this.formConfigService.createFormGroup(this.formConfig);
   }
 
-  onSubmit(action: string): void {
+  onSubmit(): void {
+    console.log(this.form.value);
+
     if (this.form.valid) {
-      this.onClick.emit({ form: this.form.value, event: action });
+      this.onClick.emit(this.form.value);
     } else {
       this.form.markAllAsTouched();
       this.form.updateValueAndValidity();

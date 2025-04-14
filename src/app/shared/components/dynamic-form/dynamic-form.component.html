@@ -221,12 +221,11 @@
   <app-button
     *ngFor="let Btn of formBtnConfig"
     [label]="Btn.label"
-    [appearance]="Btn.appearance"
     [variant]="Btn.variant"
     [width]="Btn.width"
     [color]="Btn.color"
     [icon]="Btn.icon"
-    (onClick)="onSubmit(Btn.action)"
+    (onClick)="onSubmit()"
     [disabled]="Btn.disabled"
     [loading]="Btn.loading"
   ></app-button>

@@ -6,11 +6,11 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
-import { Laboratories } from '@interfaces/admin/laboratories.interfaces';
+import { Laboratories } from '@interfaces/laboratories.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
-import { LaboratoriesService } from '@services/admin/laboratories.service';
-import { AuthService } from '@services/auth/auth.service';
+import { LaboratoriesService } from '@services/laboratories.service';
+import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
 

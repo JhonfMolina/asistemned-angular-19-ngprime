@@ -2,15 +2,16 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
-import { ImagingCenters } from '@interfaces/admin/imaging-centers.interfaces';
+import { ImagingCenters } from '@interfaces/imaging-centers.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
-import { ImagingCentersService } from '@services/admin/imaging-centers.service';
-import { AuthService } from '@services/auth/auth.service';
+import { ImagingCentersService } from '@services/imaging-centers.service';
+import { AuthService } from '@services/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 
 @Component({
   selector: 'app-imaging-centers-update',
@@ -22,17 +23,18 @@ export default class ImagingCentersUpdateComponent {
   private readonly subscription: Subscription[] = [];
   private centroImagenId = '';
 
-  formBtnConfig = [
+  formActionButton: ActionButton[] = [
     {
       label: 'Actualizar',
       icon: 'bx bx-refresh bx-sm',
       visible: true,
       width: 'w-full',
-      appearance: 'base',
       color: 'primary',
-      action: 'actualizar',
       disabled: false,
       loading: false,
+      callback: (data: any) => {
+        this.put(data);
+      },
     },
   ];
 
@@ -242,10 +244,10 @@ export default class ImagingCentersUpdateComponent {
     }
   }
 
-  put(data: any): void {
+  put(formData: any): void {
     const centroImagenes: ImagingCenters = {
-      ...data.form,
-      estado: data.form.estado ? 'activo' : 'inactivo',
+      ...formData,
+      estado: formData.estado ? 'activo' : 'inactivo',
       ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
@@ -260,7 +262,7 @@ export default class ImagingCentersUpdateComponent {
 
   ngOnInit(): void {
     this._loadingService.loading$.subscribe((loading) => {
-      this.formBtnConfig.find((btn) => btn.label === 'Actualizar')!.loading =
+      this.formActionButton.find((btn) => btn.label === 'Actualizar')!.loading =
         loading;
     });
     this.getListadoTipoIdentificacion();

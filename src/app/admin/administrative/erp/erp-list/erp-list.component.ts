@@ -6,11 +6,11 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
-import { Erp } from '@interfaces/admin/erp.interfaces';
+import { Erp } from '@interfaces/erp.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
-import { ErpService } from '@services/admin/erp.service';
-import { AuthService } from '@services/auth/auth.service';
+import { ErpService } from '@services/erp.service';
+import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
 

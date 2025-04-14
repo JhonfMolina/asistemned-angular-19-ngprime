@@ -1,58 +1,53 @@
+import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
-import { Permisos } from '@interfaces/security/permisos.interfaces';
-import { Roles } from '@interfaces/security/roles.interfaces';
-import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
-import { AuthService } from '@services/auth/auth.service';
-import { PermisosService } from '@services/security/permisos.service';
-import { RolesService } from '@services/security/roles.service';
+import { AuthService } from '@services/auth.service';
+import { PermisosService } from '@services/permisos.service';
+import { RolesService } from '@services/roles.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { CardModule } from 'primeng/card';
+import { Checkbox } from 'primeng/checkbox';
+import { DividerModule } from 'primeng/divider';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { AccordionModule } from 'primeng/accordion';
 
 @Component({
   selector: 'app-roles-create',
-  imports: [DynamicFormComponent, CardModule, ButtonComponent],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    CardModule,
+    Checkbox,
+    AccordionModule,
+    ButtonComponent,
+    InputTextModule,
+    ScrollPanelModule,
+    FloatLabel,
+    CommonModule,
+    DividerModule,
+  ],
   templateUrl: './roles-create.component.html',
 })
 export default class RolesCreateComponent {
-  @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private readonly subscription: Subscription[] = [];
-
-  public permiso: Permisos | undefined;
-
-  formBtnConfig = [
-    {
-      label: 'Guardar',
-      icon: 'save bx-sm',
-      visible: true,
-      width: 'w-full',
-      appearance: 'base',
-      color: 'primary',
-      action: 'guardar',
-      disabled: false,
-      loading: false,
-    },
-  ];
-  formConfig: DynamicForm[] = [
-    {
-      type: 'text',
-      icon: 'user',
-      name: 'nombre',
-      label: 'Nombre',
-      on_label: 'nombre',
-      placeholder: '',
-      validators: {
-        required: true,
-        minLength: 3,
-        maxLength: 40,
-      },
-      column: 'col-12 md:col-6 lg:col-6',
-    },
-  ];
+  public loading: boolean = false;
+  public listadoMudulosPermisos: Array<any> = [];
+  public dataSeguridadPermisos: any = {};
+  public form: FormGroup;
+  public formControl = () => this.form.controls;
 
   constructor(
     private readonly _notificationService: NotificationService,
@@ -60,8 +55,14 @@ export default class RolesCreateComponent {
     private readonly _permisosService: PermisosService,
     private readonly _loadingService: LoadingService,
     private readonly _authService: AuthService,
-    private readonly _router: Router
-  ) {}
+    private readonly _router: Router,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({
+      id: [''],
+      nombre: ['', Validators.required],
+    });
+  }
 
   goToReturnUrl(): void {
     this._router.navigate(['admin/security/roles']);
@@ -74,40 +75,91 @@ export default class RolesCreateComponent {
           ma_entidad_id: this._authService.getEntityStorage.id!,
         })
         .subscribe((response) => {
-          this.permiso = {
-            ...response.data.asistencial[0],
-            acciones: JSON.parse(response.data.asistencial[0].acciones),
-          };
+          this.dataSeguridadPermisos = response.data;
+          this.setDataPermisoModulo();
         })
     );
   }
 
-  post(data: any): void {
-    const rol: Roles = {
-      ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+  private get getDataPermisos(): Array<any> {
+    return this.listadoMudulosPermisos
+      .flatMap((item) => {
+        return item.dataTable.map((subItem: any) => ({
+          acl_permiso_id: subItem.permisoId,
+          acciones: subItem.acciones
+            .filter((accion: any) => accion.value)
+            .map((accion: any) => accion.titulo),
+        }));
+      })
+      .filter((item) => item.acciones.length > 0);
+  }
+
+  private get getDataApi(): modelRolesApiRequest {
+    return {
+      ma_entidad_id: String(this._authService.getEntityStorage.id),
+      nombre: String(this.formControl()['nombre'].value).toUpperCase(),
+      permisos: this.getDataPermisos,
+      estado: 'activo',
     };
+  }
 
-    if (this.permiso) {
-      const permiso = {
-        acl_permiso_id: this.permiso.id,
-        acciones: this.permiso.acciones,
-        id: '',
-        acl_rol_id: '',
-        estado: '',
-      };
-      console.log(permiso);
-      rol.permisos = [permiso];
-    }
+  private setDataPermisoModulo() {
+    this.listadoMudulosPermisos = [];
+    (Object.keys(this.dataSeguridadPermisos) as Array<any>).forEach(
+      (modulo) => {
+        let listDataTable: Array<any> = [];
+        const listadoPermisos: Array<any> = this.dataSeguridadPermisos[modulo]!;
+        listadoPermisos.forEach((item) => {
+          const list: Array<any> = (
+            JSON.parse(item.acciones) as Array<string>
+          ).map((acc) => ({ titulo: acc, value: false }));
+          const data: any = {
+            permisoId: item.id,
+            menu: item.recurso,
+            acciones: list,
+          };
+          listDataTable.push(data);
+        });
 
+        this.listadoMudulosPermisos.push({
+          titulo: modulo,
+          displayedColumns: ['menu', 'acciones'],
+          dataTable: listDataTable,
+        });
+      }
+    );
+    this.clearValuesAccionesPermisosModulo();
+  }
+
+  private clearValuesAccionesPermisosModulo() {
+    /**Seteo de valores en falso del listado de permisos */
+    this.listadoMudulosPermisos.forEach((modulo) => {
+      modulo.dataTable.forEach((menu: any) => {
+        menu.acciones.forEach((accion: any) => (accion.value = false));
+      });
+    });
+  }
+
+  protected onCheckSeleccionarTodos(modulo: any, input: any) {
+    modulo.dataTable.forEach((permiso: any) => {
+      (permiso.acciones as Array<any>).forEach(
+        (accion) => (accion.value = input.checked)
+      );
+    });
+  }
+
+  post(): void {
+    this.form.markAllAsTouched();
+    this.form.updateValueAndValidity();
     this.subscription.push(
-      this._rolesService.post(rol).subscribe((res) => {
+      this._rolesService.post(this.getDataApi).subscribe((res) => {
         this._notificationService.showSuccess(res.message);
         setTimeout(() => {
           this._notificationService.confirmation({
             message: '¿Desea crear otro rol?',
             accept: () => {
-              this.dynamicFormComponent.resetForm();
+              this.form.reset();
+              this.clearValuesAccionesPermisosModulo();
             },
             reject: () => {
               this.goToReturnUrl();
@@ -120,9 +172,16 @@ export default class RolesCreateComponent {
 
   ngOnInit(): void {
     this._loadingService.loading$.subscribe((loading) => {
-      this.formBtnConfig.find((btn) => btn.label === 'Guardar')!.loading =
-        loading;
+      this.loading = loading;
     });
     this.getListadoPermisos();
   }
+}
+
+interface modelRolesApiRequest {
+  id?: string;
+  ma_entidad_id: string;
+  nombre: string;
+  permisos: Array<any>;
+  estado: string;
 }

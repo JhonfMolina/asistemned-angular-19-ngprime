@@ -5,9 +5,8 @@
   [rows]="rows"
   [first]="first"
   [totalRecords]="totalRecords"
-  (navigate)="onNavigate()"
-  (edit)="onEdit($event)"
-  (delete)="onDelete($event)"
+  [actions]="actions"
+  (addRow)="onNavigate()"
   (pageChange)="onPageChange($event)"
 ></app-table>
 <ng-template #statusTemplate let-item let-col="colName">

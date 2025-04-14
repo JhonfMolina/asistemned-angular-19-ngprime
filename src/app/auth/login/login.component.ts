@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
-import { Login } from '@interfaces/auth/auth.interface';
+import { Login } from '@interfaces/auth.interface';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
-import { AuthService } from '@services/auth/auth.service';
+import { AuthService } from '@services/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { CardModule } from 'primeng/card';
@@ -18,17 +19,18 @@ import { Subscription } from 'rxjs/internal/Subscription';
 })
 export default class LoginComponent {
   private subscription: Subscription[] = [];
-  formBtnConfig = [
+  formActionButton: ActionButton[] = [
     {
       label: 'Iniciar Sesión',
       icon: 'door-open bx-sm',
       visible: true,
       width: 'w-full',
-      appearance: 'base',
       color: 'primary',
-      action: 'sign-in',
       disabled: false,
       loading: false,
+      callback: (e: any) => {
+        this.login(e);
+      },
     },
   ];
   formConfig: DynamicForm[] = [
@@ -67,8 +69,8 @@ export default class LoginComponent {
     private _notificationService: NotificationService
   ) {}
 
-  login(e: any) {
-    const formdata: Login = e.form;
+  login(formData: any) {
+    const formdata: Login = formData;
     this.subscription.push(
       this._authService.login(formdata).subscribe({
         next: (res) => {
@@ -111,7 +113,7 @@ export default class LoginComponent {
 
   ngOnInit(): void {
     this._loadingService.loading$.subscribe((loading) => {
-      this.formBtnConfig[0].loading = loading;
+      this.formActionButton[0].loading = loading;
     });
   }
 

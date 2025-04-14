@@ -1,4 +1,4 @@
-import { Entities } from '@interfaces/admin/entities.interfaces';
+import { Entities } from '@interfaces/entities.interfaces';
 
 export interface AuthResponse {
   message: string;

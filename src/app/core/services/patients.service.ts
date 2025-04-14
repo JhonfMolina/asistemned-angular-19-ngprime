@@ -4,7 +4,7 @@ import {
   ApiResponse,
   PaginatedApiResponse,
 } from '@interfaces/util/response.models';
-import { Patients } from '@interfaces/admin/patients.interfaces';
+import { Patients } from '@interfaces/patients.interfaces';
 
 @Injectable({
   providedIn: 'root',

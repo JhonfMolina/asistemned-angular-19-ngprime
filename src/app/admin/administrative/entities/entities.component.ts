@@ -1,9 +1,9 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
-import { Entities } from '@interfaces/admin/entities.interfaces';
+import { Entities } from '@interfaces/entities.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
-import { EntitiesService } from '@services/admin/entities.service';
-import { AuthService } from '@services/auth/auth.service';
+import { EntitiesService } from '@services/entities.service';
+import { AuthService } from '@services/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
@@ -12,8 +12,8 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { environment } from '../../../../environments/environment';
 import { Message } from 'primeng/message';
 import { CommonModule } from '@angular/common';
-import { routes } from '../../../app.routes';
 import { Router } from '@angular/router';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 
 @Component({
   selector: 'app-entities',
@@ -25,17 +25,18 @@ export default class EntitiesComponent {
   private subscription: Subscription[] = [];
   private _authService = inject(AuthService);
   protected readonly entities = this._authService.getEntityStorage || null;
-  formBtnConfig = [
+  formActionButton: ActionButton[] = [
     {
       label: this.entities ? 'Actualizar' : 'Guardar',
       icon: this.entities ? 'bx bx-refresh bx-sm' : 'bx bx-save bx-sm',
       visible: true,
       width: 'w-full',
-      appearance: 'base',
       color: 'primary',
-      action: this.entities ? 'actualizar' : 'guardar',
       disabled: false,
       loading: false,
+      callback: (e: any) => {
+        this.action(e);
+      },
     },
   ];
   formConfig: DynamicForm[] = [
@@ -266,16 +267,9 @@ export default class EntitiesComponent {
   }
 
   action(e: any) {
-    switch (e.event) {
-      case 'guardar':
-        this.post(e.form);
-        break;
-      case 'actualizar':
-        this.put(e.form);
-        break;
-      default:
-        break;
-    }
+    console.log(e);
+
+    this.entities ? this.put(e) : this.post(e);
   }
 
   ngOnInit(): void {
@@ -285,7 +279,7 @@ export default class EntitiesComponent {
 
   ngAfterViewInit() {
     this._loadingService.loading$.subscribe((loading) => {
-      this.formBtnConfig[0].loading = loading;
+      this.formActionButton[0].loading = loading;
     });
     if (this.entities) {
       this.dynamicFormComponent.setFormData({

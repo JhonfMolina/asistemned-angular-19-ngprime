@@ -1,18 +1,20 @@
 import { inject, Injectable } from '@angular/core';
-import { GlobalService } from '../util/global.service';
-import { Observable } from 'rxjs/internal/Observable';
-import { throwError } from 'rxjs/internal/observable/throwError';
-import { catchError, map } from 'rxjs';
+
 import {
   AuthResponse,
   Login,
   Profile,
   Register,
-} from '@interfaces/auth/auth.interface';
-import { environment } from '../../../../environments/environment';
+} from '@interfaces/auth.interface';
 import { EncryptionService } from '@services/util/encryption.service';
 import { Router } from '@angular/router';
-import { Entities } from '@interfaces/admin/entities.interfaces';
+import { Entities } from '@interfaces/entities.interfaces';
+import { GlobalService } from './util/global.service';
+import { Observable } from 'rxjs/internal/Observable';
+import { environment } from '../../../environments/environment';
+import { throwError } from 'rxjs/internal/observable/throwError';
+import { map } from 'rxjs/internal/operators/map';
+import { catchError } from 'rxjs/internal/operators/catchError';
 
 @Injectable({
   providedIn: 'root',

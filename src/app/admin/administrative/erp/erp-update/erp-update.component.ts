@@ -2,15 +2,16 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
-import { Erp } from '@interfaces/admin/erp.interfaces';
+import { Erp } from '@interfaces/erp.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
-import { ErpService } from '@services/admin/erp.service';
-import { AuthService } from '@services/auth/auth.service';
+import { ErpService } from '@services/erp.service';
+import { AuthService } from '@services/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 
 @Component({
   selector: 'app-erp-update',
@@ -21,17 +22,18 @@ export default class ErpUpdateComponent {
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private subscription: Subscription[] = [];
   private erpId = '';
-  formBtnConfig = [
+  formActionButton: ActionButton[] = [
     {
       label: 'Actualizar',
       icon: 'bx bx-refresh bx-sm',
       visible: true,
       width: 'w-full',
-      appearance: 'base',
       color: 'primary',
-      action: 'actualizar',
       disabled: false,
       loading: false,
+      callback: (e: any) => {
+        this.put(e);
+      },
     },
   ];
   formConfig: DynamicForm[] = [
@@ -229,10 +231,10 @@ export default class ErpUpdateComponent {
     }
   }
 
-  put(data: any): void {
+  put(formData: any): void {
     const erp: Erp = {
-      ...data.form,
-      estado: data.form.estado ? 'activo' : 'inactivo',
+      ...formData,
+      estado: formData.estado ? 'activo' : 'inactivo',
       ma_entidad_id: this._authService.getEntityStorage.id!,
     };
     this.subscription.push(
@@ -245,7 +247,7 @@ export default class ErpUpdateComponent {
 
   ngOnInit(): void {
     this._loadingService.loading$.subscribe((loading) => {
-      this.formBtnConfig.find((btn) => btn.label === 'Actualizar')!.loading =
+      this.formActionButton.find((btn) => btn.label === 'Actualizar')!.loading =
         loading;
     });
     this.getListadoTipoIdentificacion();

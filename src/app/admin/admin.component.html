@@ -14,7 +14,6 @@
           />
         </a>
         <app-button
-          [appearance]="'base'"
           variant="text"
           [color]="'primary'"
           [icon]="'bx bx-menu bx-sm'"
@@ -25,7 +24,6 @@
       <ng-template #end>
         <div class="flex align-items-center gap-2">
           <app-button
-            [appearance]="'base'"
             [variant]="'text'"
             [color]="toggle ? 'success' : 'warn'"
             [icon]="toggle ? 'bx bx-moon bx-sm' : 'bx bx-sun bx-sm'"
@@ -34,7 +32,6 @@
           <div>
             <p-menu #menu [model]="items" [popup]="true" />
             <app-button
-              [appearance]="'base'"
               [variant]="'text'"
               [color]="'primary'"
               [icon]="'bx bx-category-alt bx-sm'"

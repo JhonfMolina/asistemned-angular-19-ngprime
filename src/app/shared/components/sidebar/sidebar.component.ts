@@ -5,7 +5,7 @@ import { DividerModule } from 'primeng/divider';
 import { CommonModule } from '@angular/common';
 import { AccordionModule } from 'primeng/accordion';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '@services/auth/auth.service';
+import { AuthService } from '@services/auth.service';
 import { DefaultImagePipe } from '../../pipes/default-image.pipe';
 import { SidebarService } from '@services/util/sidebar.service';
 

@@ -2,20 +2,81 @@
   <ng-template #header>
     <div class="flex justify-content-start align-items-center gap-1">
       <app-button
-        [appearance]="'base'"
         variant="text"
         [color]="'primary'"
         [icon]="'bx bx-undo bx-sm'"
         [classList]="'ml-2'"
         (onClick)="goToReturnUrl()"
       ></app-button>
-      <h3 class="text-primary-600">Crear rol</h3>
+      <h3 class="text-primary-600">Crear role</h3>
     </div>
   </ng-template>
+  <form class="flex align-items-center my-2 px-2" [formGroup]="form">
+    <div class="col-6 md:col-10 col-lg-11">
+      <p-floatlabel variant="on">
+        <input
+          pInputText
+          id="on_label"
+          formControlName="nombre"
+          autocomplete="off"
+        />
+        <label for="on_label">Nombre del role</label>
+      </p-floatlabel>
+    </div>
+    <div class="col-6 md:col-10 col-lg-11">
+      <app-button
+        [label]="'Guardar'"
+        [color]="'primary'"
+        [icon]="'bx bx-save bx-sm'"
+        [classList]="'ml-2'"
+        (onClick)="post()"
+        [loading]="loading"
+        [disabled]="form.invalid ? true : false"
+      ></app-button>
+    </div>
+  </form>
 
-  <app-dynamic-form
-    [formConfig]="formConfig"
-    [formBtnConfig]="formBtnConfig"
-    (onClick)="post($event)"
-  ></app-dynamic-form>
+  <p-accordion [value]="0">
+    @for (resource of listadoMudulosPermisos; track resource.titulo) {
+    <p-accordion-panel [value]="resource.dataTable">
+      <p-accordion-header class="m-0">
+        <div class="flex justify-content-start align-items-center gap-2">
+          <p-checkbox
+            [binary]="true"
+            (onChange)="onCheckSeleccionarTodos(resource, $event)"
+          />
+          <h2 class="text-primary-600">
+            {{ resource.titulo | titlecase }}
+          </h2>
+        </div>
+      </p-accordion-header>
+
+      <p-accordion-content>
+        <ul
+          style="list-style: none"
+          class="grid justify-content-start align-items-center"
+        >
+          <li class="col-12 md:col-2" *ngFor="let action of resource.dataTable">
+            <p-card>
+              <p-scrollpanel [style]="{ height: '200px' }">
+                <h3 class="text-primary-600">
+                  {{ action.menu.replace("-", " ") | titlecase }}
+                </h3>
+                <div *ngFor="let acc of action.acciones">
+                  <label
+                    for="ny"
+                    class="flex justify-content-start align-items-baseline gap-2"
+                  >
+                    <p-checkbox [binary]="true" [(ngModel)]="acc.value" />
+                    <span>{{ acc.titulo.replace("-", " ") | titlecase }}</span>
+                  </label>
+                </div>
+              </p-scrollpanel>
+            </p-card>
+          </li>
+        </ul>
+      </p-accordion-content>
+    </p-accordion-panel>
+    }
+  </p-accordion>
 </p-card>

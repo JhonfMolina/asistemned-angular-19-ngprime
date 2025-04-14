@@ -51,7 +51,6 @@
             <app-button
               [label]="'Reenviar'"
               [icon]="'bx bx-refresh'"
-              [appearance]="'base'"
               [variant]="'text'"
               [color]="'primary'"
               [disabled]="!canResendCode"
@@ -62,7 +61,6 @@
             <app-button
               [label]="'Verificar'"
               [icon]="'bx bx-check'"
-              [appearance]="'base'"
               [color]="'primary'"
               [loading]="loading"
               [disabled]="!code || code.length < 6 ? true : false"

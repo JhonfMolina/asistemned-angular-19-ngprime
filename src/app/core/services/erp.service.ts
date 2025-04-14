@@ -4,7 +4,7 @@ import {
   ApiResponse,
   PaginatedApiResponse,
 } from '@interfaces/util/response.models';
-import { Erp } from '@interfaces/admin/erp.interfaces';
+import { Erp } from '@interfaces/erp.interfaces';
 
 @Injectable({
   providedIn: 'root',

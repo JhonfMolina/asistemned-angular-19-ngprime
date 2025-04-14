@@ -2,7 +2,6 @@
   <ng-template #header>
     <div class="flex justify-content-start align-items-center gap-1">
       <app-button
-        [appearance]="'base'"
         variant="text"
         [color]="'primary'"
         [icon]="'bx bx-undo bx-sm'"
@@ -14,7 +13,7 @@
   </ng-template>
   <app-dynamic-form
     [formConfig]="formConfig"
-    [formBtnConfig]="formBtnConfig"
+    [formBtnConfig]="formActionButton"
     (onClick)="put($event)"
   ></app-dynamic-form>
 </p-card>

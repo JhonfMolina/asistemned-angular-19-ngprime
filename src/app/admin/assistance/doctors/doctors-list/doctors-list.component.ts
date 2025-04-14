@@ -4,10 +4,10 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { DoctorsService } from '@services/admin/doctors.service';
-import { AuthService } from '@services/auth/auth.service';
+import { DoctorsService } from '@services/doctors.service';
+import { AuthService } from '@services/auth.service';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { Doctors } from '@interfaces/admin/doctors.interfaces';
+import { Doctors } from '@interfaces/doctors.interfaces';
 import { Chip } from 'primeng/chip';
 import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';

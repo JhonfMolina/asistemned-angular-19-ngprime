@@ -21,32 +21,23 @@ import { ButtonModule } from 'primeng/button';
   imports: [ButtonModule],
 })
 export default class ButtonComponent {
-  @Input() width!: string;
-  @Input() label!:
-    | 'Iniciar sesion'
-    | 'Cancelar'
-    | 'Guardar'
-    | 'Actualizar'
-    | 'Adquirir ahora'
-    | 'Eliminar'
-    | 'Reenviar'
-    | 'Verificar'
-    | 'Nuevo';
+  @Input() width?: string;
+  @Input() label?: string;
+
   @Input() action!: string;
-  @Input() visible!: boolean;
-  @Input() appearance!: 'base' | 'raised' | 'rounded' | 'text';
-  @Input() variant!: 'outlined' | 'text';
-  @Input() color!:
+  @Input() visible?: boolean;
+  @Input() variant?: 'outlined' | 'text';
+  @Input() color?:
     | 'primary'
     | 'secondary'
     | 'success'
     | 'info'
     | 'warn'
     | 'danger';
-  @Input() icon!: string;
+  @Input() icon?: string;
   @Output() onClick = new EventEmitter<any>();
-  @Input() disabled!: boolean | string;
-  @Input() loading: boolean = false;
+  @Input() disabled?: boolean | string;
+  @Input() loading?: boolean = false;
 
   constructor() {}
 

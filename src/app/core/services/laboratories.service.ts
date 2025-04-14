@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GlobalService } from '@services/util/global.service';
 import { ApiResponse } from '@interfaces/util/response.models';
-import { Laboratories } from '@interfaces/admin/laboratories.interfaces';
+import { Laboratories } from '@interfaces/laboratories.interfaces';
 
 @Injectable({
   providedIn: 'root',

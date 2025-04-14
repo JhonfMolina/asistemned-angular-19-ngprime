@@ -8,7 +8,8 @@ import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
-import { AuthService } from '@services/auth/auth.service';
+import { MedicalConsultationsService } from '@services/medical-consultations.service';
+import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
 
@@ -59,6 +60,7 @@ export default class MedicalConsultationsListComponent {
 
   constructor(
     private readonly _authService: AuthService,
+    private readonly _medicalConsultationsService: MedicalConsultationsService,
     private readonly cdr: ChangeDetectorRef,
     private readonly _router: Router
   ) {}
@@ -91,9 +93,29 @@ export default class MedicalConsultationsListComponent {
   onPageChange(event: PageEvent): void {
     this.page = event.page + 1;
     this.rows = event.rows;
+    this.getList();
   }
 
-  ngOnInit() {}
+  getList() {
+    const params = {
+      ma_entidad_id: this._authService.getEntityStorage.id,
+      estados: ['activo', 'inactivo'],
+      per_page: this.rows,
+      page: this.page,
+    };
+    this.subscription.push(
+      this._medicalConsultationsService.getlist(params).subscribe((res) => {
+        if (res) {
+          this.consultations = res.data.data;
+          this.totalRecords = res.data.total;
+        }
+      })
+    );
+  }
+
+  ngOnInit() {
+    this.getList();
+  }
 
   ngAfterViewInit() {
     this.columns = [
