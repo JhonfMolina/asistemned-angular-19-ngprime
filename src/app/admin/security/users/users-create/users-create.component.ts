@@ -12,6 +12,7 @@ import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { passwordMatchValidator } from '../../../../core/helpers/passwordMacth';
 
 @Component({
   selector: 'app-users-create',
@@ -106,9 +107,9 @@ export default class UsersCreateComponent {
       column: 'col-12 md:col-6 lg:col-4',
     },
     {
-      type: 'select',
+      type: 'multiselect',
       name: 'rol_id',
-      label: 'Rol',
+      label: 'Role',
       on_label: 'rol_id',
       placeholder: '',
       filter: true,
@@ -149,14 +150,19 @@ export default class UsersCreateComponent {
   }
 
   post(data: any): void {
-    const laboratories: Users = {
-      ...data.form,
+    const usuario: Users = {
+      ...data,
       ma_entidad_id: this._authService.getEntityStorage.id!.toString(),
-      acl_roles: [data.form.rol_id],
+      acl_roles: this.formConfig
+        .find((field) => field.name === 'rol_id')!
+        .selectedItems?.map((rol: any) => rol.id),
     };
+    console.log(usuario);
+
     this.subscription.push(
-      this._usersService.post(laboratories).subscribe((res) => {
+      this._usersService.post(usuario).subscribe((res) => {
         this._notificationService.showSuccess(res.message);
+        console.log(usuario);
         setTimeout(() => {
           this._notificationService.confirmation({
             message: '¿Desea crear otro usuario?',

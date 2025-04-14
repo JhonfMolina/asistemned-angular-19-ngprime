@@ -1,9 +1,8 @@
 :host {
   display: block;
   margin: 0 auto;
-  background: transparent url("../../../assets/images/background-curveline.svg")
-    no-repeat;
-  background-position: 100% 800%;
+  background: url("../../../assets/images/background-curveline.svg") no-repeat;
+  background-size: cover;
 }
 
 @media only screen and (max-width: 576px) {

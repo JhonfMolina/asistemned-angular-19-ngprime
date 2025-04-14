@@ -32,66 +32,13 @@ export default class UsersUpdateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
-      callback: (data: any) => {
-        this.put(data);
+      callback: (e: any) => {
+        this.put(e);
       },
     },
   ];
 
   formConfig: DynamicForm[] = [
-    {
-      type: 'email',
-      icon: 'envelope',
-      name: 'email',
-      label: 'Correo',
-      on_label: 'email',
-      placeholder: '',
-      validators: {
-        required: true,
-        email: true,
-      },
-      column: 'col-12 md:col-6 lg:col-4',
-    },
-    // {
-    //   type: 'password',
-    //   icon: 'lock',
-    //   name: 'password',
-    //   label: 'Clave',
-    //   on_label: 'password',
-    //   placeholder: '',
-    //   validators: {
-    //     required: true,
-    //     minLength: 8,
-    //   },
-    //   column: 'col-12 md:col-6 lg:col-4',
-    // },
-    // {
-    //   type: 'password',
-    //   icon: 'lock',
-    //   name: 'password_confirmation',
-    //   label: 'Confirmar Clave',
-    //   on_label: 'password_confirmation',
-    //   placeholder: '',
-    //   validators: {
-    //     required: true,
-    //     minLength: 8,
-    //   },
-    //   column: 'col-12 md:col-6 lg:col-4',
-    // },
-    {
-      type: 'number',
-      icon: 'id-card',
-      name: 'identificacion',
-      label: 'identificacion',
-      on_label: 'identificacion',
-      placeholder: '',
-      validators: {
-        required: true,
-        minLength: 3,
-        maxLength: 20,
-      },
-      column: 'col-12 md:col-6 lg:col-4',
-    },
     {
       type: 'text',
       icon: 'user',
@@ -107,9 +54,9 @@ export default class UsersUpdateComponent {
       column: 'col-12 md:col-6 lg:col-4',
     },
     {
-      type: 'select',
+      type: 'multiselect',
       name: 'rol_id',
-      label: 'Rol',
+      label: 'Role',
       on_label: 'rol_id',
       placeholder: '',
       filter: true,
@@ -123,6 +70,8 @@ export default class UsersUpdateComponent {
       column: 'col-12 md:col-6 lg:col-4',
     },
   ];
+
+  protected usuario!: Users;
 
   constructor(
     private readonly _usersService: UsersService,
@@ -144,15 +93,17 @@ export default class UsersUpdateComponent {
     if (this.usuarioId) {
       this.subscription.push(
         this._usersService
-          .getById({
+          .getByIdUserRole({
             estados: ['activo'],
             id: this.usuarioId,
             ma_entidad_id: this._authService.getEntityStorage.id!,
           })
-          .subscribe((usuario) => {
+          .subscribe((res) => {
+            this.usuario = res.data;
+            console.log(this.usuario);
+
             this.dynamicFormComponent.setFormData({
-              ...usuario.data,
-              estado: usuario.data.status == 'activo',
+              ...this.usuario,
             });
           })
       );
@@ -166,8 +117,11 @@ export default class UsersUpdateComponent {
         ma_entidad_id: this._authService.getEntityStorage.id!,
       })
       .subscribe((response) => {
-        this.formConfig.find((field) => field.name === 'rol_id')!.options =
-          response.data.data;
+        if (response) {
+          this.formConfig.find((field) => field.name === 'rol_id')!.options =
+            response.data.data;
+          this.getById();
+        }
       });
   }
 
@@ -191,10 +145,6 @@ export default class UsersUpdateComponent {
         loading;
     });
     this.getListadoRoles();
-  }
-
-  ngAfterViewInit() {
-    this.getById();
   }
 
   ngOnDestroy(): void {

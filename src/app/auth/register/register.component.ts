@@ -6,7 +6,6 @@ import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { AuthService } from '@services/auth.service';
 import { LoadingService } from '@services/util/loading.service';
-import { NotificationService } from '@services/util/notificacion.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs';
 
@@ -102,33 +101,26 @@ export default class RegisterComponent {
   constructor(
     private _authService: AuthService,
     protected readonly _router: Router,
-    private _loadingService: LoadingService,
-    private _notificationService: NotificationService
+    private _loadingService: LoadingService
   ) {}
 
   register(formData: any) {
     const formdata: Register = formData;
-    if (formdata.password !== formdata.password_confirmation) {
-      this._notificationService.showError(
-        'Las contraseñas no coinciden, por favor verifique.'
-      );
-      return;
-    }
 
-    this.subscription.push(
-      this._authService.register(formdata).subscribe({
-        next: (res) => {
-          this._authService
-            .login({ email: formdata.email, password: formdata.password })
-            .subscribe({
-              next: (loginRes) => {
-                this._authService.setAuthorizationToken(loginRes);
-                this.getUserProfile();
-              },
-            });
-        },
-      })
-    );
+    // this.subscription.push(
+    //   this._authService.register(formdata).subscribe({
+    //     next: (res) => {
+    //       this._authService
+    //         .login({ email: formdata.email, password: formdata.password })
+    //         .subscribe({
+    //           next: (loginRes) => {
+    //             this._authService.setAuthorizationToken(loginRes);
+    //             this.getUserProfile();
+    //           },
+    //         });
+    //     },
+    //   })
+    // );
   }
 
   private getUserProfile() {

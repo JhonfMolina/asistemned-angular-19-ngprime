@@ -12,6 +12,7 @@ export interface DynamicForm {
   filterBy?: string;
   showClear?: boolean;
   options?: any[];
+  disabled?: boolean;
   selectedItems?: any[];
   onChange?: (event: any) => void;
 }

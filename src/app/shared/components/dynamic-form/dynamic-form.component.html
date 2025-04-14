@@ -186,6 +186,44 @@
       ></app-validators-form>
     </div>
 
+    <div *ngIf="field.type === 'multiselect'">
+      <p-floatlabel variant="on">
+        <p-multiselect
+          [ngClass]="{
+            'ng-invalid ng-dirty':
+              form.get(field.name).invalid &&
+              (form.get(field.name).dirty || form.get(field.name).touched)
+          }"
+          display="chip"
+          size="small"
+          [(ngModel)]="field.selectedItems"
+          [options]="field.options"
+          [id]="field.on_label"
+          [formControlName]="field.name"
+          [filter]="field.filter"
+          [filterBy]="field.filterBy"
+          [maxSelectedLabels]="4"
+          displaySelectedLabels="true"
+          [showClear]="field.showClear"
+          styleClass="w-full"
+          optionLabel="nombre"
+        >
+          <ng-template #selectedItems let-selectedItems>
+            <div>{{ selectedItems.nombre }}</div>
+          </ng-template>
+          <ng-template let-data #item>
+            <div>{{ data.nombre }}</div>
+          </ng-template>
+        </p-multiselect>
+        <label [for]="field.on_label">{{ field.label }}</label>
+      </p-floatlabel>
+
+      <app-validators-form
+        [form]="form.controls"
+        [field]="field"
+      ></app-validators-form>
+    </div>
+
     <div *ngIf="field.type === 'date'">
       <p-floatlabel variant="on">
         <p-datepicker

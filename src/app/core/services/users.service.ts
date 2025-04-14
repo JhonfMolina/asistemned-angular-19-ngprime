@@ -28,6 +28,16 @@ export class UsersService extends GlobalService {
     );
   }
 
+  // Se obtienen todos los acl de los roles de un usuario
+  public getByIdUserRole(params: any) {
+    return this._http.get<ApiResponse<Users>>(
+      `${this.apiUrl}/seguridad/users/roles/search-where`,
+      {
+        params: this.setHttpParams(params),
+      }
+    );
+  }
+
   public post(data: Users) {
     return this._http.post<ApiResponse<Users>>(
       `${this.apiUrl}/seguridad/users`,

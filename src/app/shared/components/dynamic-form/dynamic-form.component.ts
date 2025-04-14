@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Checkbox } from 'primeng/checkbox';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -24,6 +25,7 @@ import { ActionButton } from '@interfaces/util/actions.interfaces';
     InputTextModule,
     TextareaModule,
     SelectModule,
+    MultiSelectModule,
     FloatLabel,
     FloatLabelModule,
     ValidatorsFormComponent,
@@ -61,11 +63,33 @@ export class DynamicFormComponent {
     this.form = this.formConfigService.createFormGroup(this.formConfig);
   }
 
+  private passwordMatchValidator(): boolean | undefined {
+    if (
+      this.form.get('password_confirmation')?.value &&
+      this.form.get('password')?.value
+    ) {
+      const password = this.form.get('password')?.value;
+      const confirmPassword = this.form.get('password_confirmation')?.value;
+
+      if (password !== confirmPassword) {
+        this._notificationService.showError(
+          'Las contraseñas no coinciden',
+          'Por favor verifique las contraseñas ingresadas'
+        );
+        return true;
+      }
+      return false;
+    }
+    return undefined;
+  }
+
   onSubmit(): void {
     console.log(this.form.value);
 
     if (this.form.valid) {
-      this.onClick.emit(this.form.value);
+      if (!this.passwordMatchValidator()) {
+        this.onClick.emit(this.form.value);
+      }
     } else {
       this.form.markAllAsTouched();
       this.form.updateValueAndValidity();
