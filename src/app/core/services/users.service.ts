@@ -4,7 +4,7 @@ import {
   ApiResponse,
   PaginatedApiResponse,
 } from '@interfaces/util/response.models';
-import { Users } from '@interfaces/users.interfaces';
+import { UserRole, Users } from '@interfaces/users.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +30,7 @@ export class UsersService extends GlobalService {
 
   // Se obtienen todos los acl de los roles de un usuario
   public getByIdUserRole(params: any) {
-    return this._http.get<ApiResponse<Users>>(
+    return this._http.get<ApiResponse<UserRole>>(
       `${this.apiUrl}/seguridad/users/roles/search-where`,
       {
         params: this.setHttpParams(params),
@@ -45,10 +45,7 @@ export class UsersService extends GlobalService {
     );
   }
 
-  public put(id: string, data: Users) {
-    return this._http.put<ApiResponse<Users>>(
-      `${this.apiUrl}/seguridad/users/${id}`,
-      data
-    );
+  public put(id: string, data: any) {
+    return this._http.post<any>(`${this.apiUrl}/seguridad/users/roles`, data);
   }
 }

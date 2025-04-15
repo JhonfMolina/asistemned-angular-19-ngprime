@@ -108,9 +108,9 @@ export default class UsersCreateComponent {
     },
     {
       type: 'multiselect',
-      name: 'rol_id',
+      name: 'acl_roles',
       label: 'Role',
-      on_label: 'rol_id',
+      on_label: 'acl_roles',
       placeholder: '',
       filter: true,
       filterBy: 'nombre',
@@ -144,7 +144,7 @@ export default class UsersCreateComponent {
         ma_entidad_id: this._authService.getEntityStorage.id!,
       })
       .subscribe((response) => {
-        this.formConfig.find((field) => field.name === 'rol_id')!.options =
+        this.formConfig.find((field) => field.name === 'acl_roles')!.options =
           response.data.data;
       });
   }
@@ -154,11 +154,9 @@ export default class UsersCreateComponent {
       ...data,
       ma_entidad_id: this._authService.getEntityStorage.id!.toString(),
       acl_roles: this.formConfig
-        .find((field) => field.name === 'rol_id')!
+        .find((field) => field.name === 'acl_roles')!
         .selectedItems?.map((rol: any) => rol.id),
     };
-    console.log(usuario);
-
     this.subscription.push(
       this._usersService.post(usuario).subscribe((res) => {
         this._notificationService.showSuccess(res.message);

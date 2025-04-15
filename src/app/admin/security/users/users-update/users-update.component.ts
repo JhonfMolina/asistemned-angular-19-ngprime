@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
-import { Users } from '@interfaces/users.interfaces';
+import { UserRole, Users } from '@interfaces/users.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { AuthService } from '@services/auth.service';
@@ -22,6 +22,8 @@ export default class UsersUpdateComponent {
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private readonly subscription: Subscription[] = [];
   private usuarioId = '';
+  protected usuario!: UserRole;
+  aclFieldRole: any;
 
   formActionButton: ActionButton[] = [
     {
@@ -55,9 +57,9 @@ export default class UsersUpdateComponent {
     },
     {
       type: 'multiselect',
-      name: 'rol_id',
+      name: 'acl_roles',
       label: 'Role',
-      on_label: 'rol_id',
+      on_label: 'acl_roles',
       placeholder: '',
       filter: true,
       filterBy: 'nombre',
@@ -70,8 +72,6 @@ export default class UsersUpdateComponent {
       column: 'col-12 md:col-6 lg:col-4',
     },
   ];
-
-  protected usuario!: Users;
 
   constructor(
     private readonly _usersService: UsersService,
@@ -100,10 +100,23 @@ export default class UsersUpdateComponent {
           })
           .subscribe((res) => {
             this.usuario = res.data;
-            console.log(this.usuario);
+            const setRoleUser = Array.from(
+              new Map(
+                this.usuario.acl.map((obj) => [
+                  obj.acl_rol_nombre,
+                  { id: obj.acl_rol_id, nombre: obj.acl_rol_nombre },
+                ])
+              ).values()
+            );
+            this.aclFieldRole.selectedItems = setRoleUser.map((rol) => {
+              return this.aclFieldRole.options.find(
+                (option: any) => option.id === rol.id
+              );
+            });
 
             this.dynamicFormComponent.setFormData({
               ...this.usuario,
+              acl_roles: this.aclFieldRole.selectedItems,
             });
           })
       );
@@ -118,22 +131,30 @@ export default class UsersUpdateComponent {
       })
       .subscribe((response) => {
         if (response) {
-          this.formConfig.find((field) => field.name === 'rol_id')!.options =
-            response.data.data;
+          this.aclFieldRole = this.formConfig.find(
+            (field) => field.name === 'acl_roles'
+          )!;
+          this.aclFieldRole.options = response.data.data;
           this.getById();
         }
       });
   }
 
   put(formData: any): void {
-    const usuario: Users = {
+    const usuario: any = {
       ...formData,
-      estado: formData.status ? 'activo' : 'inactivo',
       ma_entidad_id: this._authService.getEntityStorage.id!,
+      user_id: this.usuarioId,
+      acl_roles: this.formConfig
+        .find((field) => field.name === 'acl_roles')!
+        .selectedItems?.map((rol: any) => rol.id),
     };
     this.subscription.push(
       this._usersService.put(this.usuarioId, usuario).subscribe((res) => {
-        this._notificationService.showSuccess(res.message);
+        this._notificationService.showSuccess(
+          'Usuario actualizado',
+          res.message
+        );
         this.goToReturnUrl();
       })
     );

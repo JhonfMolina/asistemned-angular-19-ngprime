@@ -4,5 +4,6 @@ export interface Roles {
   ma_entidad_id: string;
   nombre: string;
   permisos: RolesPermisos[];
+  id?: string;
   estado?: string;
 }
