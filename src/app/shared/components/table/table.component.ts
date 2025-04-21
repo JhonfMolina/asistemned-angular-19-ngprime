@@ -9,12 +9,15 @@ import { InputIconModule } from 'primeng/inputicon';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { LoadingService } from '@services/util/loading.service';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-table',
   imports: [
     TableModule,
     ButtonComponent,
+    ButtonModule,
     CardModule,
     PaginatorModule,
     InputTextModule,
@@ -33,7 +36,7 @@ export class TableComponent implements OnInit {
   @Input() totalRecords: number = 0;
   @Input() first: number = 0;
   @Input() rows: number = 0;
-  @Input() actions: any[] = [];
+  @Input() actions: ActionButton[] = [];
   @Output() addRow = new EventEmitter<any>();
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();

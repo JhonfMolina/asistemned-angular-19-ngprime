@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '@services/auth.service';
+import { StorageService } from '@services/storage.service';
 
 export const RedirectGuard: CanActivateFn = () => {
-  const token = inject(AuthService).getAuthorizationToken;
+  const token = inject(StorageService).getAuthorizationToken;
   const router = inject(Router);
 
   if (token) {

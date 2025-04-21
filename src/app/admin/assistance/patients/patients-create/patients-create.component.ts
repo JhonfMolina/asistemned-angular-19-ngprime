@@ -6,17 +6,18 @@ import { Patients } from '@interfaces/patients.interfaces';
 import { Department } from '@interfaces/util/department.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { PatientsService } from '@services/patients.service';
-import { AuthService } from '@services/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-patients-create',
-  imports: [DynamicFormComponent, CardModule, ButtonComponent],
+  imports: [DynamicFormComponent, CardModule, ButtonModule],
   templateUrl: './patients-create.component.html',
 })
 export default class PatientsCreateComponent {
@@ -33,6 +34,7 @@ export default class PatientsCreateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: 'pacientes.crear',
       callback: (e: any) => {
         this.post(e);
       },
@@ -350,7 +352,7 @@ export default class PatientsCreateComponent {
     private readonly _notificationService: NotificationService,
     private readonly _patientsService: PatientsService,
     private _loadingService: LoadingService,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly _router: Router
   ) {}
 
@@ -396,7 +398,7 @@ export default class PatientsCreateComponent {
   post(data: any): void {
     const doctor: Patients = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+      ma_entidad_id: this._storageService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._patientsService.post(doctor).subscribe((res) => {

@@ -13,6 +13,7 @@ import { PatientsService } from '@services/patients.service';
 import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-patients-list',
@@ -29,11 +30,13 @@ export default class PatientsListComponent {
     {
       icon: 'bx bx-edit',
       color: 'success',
+      permission: 'pacientes.editar',
       callback: (row: any) => this.onEdit(row),
     },
     {
       icon: 'bx bx-trash',
       color: 'danger',
+      permission: 'pacientes.eliminar',
       callback: (row: any) => this.onDelete(row),
     },
   ];
@@ -45,7 +48,7 @@ export default class PatientsListComponent {
 
   constructor(
     private readonly _patientsService: PatientsService,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly cdr: ChangeDetectorRef,
     private readonly _router: Router
   ) {}
@@ -73,7 +76,7 @@ export default class PatientsListComponent {
 
   getList() {
     const params = {
-      ma_entidad_id: this._authService.getEntityStorage.id,
+      ma_entidad_id: this._storageService.getEntityStorage.id,
       estados: ['activo', 'inactivo'],
       per_page: this.rows,
       page: this.page,

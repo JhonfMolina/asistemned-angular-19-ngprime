@@ -5,6 +5,7 @@ import { Register } from '@interfaces/auth.interface';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { AuthService } from '@services/auth.service';
+import { StorageService } from '@services/storage.service';
 import { LoadingService } from '@services/util/loading.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs';
@@ -25,6 +26,7 @@ export default class RegisterComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: '',
       callback: (e: any) => {
         this.register(e);
       },
@@ -99,7 +101,8 @@ export default class RegisterComponent {
   ];
 
   constructor(
-    private _authService: AuthService,
+    private readonly _storageService: StorageService,
+    private readonly _authService: AuthService,
     protected readonly _router: Router,
     private _loadingService: LoadingService
   ) {}
@@ -107,20 +110,20 @@ export default class RegisterComponent {
   register(formData: any) {
     const formdata: Register = formData;
 
-    // this.subscription.push(
-    //   this._authService.register(formdata).subscribe({
-    //     next: (res) => {
-    //       this._authService
-    //         .login({ email: formdata.email, password: formdata.password })
-    //         .subscribe({
-    //           next: (loginRes) => {
-    //             this._authService.setAuthorizationToken(loginRes);
-    //             this.getUserProfile();
-    //           },
-    //         });
-    //     },
-    //   })
-    // );
+    this.subscription.push(
+      this._authService.register(formdata).subscribe({
+        next: (res) => {
+          this._authService
+            .login({ email: formdata.email, password: formdata.password })
+            .subscribe({
+              next: (loginRes) => {
+                this._storageService.setAuthorizationToken(loginRes);
+                this.getUserProfile();
+              },
+            });
+        },
+      })
+    );
   }
 
   private getUserProfile() {
@@ -128,9 +131,9 @@ export default class RegisterComponent {
       this._authService.getUserProfile().subscribe({
         next: (resp) => {
           if (resp && resp.data) {
-            this._authService.updateLocalStorage(resp.data);
+            this._storageService.updateLocalStorage(resp.data);
             if (
-              this._authService.getAccountVerificationStorage == 'verificar'
+              this._storageService.getAccountVerificationStorage == 'verificar'
             ) {
               this._router.navigate(['/auth/verification']);
             }

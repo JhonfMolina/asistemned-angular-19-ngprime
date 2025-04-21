@@ -13,30 +13,31 @@
             class="w-10rem"
           />
         </a>
-        <app-button
+
+        <p-button
+          severity="primary"
           variant="text"
-          [color]="'primary'"
-          [icon]="'bx bx-menu bx-sm'"
+          icon="bx bx-menu bx-sm"
           (click)="openSidebar()"
-        ></app-button>
+        ></p-button>
       </ng-template>
 
       <ng-template #end>
         <div class="flex align-items-center gap-2">
-          <app-button
-            [variant]="'text'"
-            [color]="toggle ? 'success' : 'warn'"
+          <p-button
+            [severity]="toggle ? 'success' : 'warn'"
+            variant="text"
             [icon]="toggle ? 'bx bx-moon bx-sm' : 'bx bx-sun bx-sm'"
             (click)="toogleDarkMode()"
-          ></app-button>
+          ></p-button>
           <div>
             <p-menu #menu [model]="items" [popup]="true" />
-            <app-button
-              [variant]="'text'"
-              [color]="'primary'"
-              [icon]="'bx bx-category-alt bx-sm'"
+            <p-button
+              severity="primary"
+              variant="text"
+              icon="bx bx-category-alt bx-sm"
               (click)="menu.toggle($event)"
-            ></app-button>
+            ></p-button>
           </div>
         </div>
       </ng-template>

@@ -10,13 +10,14 @@ import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Router } from '@angular/router';
-import ButtonComponent from '@components/button/button.component';
 import { LoadingService } from '@services/util/loading.service';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-doctors-create',
-  imports: [DynamicFormComponent, CardModule, ButtonComponent],
+  imports: [DynamicFormComponent, CardModule, ButtonModule],
   templateUrl: './doctors-create.component.html',
 })
 export default class DoctorsCreateComponent {
@@ -32,6 +33,7 @@ export default class DoctorsCreateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: 'medicos.crear',
       callback: (e: any) => {
         this.post(e);
       },
@@ -265,7 +267,7 @@ export default class DoctorsCreateComponent {
     private _notificationService: NotificationService,
     private _doctorsService: DoctorsService,
     private _loadingService: LoadingService,
-    private _authService: AuthService,
+    private _storageService: StorageService,
     private _router: Router
   ) {}
 
@@ -311,7 +313,7 @@ export default class DoctorsCreateComponent {
   post(data: any): void {
     const doctor: Doctors = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+      ma_entidad_id: this._storageService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._doctorsService.post(doctor).subscribe((res) => {

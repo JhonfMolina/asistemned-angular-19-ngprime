@@ -1,11 +1,12 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '@services/auth.service';
+import { StorageService } from '@services/storage.service';
 
 export const IsLoggeInGuard: CanActivateFn = () => {
-  const token = inject(AuthService).getAuthorizationToken;
+  const token = inject(StorageService).getAuthorizationToken;
   const router = inject(Router);
-  const verification = inject(AuthService).getAccountVerificationStorage;
+  const verification = inject(StorageService).getAccountVerificationStorage;
 
   if (!token) {
     router.navigate(['/']);

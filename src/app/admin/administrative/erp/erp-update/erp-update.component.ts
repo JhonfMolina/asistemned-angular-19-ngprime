@@ -12,6 +12,7 @@ import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-erp-update',
@@ -31,6 +32,7 @@ export default class ErpUpdateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: '',
       callback: (e: any) => {
         this.put(e);
       },
@@ -156,7 +158,7 @@ export default class ErpUpdateComponent {
     private _utilidadesService: UtilidadesService,
     private _notificationService: NotificationService,
     private _erpService: ErpService,
-    private _authService: AuthService,
+    private _storageService: StorageService,
     private route: ActivatedRoute,
     private _loadingService: LoadingService,
     private _router: Router
@@ -216,7 +218,7 @@ export default class ErpUpdateComponent {
           .getById({
             estados: ['activo'],
             id: this.erpId,
-            ma_entidad_id: this._authService.getEntityStorage.id!,
+            ma_entidad_id: this._storageService.getEntityStorage.id!,
           })
           .subscribe((erp) => {
             this.dynamicFormComponent.setFormData({
@@ -235,7 +237,7 @@ export default class ErpUpdateComponent {
     const erp: Erp = {
       ...formData,
       estado: formData.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+      ma_entidad_id: this._storageService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._erpService.put(this.erpId, erp).subscribe((res) => {

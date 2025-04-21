@@ -1,22 +1,22 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { ImagingCenters } from '@interfaces/imaging-centers.interfaces';
 import { Department } from '@interfaces/util/department.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { ImagingCentersService } from '@services/imaging-centers.service';
-import { AuthService } from '@services/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-imaging-centers-create',
-  imports: [DynamicFormComponent, CardModule, ButtonComponent],
+  imports: [DynamicFormComponent, CardModule, ButtonModule],
   templateUrl: './imaging-centers-create.component.html',
 })
 export default class ImagingCentersCreateComponent {
@@ -33,6 +33,7 @@ export default class ImagingCentersCreateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: '',
       callback: (data: any) => {
         this.post(data);
       },
@@ -164,7 +165,7 @@ export default class ImagingCentersCreateComponent {
     private readonly _notificationService: NotificationService,
     private readonly _imagingCentersService: ImagingCentersService,
     private _loadingService: LoadingService,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly _router: Router
   ) {}
 
@@ -210,7 +211,7 @@ export default class ImagingCentersCreateComponent {
   post(data: any): void {
     const centroImagenes: ImagingCenters = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+      ma_entidad_id: this._storageService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._imagingCentersService.post(centroImagenes).subscribe((res) => {

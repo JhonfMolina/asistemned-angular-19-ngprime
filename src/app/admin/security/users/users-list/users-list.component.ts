@@ -10,6 +10,7 @@ import { Users } from '@interfaces/users.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
 import { AuthService } from '@services/auth.service';
+import { StorageService } from '@services/storage.service';
 import { UsersService } from '@services/users.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -29,11 +30,13 @@ export default class UsersListComponent {
     {
       icon: 'bx bx-edit',
       color: 'success',
+      permission: '',
       callback: (row: any) => this.onEdit(row),
     },
     {
       icon: 'bx bx-trash',
       color: 'danger',
+      permission: '',
       callback: (row: any) => this.onDelete(row),
     },
   ];
@@ -45,7 +48,7 @@ export default class UsersListComponent {
 
   constructor(
     private readonly _usersService: UsersService,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly cdr: ChangeDetectorRef,
     private readonly _router: Router
   ) {}
@@ -70,7 +73,7 @@ export default class UsersListComponent {
 
   getList() {
     const params = {
-      ma_entidad_id: this._authService.getEntityStorage.id,
+      ma_entidad_id: this._storageService.getEntityStorage.id,
       estados: ['activo', 'inactivo'],
       per_page: this.rows,
       page: this.page,

@@ -22,12 +22,13 @@
               <i class="bx bx-search"></i>
             </p-inputicon>
           </p-iconfield>
-          <app-button
-            [label]="'Nuevo'"
-            [color]="'primary'"
-            [icon]="'bx bx-plus-circle'"
+
+          <p-button
+            icon="bx bx-plus-circle"
+            severity="primary"
+            label="Nuevo"
             (onClick)="onAddRow()"
-          ></app-button>
+          ></p-button>
         </div>
       </div>
     </ng-template>
@@ -64,6 +65,7 @@
               [icon]="action.icon"
               [label]="action.label"
               (onClick)="action.callback(rowData)"
+              [permission]="action.permission"
             ></app-button>
           </ng-container>
         </td>

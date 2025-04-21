@@ -13,6 +13,7 @@ import { ErpService } from '@services/erp.service';
 import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-erp-list',
@@ -29,11 +30,13 @@ export default class ErpListComponent {
     {
       icon: 'bx bx-edit',
       color: 'success',
+      permission: '',
       callback: (row: any) => this.onEdit(row),
     },
     {
       icon: 'bx bx-trash',
       color: 'danger',
+      permission: '',
       callback: (row: any) => this.onDelete(row),
     },
   ];
@@ -44,7 +47,7 @@ export default class ErpListComponent {
   page: number = 1;
   constructor(
     private _erpServices: ErpService,
-    private _authService: AuthService,
+    private _storageService: StorageService,
     private cdr: ChangeDetectorRef,
     private _router: Router
   ) {}
@@ -69,7 +72,7 @@ export default class ErpListComponent {
 
   getList() {
     const params = {
-      ma_entidad_id: this._authService.getEntityStorage.id,
+      ma_entidad_id: this._storageService.getEntityStorage.id,
       estados: ['activo', 'inactivo'],
       per_page: this.rows,
       page: this.page,

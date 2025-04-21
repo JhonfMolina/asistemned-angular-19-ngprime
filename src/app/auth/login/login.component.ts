@@ -5,6 +5,7 @@ import { Login } from '@interfaces/auth.interface';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { AuthService } from '@services/auth.service';
+import { StorageService } from '@services/storage.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { CardModule } from 'primeng/card';
@@ -28,6 +29,7 @@ export default class LoginComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: '',
       callback: (e: any) => {
         this.login(e);
       },
@@ -63,7 +65,8 @@ export default class LoginComponent {
   ];
 
   constructor(
-    private _authService: AuthService,
+    private readonly _storageService: StorageService,
+    private readonly _authService: AuthService,
     protected readonly _router: Router,
     private _loadingService: LoadingService,
     private _notificationService: NotificationService
@@ -74,7 +77,7 @@ export default class LoginComponent {
     this.subscription.push(
       this._authService.login(formdata).subscribe({
         next: (res) => {
-          this._authService.setAuthorizationToken(res);
+          this._storageService.setAuthorizationToken(res);
           this.getUserProfile();
         },
       })
@@ -86,7 +89,7 @@ export default class LoginComponent {
       this._authService.getUserProfile().subscribe({
         next: (resp) => {
           if (resp && resp.data) {
-            this._authService.updateLocalStorage(resp.data);
+            this._storageService.updateLocalStorage(resp.data);
             this.goTo();
           }
         },
@@ -95,15 +98,15 @@ export default class LoginComponent {
   }
 
   private goTo() {
-    if (this._authService.getAccountVerificationStorage == 'verificar') {
+    if (this._storageService.getAccountVerificationStorage == 'verificar') {
       this._router.navigate(['/auth/verification']);
     }
-    if (this._authService.getAccountVerificationStorage == 'activo') {
+    if (this._storageService.getAccountVerificationStorage == 'activo') {
       this._notificationService.showSuccess(
-        `Hola ${this._authService.getUserProfileStorage.name}!`,
+        `Hola ${this._storageService.getUserProfileStorage.name}!`,
         'Explora y disfruta de todas nuestras funcionalidades.'
       );
-      if (this._authService.getEntityStorage == null) {
+      if (this._storageService.getEntityStorage == null) {
         this._router.navigate(['/admin/administrative/entities']);
       } else {
         this._router.navigate(['/admin']);

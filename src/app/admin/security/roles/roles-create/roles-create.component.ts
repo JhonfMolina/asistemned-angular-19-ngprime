@@ -23,6 +23,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { AccordionModule } from 'primeng/accordion';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-roles-create',
@@ -54,7 +55,7 @@ export default class RolesCreateComponent {
     private readonly _rolesService: RolesService,
     private readonly _permisosService: PermisosService,
     private readonly _loadingService: LoadingService,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly _router: Router,
     private fb: FormBuilder
   ) {
@@ -72,7 +73,7 @@ export default class RolesCreateComponent {
     this.subscription.push(
       this._permisosService
         .getlist({
-          ma_entidad_id: this._authService.getEntityStorage.id!,
+          ma_entidad_id: this._storageService.getEntityStorage.id!,
         })
         .subscribe((response) => {
           this.dataSeguridadPermisos = response.data;
@@ -96,7 +97,7 @@ export default class RolesCreateComponent {
 
   private get getDataApi(): modelRolesApiRequest {
     return {
-      ma_entidad_id: String(this._authService.getEntityStorage.id),
+      ma_entidad_id: String(this._storageService.getEntityStorage.id),
       nombre: String(this.formControl()['nombre'].value).toUpperCase(),
       permisos: this.getDataPermisos,
       estado: 'activo',

@@ -7,5 +7,6 @@ export interface ActionButton {
   width?: string;
   disabled?: boolean;
   loading?: boolean;
+  permission: string | string[];
   callback: (row: any) => void;
 }

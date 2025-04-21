@@ -10,6 +10,7 @@ import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import ButtonComponent from '@components/button/button.component';
 import { interval } from 'rxjs/internal/observable/interval';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-account-verification',
@@ -33,11 +34,13 @@ export default class AccountVerificationComponent {
   private entitiesId: any;
   constructor(
     private _authService: AuthService,
+    private readonly _storageService: StorageService,
+
     protected readonly _router: Router,
     private _loadingService: LoadingService,
     private _notificationService: NotificationService
   ) {
-    this.entitiesId = this._authService.getEntityStorage || null;
+    this.entitiesId = this._storageService.getEntityStorage || null;
   }
 
   ngOnInit() {
@@ -91,7 +94,7 @@ export default class AccountVerificationComponent {
         .accountVerification({ codigo_activacion: this.code })
         .subscribe({
           next: () => {
-            this._authService.updateLocalStorage({ status: 'activo' });
+            this._storageService.updateLocalStorage({ status: 'activo' });
             setTimeout(() => {
               if (this.entitiesId) {
                 this._router.navigate(['/admin']);
@@ -99,7 +102,7 @@ export default class AccountVerificationComponent {
                 this._router.navigate(['/admin/administrative/entities']);
               }
               this._notificationService.showSuccess(
-                `Hola ${this._authService.getUserProfileStorage.name}!`,
+                `Hola ${this._storageService.getUserProfileStorage.name}!`,
                 'Explora y disfruta de todas nuestras funcionalidades.'
               );
             }, 500);

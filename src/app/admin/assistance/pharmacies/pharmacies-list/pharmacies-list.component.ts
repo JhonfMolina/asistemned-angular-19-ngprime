@@ -13,6 +13,7 @@ import { PharmaciesService } from '@services/pharmacies.service';
 import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-pharmacies-list',
@@ -29,11 +30,13 @@ export default class PharmaciesListComponent {
     {
       icon: 'bx bx-edit',
       color: 'success',
+      permission: '',
       callback: (row: any) => this.onEdit(row),
     },
     {
       icon: 'bx bx-trash',
       color: 'danger',
+      permission: '',
       callback: (row: any) => this.onDelete(row),
     },
   ];
@@ -45,7 +48,7 @@ export default class PharmaciesListComponent {
 
   constructor(
     private readonly _pharmaciesService: PharmaciesService,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly cdr: ChangeDetectorRef,
     private readonly _router: Router
   ) {}
@@ -73,7 +76,7 @@ export default class PharmaciesListComponent {
 
   getList() {
     const params = {
-      ma_entidad_id: this._authService.getEntityStorage.id,
+      ma_entidad_id: this._storageService.getEntityStorage.id,
       estados: ['activo', 'inactivo'],
       per_page: this.rows,
       page: this.page,

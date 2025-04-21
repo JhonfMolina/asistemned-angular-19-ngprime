@@ -12,6 +12,7 @@ import ButtonComponent from '@components/button/button.component';
 import { AuthService } from '@services/auth.service';
 import { PermisosService } from '@services/permisos.service';
 import { RolesService } from '@services/roles.service';
+import { StorageService } from '@services/storage.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { AccordionModule } from 'primeng/accordion';
@@ -55,7 +56,7 @@ export default class RolesUpdateComponent {
     private readonly _rolesService: RolesService,
     private readonly _permisosService: PermisosService,
     private readonly _loadingService: LoadingService,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly route: ActivatedRoute,
     private readonly _router: Router,
     private fb: FormBuilder
@@ -75,7 +76,7 @@ export default class RolesUpdateComponent {
     this.subscription.push(
       this._permisosService
         .getlist({
-          ma_entidad_id: this._authService.getEntityStorage.id!,
+          ma_entidad_id: this._storageService.getEntityStorage.id!,
         })
         .subscribe((response) => {
           this.dataSeguridadPermisos = response.data;
@@ -88,7 +89,7 @@ export default class RolesUpdateComponent {
     this._rolesService
       .getById({
         id: this.rolId,
-        ma_entidad_id: this._authService.getEntityStorage.id,
+        ma_entidad_id: this._storageService.getEntityStorage.id,
       })
       .subscribe((resp) => {
         this.dataSeguridadRol = resp.data;
@@ -113,7 +114,7 @@ export default class RolesUpdateComponent {
 
   private get getDataApi(): modelRolesApiRequest {
     return {
-      ma_entidad_id: String(this._authService.getEntityStorage.id),
+      ma_entidad_id: String(this._storageService.getEntityStorage.id),
       nombre: String(this.formControl()['nombre'].value).toUpperCase(),
       permisos: this.getDataPermisos,
       estado: 'activo',

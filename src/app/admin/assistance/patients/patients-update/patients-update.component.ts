@@ -1,21 +1,21 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { Patients } from '@interfaces/patients.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { PatientsService } from '@services/patients.service';
-import { AuthService } from '@services/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-patients-update',
-  imports: [DynamicFormComponent, CardModule, ButtonComponent],
+  imports: [DynamicFormComponent, CardModule, ButtonModule],
   templateUrl: './patients-update.component.html',
 })
 export default class PatientsUpdateComponent {
@@ -31,6 +31,7 @@ export default class PatientsUpdateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: 'pacientes.editar',
       callback: (e: any) => {
         this.put(e);
       },
@@ -356,7 +357,7 @@ export default class PatientsUpdateComponent {
     private readonly _notificationService: NotificationService,
     private readonly _patientsService: PatientsService,
     private readonly route: ActivatedRoute,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly _loadingService: LoadingService,
     private readonly _router: Router
   ) {
@@ -415,7 +416,7 @@ export default class PatientsUpdateComponent {
           .getById({
             estados: ['activo'],
             id: this.pacienteId,
-            ma_entidad_id: this._authService.getEntityStorage.id!,
+            ma_entidad_id: this._storageService.getEntityStorage.id!,
           })
           .subscribe((paciente) => {
             this.dynamicFormComponent.setFormData({
@@ -434,7 +435,7 @@ export default class PatientsUpdateComponent {
     const paciente: Patients = {
       ...formData,
       estado: formData.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+      ma_entidad_id: this._storageService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._patientsService.put(this.pacienteId, paciente).subscribe((res) => {

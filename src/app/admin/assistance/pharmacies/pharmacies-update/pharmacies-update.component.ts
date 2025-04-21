@@ -5,13 +5,13 @@ import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.comp
 import { Pharmacies } from '@interfaces/pharmacies.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { PharmaciesService } from '@services/pharmacies.service';
-import { AuthService } from '@services/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-pharmacies-update',
@@ -32,6 +32,7 @@ export default class PharmaciesUpdateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: '',
       callback: (e: any) => {
         this.put(e);
       },
@@ -170,7 +171,7 @@ export default class PharmaciesUpdateComponent {
     private readonly _notificationService: NotificationService,
     private readonly _pharmaciesService: PharmaciesService,
     private readonly route: ActivatedRoute,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly _loadingService: LoadingService,
     private readonly _router: Router
   ) {
@@ -229,7 +230,7 @@ export default class PharmaciesUpdateComponent {
           .getById({
             estados: ['activo'],
             id: this.farmaciaId,
-            ma_entidad_id: this._authService.getEntityStorage.id!,
+            ma_entidad_id: this._storageService.getEntityStorage.id!,
           })
           .subscribe((farmacia) => {
             this.dynamicFormComponent.setFormData({
@@ -248,7 +249,7 @@ export default class PharmaciesUpdateComponent {
     const farmacia: Pharmacies = {
       ...formData,
       estado: formData.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+      ma_entidad_id: this._storageService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._pharmaciesService

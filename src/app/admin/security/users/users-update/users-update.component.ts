@@ -2,11 +2,11 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
-import { UserRole, Users } from '@interfaces/users.interfaces';
+import { UserRole } from '@interfaces/users.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
-import { AuthService } from '@services/auth.service';
 import { RolesService } from '@services/roles.service';
+import { StorageService } from '@services/storage.service';
 import { UsersService } from '@services/users.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
@@ -34,6 +34,7 @@ export default class UsersUpdateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: '',
       callback: (e: any) => {
         this.put(e);
       },
@@ -77,7 +78,7 @@ export default class UsersUpdateComponent {
     private readonly _usersService: UsersService,
     private readonly _notificationService: NotificationService,
     private readonly route: ActivatedRoute,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly _loadingService: LoadingService,
     private readonly _rolesService: RolesService,
     private readonly _router: Router
@@ -96,7 +97,7 @@ export default class UsersUpdateComponent {
           .getByIdUserRole({
             estados: ['activo'],
             id: this.usuarioId,
-            ma_entidad_id: this._authService.getEntityStorage.id!,
+            ma_entidad_id: this._storageService.getEntityStorage.id!,
           })
           .subscribe((res) => {
             this.usuario = res.data;
@@ -127,7 +128,7 @@ export default class UsersUpdateComponent {
     this._rolesService
       .getlist({
         estados: ['activo'],
-        ma_entidad_id: this._authService.getEntityStorage.id!,
+        ma_entidad_id: this._storageService.getEntityStorage.id!,
       })
       .subscribe((response) => {
         if (response) {
@@ -143,7 +144,7 @@ export default class UsersUpdateComponent {
   put(formData: any): void {
     const usuario: any = {
       ...formData,
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+      ma_entidad_id: this._storageService.getEntityStorage.id!,
       user_id: this.usuarioId,
       acl_roles: this.formConfig
         .find((field) => field.name === 'acl_roles')!

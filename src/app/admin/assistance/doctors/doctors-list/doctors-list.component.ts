@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { TableComponent } from '@components/table/table.component';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-doctors-list',
@@ -29,11 +30,13 @@ export default class DoctorsListComponent {
     {
       icon: 'bx bx-edit',
       color: 'success',
+      permission: 'medicos.editar',
       callback: (row: any) => this.onEdit(row),
     },
     {
       icon: 'bx bx-trash',
       color: 'danger',
+      permission: 'medicos.eliminar',
       callback: (row: any) => this.onDelete(row),
     },
   ];
@@ -44,7 +47,7 @@ export default class DoctorsListComponent {
   page: number = 1;
   constructor(
     private _doctorsService: DoctorsService,
-    private _authService: AuthService,
+    private _storageService: StorageService,
     private cdr: ChangeDetectorRef,
     private _router: Router
   ) {}
@@ -72,7 +75,7 @@ export default class DoctorsListComponent {
 
   getList() {
     const params = {
-      ma_entidad_id: this._authService.getEntityStorage.id,
+      ma_entidad_id: this._storageService.getEntityStorage.id,
       estados: ['activo', 'inactivo'],
       per_page: this.rows,
       page: this.page,

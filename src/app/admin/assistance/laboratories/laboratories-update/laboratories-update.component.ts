@@ -12,6 +12,7 @@ import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-laboratories-update',
@@ -32,6 +33,7 @@ export default class LaboratoriesUpdateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: '',
       callback: (data: any) => {
         this.put(data);
       },
@@ -170,7 +172,7 @@ export default class LaboratoriesUpdateComponent {
     private readonly _notificationService: NotificationService,
     private readonly _laboratoriesService: LaboratoriesService,
     private readonly route: ActivatedRoute,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly _loadingService: LoadingService,
     private readonly _router: Router
   ) {
@@ -229,7 +231,7 @@ export default class LaboratoriesUpdateComponent {
           .getById({
             estados: ['activo'],
             id: this.laboratorioId,
-            ma_entidad_id: this._authService.getEntityStorage.id!,
+            ma_entidad_id: this._storageService.getEntityStorage.id!,
           })
           .subscribe((laboratoro) => {
             this.dynamicFormComponent.setFormData({
@@ -248,7 +250,7 @@ export default class LaboratoriesUpdateComponent {
     const laboratorio: Laboratories = {
       ...formData,
       estado: formData.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+      ma_entidad_id: this._storageService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._laboratoriesService

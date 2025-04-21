@@ -61,6 +61,7 @@ export class DynamicFormComponent {
 
   ngOnInit(): void {
     this.form = this.formConfigService.createFormGroup(this.formConfig);
+    console.log(this.formBtnConfig[0].permission);
   }
 
   private passwordMatchValidator(): boolean | undefined {

@@ -5,13 +5,16 @@ import { ButtonModule } from 'primeng/button';
 import { Toolbar } from 'primeng/toolbar';
 import { Menu } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
-import ButtonComponent from '@components//button/button.component';
 import { SidebarComponent } from '@components/sidebar/sidebar.component';
 import { SidebarService } from '@services/util/sidebar.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { AuthService } from '@services/auth.service';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
+import { StorageService } from '@services/storage.service';
+import { UsersService } from '@services/users.service';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { PermissionService } from './security/permission/permission.service';
 
 @Component({
   selector: 'app-admin',
@@ -23,7 +26,6 @@ import { DividerModule } from 'primeng/divider';
     DividerModule,
     Toolbar,
     SidebarComponent,
-    ButtonComponent,
     Menu,
   ],
   templateUrl: './admin.component.html',
@@ -33,12 +35,16 @@ export default class AdminComponent {
   visible: boolean = false;
   toggle = false;
   items: MenuItem[] | undefined;
+  private readonly subscription: Subscription[] = [];
 
   constructor(
     private router: Router,
     private sidebarService: SidebarService,
-    _notificationService: NotificationService,
-    private _authService: AuthService
+    private readonly _usersService: UsersService,
+    private readonly _storageService: StorageService,
+    private readonly _permissionService: PermissionService,
+    private readonly _notificationService: NotificationService,
+    private readonly _authService: AuthService
   ) {
     this.items = [
       {
@@ -85,20 +91,41 @@ export default class AdminComponent {
   }
 
   onNavigate() {
-    if (this._authService.getEntityStorage == null) {
+    if (this._storageService.getEntityStorage == null) {
       this.router.navigate(['/admin/administrative/entities']);
     } else {
       this.router.navigate(['/admin']);
     }
   }
 
+  setPermissions(): void {
+    this.subscription.push(
+      this._usersService
+        .getByIdUserRole({
+          estados: ['activo'],
+          id: this._storageService.getUserProfileStorage.id!,
+          ma_entidad_id: this._storageService.getEntityStorage.id!,
+        })
+        .subscribe((res) => {
+          const userPermissions: Array<string> = [];
+          res.data.acl.forEach((perm) => {
+            JSON.parse(perm.acl_rol_per_acciones).forEach((permiso: string) => {
+              userPermissions.push(`${perm.acl_per_recurso}.${permiso}`);
+            });
+          });
+          this._permissionService.setPermissions(userPermissions);
+        })
+    );
+  }
+
   ngOnInit(): void {
+    this.setPermissions();
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
       this.toggle = true;
       document.querySelector('html')!.classList.add('my-app-dark');
     }
-    if (this._authService.getEntityStorage == null) {
+    if (this._storageService.getEntityStorage == null) {
       this.router.navigate(['/admin/administrative/entities']);
     }
   }

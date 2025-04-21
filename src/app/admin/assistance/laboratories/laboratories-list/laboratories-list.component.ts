@@ -13,6 +13,7 @@ import { LaboratoriesService } from '@services/laboratories.service';
 import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-laboratories-list',
@@ -29,11 +30,13 @@ export default class LaboratoriesListComponent {
     {
       icon: 'bx bx-edit',
       color: 'success',
+      permission: '',
       callback: (row: any) => this.onEdit(row),
     },
     {
       icon: 'bx bx-trash',
       color: 'danger',
+      permission: '',
       callback: (row: any) => this.onDelete(row),
     },
   ];
@@ -45,7 +48,7 @@ export default class LaboratoriesListComponent {
 
   constructor(
     private readonly _laboratoriesService: LaboratoriesService,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly cdr: ChangeDetectorRef,
     private readonly _router: Router
   ) {}
@@ -75,7 +78,7 @@ export default class LaboratoriesListComponent {
 
   getList() {
     const params = {
-      ma_entidad_id: this._authService.getEntityStorage.id,
+      ma_entidad_id: this._storageService.getEntityStorage.id,
       estados: ['activo', 'inactivo'],
       per_page: this.rows,
       page: this.page,

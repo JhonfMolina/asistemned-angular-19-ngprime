@@ -12,10 +12,12 @@ import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-doctors-update',
-  imports: [DynamicFormComponent, CardModule, ButtonComponent],
+  imports: [DynamicFormComponent, CardModule, ButtonModule],
   templateUrl: './doctors-update.component.html',
 })
 export default class DoctorsUpdateComponent {
@@ -31,6 +33,7 @@ export default class DoctorsUpdateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: 'medicos.editar',
       callback: (e: any) => {
         this.put(e);
       },
@@ -270,7 +273,7 @@ export default class DoctorsUpdateComponent {
     private _utilidadesService: UtilidadesService,
     private _notificationService: NotificationService,
     private _doctorsService: DoctorsService,
-    private _authService: AuthService,
+    private _storageService: StorageService,
     private route: ActivatedRoute,
     private _loadingService: LoadingService,
     private _router: Router
@@ -330,7 +333,7 @@ export default class DoctorsUpdateComponent {
           .getById({
             estados: ['activo'],
             id: this.doctorId,
-            ma_entidad_id: this._authService.getEntityStorage.id!,
+            ma_entidad_id: this._storageService.getEntityStorage.id!,
           })
           .subscribe((doctor) => {
             this.dynamicFormComponent.setFormData({
@@ -349,7 +352,7 @@ export default class DoctorsUpdateComponent {
     const doctor: Doctors = {
       ...formData,
       estado: formData.estado ? 'activo' : 'inactivo',
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+      ma_entidad_id: this._storageService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._doctorsService.put(this.doctorId, doctor).subscribe((res) => {

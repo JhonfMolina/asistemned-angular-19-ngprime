@@ -13,6 +13,7 @@ import { NotificationService } from '@services/util/notificacion.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { passwordMatchValidator } from '../../../../core/helpers/passwordMacth';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-users-create',
@@ -32,6 +33,7 @@ export default class UsersCreateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: '',
       callback: (e: any) => {
         this.post(e);
       },
@@ -129,7 +131,7 @@ export default class UsersCreateComponent {
     private readonly _usersService: UsersService,
     private readonly _rolesService: RolesService,
     private readonly _loadingService: LoadingService,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly _router: Router
   ) {}
 
@@ -141,7 +143,7 @@ export default class UsersCreateComponent {
     this._rolesService
       .getlist({
         estados: ['activo'],
-        ma_entidad_id: this._authService.getEntityStorage.id!,
+        ma_entidad_id: this._storageService.getEntityStorage.id!,
       })
       .subscribe((response) => {
         this.formConfig.find((field) => field.name === 'acl_roles')!.options =
@@ -152,7 +154,7 @@ export default class UsersCreateComponent {
   post(data: any): void {
     const usuario: Users = {
       ...data,
-      ma_entidad_id: this._authService.getEntityStorage.id!.toString(),
+      ma_entidad_id: this._storageService.getEntityStorage.id!.toString(),
       acl_roles: this.formConfig
         .find((field) => field.name === 'acl_roles')!
         .selectedItems?.map((rol: any) => rol.id),

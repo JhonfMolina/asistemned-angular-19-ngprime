@@ -13,6 +13,7 @@ import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-erp-create',
@@ -32,6 +33,7 @@ export default class ErpCreateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: '',
       callback: (e: any) => {
         this.post(e);
       },
@@ -151,6 +153,7 @@ export default class ErpCreateComponent {
     private _notificationService: NotificationService,
     private _erpService: ErpService,
     private _authService: AuthService,
+    private _storageService: StorageService,
     private _loadingService: LoadingService,
     private _router: Router
   ) {}
@@ -197,7 +200,7 @@ export default class ErpCreateComponent {
   post(data: any): void {
     const erp: Erp = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+      ma_entidad_id: this._storageService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._erpService.post(erp).subscribe((res) => {

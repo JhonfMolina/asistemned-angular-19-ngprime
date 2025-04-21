@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { HasPermissionDirective } from '../../../admin/security/permission/permission.directive';
 
 @Component({
   selector: 'app-button',
@@ -18,7 +19,7 @@ import { ButtonModule } from 'primeng/button';
       }
     `,
   ],
-  imports: [ButtonModule],
+  imports: [ButtonModule, HasPermissionDirective],
 })
 export default class ButtonComponent {
   @Input() width?: string;
@@ -38,8 +39,11 @@ export default class ButtonComponent {
   @Output() onClick = new EventEmitter<any>();
   @Input() disabled?: boolean | string;
   @Input() loading?: boolean = false;
+  @Input() permission: string | string[] = '';
 
-  constructor() {}
+  constructor() {
+    // console.log(this.permission);
+  }
 
   handleButtonClick(event: Event) {
     if (this.disabled) {

@@ -12,6 +12,7 @@ import { MedicalConsultationsService } from '@services/medical-consultations.ser
 import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-medical-consultations-list',
@@ -31,24 +32,28 @@ export default class MedicalConsultationsListComponent {
       label: 'Atender',
       icon: 'bx bx-user-check',
       color: 'primary',
+      permission: '',
       callback: (row: any) => this.onAttend(row),
     },
     {
       label: 'Editar',
       icon: 'bx bx-edit',
       color: 'success',
+      permission: '',
       callback: (row: any) => this.onEdit(row),
     },
     {
       label: 'Eliminar',
       icon: 'bx bx-trash',
       color: 'danger',
+      permission: '',
       callback: (row: any) => this.onDelete(row),
     },
     {
       label: 'Vista Previa',
       icon: 'bx bx-show',
       color: 'info',
+      permission: '',
       callback: (row: any) => this.onPreview(row),
     },
   ];
@@ -59,7 +64,7 @@ export default class MedicalConsultationsListComponent {
   page: number = 1;
 
   constructor(
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly _medicalConsultationsService: MedicalConsultationsService,
     private readonly cdr: ChangeDetectorRef,
     private readonly _router: Router
@@ -98,7 +103,7 @@ export default class MedicalConsultationsListComponent {
 
   getList() {
     const params = {
-      ma_entidad_id: this._authService.getEntityStorage.id,
+      ma_entidad_id: this._storageService.getEntityStorage.id,
       estados: ['activo', 'inactivo'],
       per_page: this.rows,
       page: this.page,

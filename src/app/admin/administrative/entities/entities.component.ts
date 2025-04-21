@@ -14,6 +14,7 @@ import { Message } from 'primeng/message';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-entities',
@@ -23,8 +24,8 @@ import { ActionButton } from '@interfaces/util/actions.interfaces';
 export default class EntitiesComponent {
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private subscription: Subscription[] = [];
-  private _authService = inject(AuthService);
-  protected readonly entities = this._authService.getEntityStorage || null;
+  private _storageService = inject(StorageService);
+  protected readonly entities = this._storageService.getEntityStorage || null;
   formActionButton: ActionButton[] = [
     {
       label: this.entities ? 'Actualizar' : 'Guardar',
@@ -34,6 +35,7 @@ export default class EntitiesComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: '',
       callback: (e: any) => {
         this.action(e);
       },
@@ -177,6 +179,7 @@ export default class EntitiesComponent {
     private _notificationService: NotificationService,
     private _entitiesService: EntitiesService,
     private _loadingService: LoadingService,
+    private _authService: AuthService,
     private _router: Router
   ) {}
 
@@ -233,7 +236,7 @@ export default class EntitiesComponent {
         .put(this.entities.id!, entities)
         .subscribe((res) => {
           this._notificationService.showSuccess(res.message);
-          this._authService.updateLocalStorage({ entidad: res.data });
+          this._storageService.updateLocalStorage({ entidad: res.data });
         })
     );
   }
@@ -248,7 +251,7 @@ export default class EntitiesComponent {
         .post({ ...entities, modulos: environment.MODULOS_VALIDOS_CREACION })
         .subscribe((res) => {
           this._notificationService.showSuccess(res.message);
-          this._authService.updateLocalStorage({ entidad: res.data });
+          this._storageService.updateLocalStorage({ entidad: res.data });
           setTimeout(() => {
             this._notificationService.confirmation({
               message: '¿Desea crear un medico?',

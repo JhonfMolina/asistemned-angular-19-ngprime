@@ -13,6 +13,7 @@ import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-laboratories-create',
@@ -33,6 +34,7 @@ export default class LaboratoriesCreateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: '',
       callback: (data: any) => {
         this.post(data);
       },
@@ -164,7 +166,7 @@ export default class LaboratoriesCreateComponent {
     private readonly _notificationService: NotificationService,
     private readonly _laboratoriesService: LaboratoriesService,
     private _loadingService: LoadingService,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly _router: Router
   ) {}
 
@@ -210,7 +212,7 @@ export default class LaboratoriesCreateComponent {
   post(data: any): void {
     const laboratories: Laboratories = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+      ma_entidad_id: this._storageService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._laboratoriesService.post(laboratories).subscribe((res) => {

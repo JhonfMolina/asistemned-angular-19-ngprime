@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '@services/auth.service';
 import { DefaultImagePipe } from '../../pipes/default-image.pipe';
 import { SidebarService } from '@services/util/sidebar.service';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,8 +26,8 @@ import { SidebarService } from '@services/util/sidebar.service';
 })
 export class SidebarComponent {
   protected fechaActual = new Date();
-  private _authService = inject(AuthService);
-  profile = this._authService.getUserProfileStorage;
+  private _storageService = inject(StorageService);
+  profile = this._storageService.getUserProfileStorage;
   visible = false;
   menuPrincipal: any[] = [];
 

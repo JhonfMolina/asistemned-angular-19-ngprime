@@ -11,6 +11,7 @@ type StorageObjectTypes =
   | 'entidad'
   | 'perfil'
   | 'suscripcion'
+  | 'permisos'
   | 'accountVerfication';
 
 @Injectable({

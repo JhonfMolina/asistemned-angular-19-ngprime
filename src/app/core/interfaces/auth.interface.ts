@@ -9,6 +9,7 @@ export interface AuthResponse {
   succes: boolean;
   perfil?: Profile;
   entidad?: Entities;
+  permisos?: Array<string>;
 }
 
 export interface Profile {

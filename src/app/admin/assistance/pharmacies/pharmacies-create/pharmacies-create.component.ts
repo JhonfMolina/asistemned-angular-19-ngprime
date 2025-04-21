@@ -13,6 +13,7 @@ import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-pharmacies-create',
@@ -33,6 +34,7 @@ export default class PharmaciesCreateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
+      permission: '',
       callback: (e: any) => {
         this.post(e);
       },
@@ -164,7 +166,7 @@ export default class PharmaciesCreateComponent {
     private readonly _notificationService: NotificationService,
     private readonly _pharmaciesService: PharmaciesService,
     private _loadingService: LoadingService,
-    private readonly _authService: AuthService,
+    private readonly _storageService: StorageService,
     private readonly _router: Router
   ) {}
 
@@ -210,7 +212,7 @@ export default class PharmaciesCreateComponent {
   post(data: any): void {
     const pharmacies: Pharmacies = {
       ...data.form,
-      ma_entidad_id: this._authService.getEntityStorage.id!,
+      ma_entidad_id: this._storageService.getEntityStorage.id!,
     };
     this.subscription.push(
       this._pharmaciesService.post(pharmacies).subscribe((res) => {

@@ -256,15 +256,17 @@
       formBtnConfig.length > 1
   }"
 >
-  <app-button
-    *ngFor="let Btn of formBtnConfig"
-    [label]="Btn.label"
-    [variant]="Btn.variant"
-    [width]="Btn.width"
-    [color]="Btn.color"
-    [icon]="Btn.icon"
-    (onClick)="onSubmit()"
-    [disabled]="Btn.disabled"
-    [loading]="Btn.loading"
-  ></app-button>
+  <div *ngFor="let Btn of formBtnConfig">
+    <app-button
+      [label]="Btn.label"
+      [variant]="Btn.variant"
+      [width]="Btn.width"
+      [color]="Btn.color"
+      [icon]="Btn.icon"
+      (onClick)="onSubmit()"
+      [disabled]="Btn.disabled"
+      [loading]="Btn.loading"
+      [permission]="Btn.permission"
+    ></app-button>
+  </div>
 </div>
