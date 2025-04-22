@@ -14,19 +14,31 @@ import { TableComponent } from '@components/table/table.component';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { StorageService } from '@services/storage.service';
+import { Dialog } from 'primeng/dialog';
+import { CommonModule } from '@angular/common';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-doctors-list',
-  imports: [TableComponent, Chip],
+  imports: [TableComponent, Chip, Dialog, CommonModule, DividerModule],
   templateUrl: './doctors-list.component.html',
 })
 export default class DoctorsListComponent {
+  visible: boolean = false;
+
   private subscription: Subscription[] = [];
   @ViewChild('statusTemplate') statusTemplate!: TemplateRef<any>;
 
   doctors: Doctors[] = [];
+  selectedDoctor: Doctors | null = null;
   columns: any[] = [];
   actions: ActionButton[] = [
+    {
+      icon: 'bx bx-search',
+      color: 'info',
+      permission: 'medicos.ver',
+      callback: (row: any) => this.onView(row),
+    },
     {
       icon: 'bx bx-edit',
       color: 'success',
@@ -54,6 +66,11 @@ export default class DoctorsListComponent {
 
   onNavigate() {
     this._router.navigate(['admin/assistance/doctors/doctors-create']);
+  }
+
+  onView(rowData: Doctors): void {
+    this.selectedDoctor = rowData;
+    this.visible = true;
   }
 
   onEdit(rowData: any): void {

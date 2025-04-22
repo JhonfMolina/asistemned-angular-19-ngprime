@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
-import ButtonComponent from '@components/button/button.component';
 import { AccordionModule } from 'primeng/accordion';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { CarouselModule } from 'primeng/carousel';
 import { Toolbar } from 'primeng/toolbar';
 import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-home',
   imports: [
     CardModule,
     DividerModule,
-    ButtonComponent,
+    ButtonModule,
     AccordionModule,
     CarouselModule,
     Toolbar,

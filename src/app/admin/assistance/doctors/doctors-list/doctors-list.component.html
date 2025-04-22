@@ -19,3 +19,58 @@
     }}"
   />
 </ng-template>
+
+<p-dialog
+  *ngIf="selectedDoctor"
+  [(visible)]="visible"
+  [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="true"
+>
+  <ng-template #header>
+    <div>
+      <h3 class="text-primary-600 mb-0">
+        {{ selectedDoctor.nombre_completo }}
+      </h3>
+    </div>
+  </ng-template>
+  <p-divider class="mt-0" />
+
+  <div class="grid p-fluid">
+    <!-- Información del Doctor -->
+    <div class="col-12 md:col-6">
+      <span class="font-bold"
+        >{{ selectedDoctor.utilidad_tipo_identificacion_nombre }}:</span
+      >
+      <p class="my-0">{{ selectedDoctor.identificacion }}</p>
+    </div>
+    <div class="col-12 md:col-6">
+      <label class="font-bold">RM:</label>
+      <p class="my-0">{{ selectedDoctor.rethus }}</p>
+    </div>
+
+    <div class="col-12 md:col-6">
+      <span class="font-bold">Especialidad</span>
+      <p class="my-0">{{ selectedDoctor.universidad }}</p>
+    </div>
+    <div class="col-12 md:col-6">
+      <label for="telefono" class="font-bold">Teléfono</label>
+      <p class="my-0">{{ selectedDoctor.contactos }}</p>
+    </div>
+    <div class="col-12 md:col-6">
+      <label for="direccion" class="font-bold">Direccion</label>
+      <p class="my-0">{{ selectedDoctor.direccion }}</p>
+    </div>
+    <div class="col-12 md:col-6">
+      <label for="correo" class="font-bold">Correo</label>
+      <p class="my-0">{{ selectedDoctor.correo }}</p>
+    </div>
+    <div class="col-12">
+      <label for="estado" class="font-bold">Estado</label>
+      <p-chip [label]="selectedDoctor.estado" [class]="'text-sm'"></p-chip>
+    </div>
+  </div>
+</p-dialog>

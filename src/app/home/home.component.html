@@ -63,11 +63,12 @@
             >
           </li>
         </ul>
-        <app-button
-          [label]="'Iniciar sesion'"
-          [icon]="'bx bx-log-in bx-sm'"
+
+        <p-button
+          icon="bx bx-log-in bx-sm"
+          label="Iniciar sesion"
           (onClick)="onNavigate()"
-        ></app-button>
+        ></p-button>
       </div>
     </ng-template>
   </p-toolbar>
@@ -353,12 +354,11 @@
         <p class="text-4xl font-bold text-primary mt-3">
           $9.99 <span class="text-300">/ mes</span>
         </p>
-
-        <app-button
-          [label]="'Adquirir ahora'"
-          [color]="'primary'"
-          [icon]="'bx bx-cart-alt'"
-        ></app-button>
+        <p-button
+          icon="bx bx-cart-alt"
+          severity="primary"
+          label="Adquirir ahora"
+        ></p-button>
       </p-card>
     </div>
     <!-- Plan Profesional -->
@@ -389,11 +389,11 @@
           $29.99 <span class="text-300">/ mes</span>
         </p>
 
-        <app-button
-          [label]="'Adquirir ahora'"
-          [color]="'primary'"
-          [icon]="'bx bx-cart-alt'"
-        ></app-button>
+        <p-button
+          icon="bx bx-cart-alt"
+          severity="primary"
+          label="Adquirir ahora"
+        ></p-button>
       </p-card>
     </div>
     <!-- Plan Empresarial -->
@@ -424,11 +424,11 @@
           $99.99 <span class="text-300">/ mes</span>
         </p>
 
-        <app-button
-          [label]="'Adquirir ahora'"
-          [color]="'primary'"
-          [icon]="'bx bx-cart-alt'"
-        ></app-button>
+        <p-button
+          icon="bx bx-cart-alt"
+          severity="primary"
+          label="Adquirir ahora"
+        ></p-button>
       </p-card>
     </div>
   </div>

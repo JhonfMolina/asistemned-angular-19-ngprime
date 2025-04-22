@@ -17,4 +17,11 @@ export interface Doctors {
   universidad: string;
   user_id: number;
   estado: string;
+  id?: string;
+  utilidad_tipo_identificacion_nombre?: string;
+  utilidad_tipo_identificacion_abreviatura?: string;
+  nombre_completo?: string;
+  utilidad_departamento_nombre?: string;
+  utilidad_ciudad_nombre?: string;
+  registro_id?: null;
 }
