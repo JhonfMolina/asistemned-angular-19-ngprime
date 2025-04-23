@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { Pharmacies } from '@interfaces/pharmacies.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
@@ -12,10 +11,11 @@ import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { StorageService } from '@services/storage.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-pharmacies-update',
-  imports: [DynamicFormComponent, CardModule, ButtonComponent],
+  imports: [DynamicFormComponent, CardModule, ButtonModule],
   templateUrl: './pharmacies-update.component.html',
 })
 export default class PharmaciesUpdateComponent {
@@ -32,7 +32,7 @@ export default class PharmaciesUpdateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
-      permission: '',
+      permission: 'farmacias.editar',
       callback: (e: any) => {
         this.put(e);
       },

@@ -35,7 +35,7 @@ export default class EntitiesComponent {
       color: 'primary',
       disabled: false,
       loading: false,
-      permission: '',
+      permission: this.entities ? 'entidades.editar' : 'entidades.crear',
       callback: (e: any) => {
         this.action(e);
       },

@@ -31,11 +31,63 @@
         </div>
 
         <div>
-          <app-dynamic-form
-            [formConfig]="formConfig"
-            [formBtnConfig]="formActionButton"
-            (onClick)="login($event)"
-          ></app-dynamic-form>
+          <form class="grid align-items-center" [formGroup]="formLogin">
+            <div class="col-12">
+              <p-floatlabel variant="on">
+                <p-iconfield>
+                  <input
+                    pInputText
+                    id="email"
+                    type="email"
+                    formControlName="email"
+                  />
+                  <p-inputicon class="bx bxs-envelope" />
+                </p-iconfield>
+                <label for="email">Email</label>
+              </p-floatlabel>
+              <app-validators-form
+                [form]="formLogin.controls"
+                [field]="{ name: 'email' }"
+              ></app-validators-form>
+            </div>
+
+            <div class="col-12">
+              <p-floatlabel variant="on">
+                <p-iconfield>
+                  <input
+                    [ngClass]="{
+                      'ng-invalid ng-dirty':
+                        formLogin.get('password')!.invalid &&
+                        (formLogin.get('password')!.dirty ||
+                          formLogin.get('password')!.touched)
+                    }"
+                    pInputText
+                    id="password"
+                    type="password"
+                    formControlName="password"
+                  />
+                  <p-inputicon class="bx bxs-key" />
+                </p-iconfield>
+                <label for="password">Password</label>
+              </p-floatlabel>
+              <app-validators-form
+                [form]="formLogin.controls"
+                [field]="{ name: 'password', validators: { minLength: '6' } }"
+              ></app-validators-form>
+            </div>
+            <div class="col-12">
+              <p-button
+                label="Iniciar sesión"
+                severity="primary"
+                icon="bx bx-door-open"
+                styleClass="w-12"
+                [disabled]="formLogin.invalid"
+                [loading]="loading"
+                (click)="login()"
+              ></p-button>
+            </div>
+          </form>
+
           <div class="flex align-items-center justify-content-center mt-3">
             <a
               (click)="this._router.navigate(['/auth/recover-password'])"

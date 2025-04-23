@@ -1,23 +1,21 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { Users } from '@interfaces/users.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
-import { AuthService } from '@services/auth.service';
 import { RolesService } from '@services/roles.service';
 import { UsersService } from '@services/users.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { passwordMatchValidator } from '../../../../core/helpers/passwordMacth';
 import { StorageService } from '@services/storage.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-users-create',
-  imports: [DynamicFormComponent, CardModule, ButtonComponent],
+  imports: [DynamicFormComponent, CardModule, ButtonModule],
   templateUrl: './users-create.component.html',
 })
 export default class UsersCreateComponent {
@@ -33,7 +31,7 @@ export default class UsersCreateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
-      permission: '',
+      permission: 'usuarios.crear',
       callback: (e: any) => {
         this.post(e);
       },

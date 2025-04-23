@@ -30,13 +30,13 @@ export default class ErpListComponent {
     {
       icon: 'bx bx-edit',
       color: 'success',
-      permission: '',
+      permission: 'convenios.editar',
       callback: (row: any) => this.onEdit(row),
     },
     {
       icon: 'bx bx-trash',
       color: 'danger',
-      permission: '',
+      permission: 'convenios.eliminar',
       callback: (row: any) => this.onDelete(row),
     },
   ];

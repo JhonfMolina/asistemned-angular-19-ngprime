@@ -5,7 +5,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DoctorsService } from '@services/doctors.service';
-import { AuthService } from '@services/auth.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Doctors } from '@interfaces/doctors.interfaces';
 import { Chip } from 'primeng/chip';

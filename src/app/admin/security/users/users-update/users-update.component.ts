@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { UserRole } from '@interfaces/users.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
@@ -10,12 +9,13 @@ import { StorageService } from '@services/storage.service';
 import { UsersService } from '@services/users.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
+import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-users-update',
-  imports: [DynamicFormComponent, ButtonComponent, CardModule],
+  imports: [DynamicFormComponent, ButtonModule, CardModule],
   templateUrl: './users-update.component.html',
 })
 export default class UsersUpdateComponent {
@@ -34,7 +34,7 @@ export default class UsersUpdateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
-      permission: '',
+      permission: 'usuarios.editar',
       callback: (e: any) => {
         this.put(e);
       },

@@ -1,13 +1,13 @@
 <p-card>
   <ng-template #header>
     <div class="flex justify-content-start align-items-center gap-1">
-      <app-button
+      <p-button
+        class="ml-2"
+        severity="primary"
         variant="text"
-        [color]="'primary'"
-        [icon]="'bx bx-undo bx-sm'"
-        [classList]="'ml-2'"
+        icon="bx bx-undo bx-sm"
         (onClick)="goToReturnUrl()"
-      ></app-button>
+      ></p-button>
       <h3 class="text-primary-600">Crear role</h3>
     </div>
   </ng-template>
@@ -31,6 +31,7 @@
         [classList]="'ml-2'"
         (onClick)="post()"
         [loading]="loading"
+        [permission]="'roles.crear'"
         [disabled]="form.invalid ? true : false"
       ></app-button>
     </div>

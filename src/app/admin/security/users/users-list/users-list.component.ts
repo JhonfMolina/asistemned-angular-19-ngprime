@@ -30,13 +30,13 @@ export default class UsersListComponent {
     {
       icon: 'bx bx-edit',
       color: 'success',
-      permission: '',
+      permission: 'usuarios.editar',
       callback: (row: any) => this.onEdit(row),
     },
     {
       icon: 'bx bx-trash',
       color: 'danger',
-      permission: '',
+      permission: 'usuarios.eliminar',
       callback: (row: any) => this.onDelete(row),
     },
   ];

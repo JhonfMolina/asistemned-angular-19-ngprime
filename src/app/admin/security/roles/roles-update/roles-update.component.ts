@@ -16,6 +16,7 @@ import { StorageService } from '@services/storage.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { AccordionModule } from 'primeng/accordion';
+import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { Checkbox } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
@@ -33,6 +34,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
     Checkbox,
     AccordionModule,
     ButtonComponent,
+    ButtonModule,
     InputTextModule,
     ScrollPanelModule,
     FloatLabel,

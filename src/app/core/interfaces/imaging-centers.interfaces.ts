@@ -10,4 +10,5 @@ export interface ImagingCenters {
   telefonos: string;
   descripcion: string;
   estado: string;
+  id?: string;
 }

@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { Erp } from '@interfaces/erp.interfaces';
 import { Department } from '@interfaces/util/department.interfaces';
@@ -14,10 +13,11 @@ import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { StorageService } from '@services/storage.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-erp-create',
-  imports: [DynamicFormComponent, CardModule, ButtonComponent],
+  imports: [DynamicFormComponent, CardModule, ButtonModule],
   templateUrl: './erp-create.component.html',
 })
 export default class ErpCreateComponent {
@@ -27,13 +27,13 @@ export default class ErpCreateComponent {
   formActionButton: ActionButton[] = [
     {
       label: 'Guardar',
-      icon: 'save bx-sm',
+      icon: 'bx bx-save bx-sm',
       visible: true,
       width: 'w-full',
       color: 'primary',
       disabled: false,
       loading: false,
-      permission: '',
+      permission: 'convenios.crear',
       callback: (e: any) => {
         this.post(e);
       },

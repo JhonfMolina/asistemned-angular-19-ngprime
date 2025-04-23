@@ -9,7 +9,6 @@ import { TableComponent } from '@components/table/table.component';
 import { Roles } from '@interfaces/roles.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
-import { AuthService } from '@services/auth.service';
 import { RolesService } from '@services/roles.service';
 import { StorageService } from '@services/storage.service';
 import { Chip } from 'primeng/chip';
@@ -30,13 +29,13 @@ export default class RolesListComponent {
     {
       icon: 'bx bx-edit',
       color: 'success',
-      permission: '',
+      permission: 'roles.editar',
       callback: (row: any) => this.onEdit(row),
     },
     {
       icon: 'bx bx-trash',
       color: 'danger',
-      permission: '',
+      permission: 'roles.eliminar',
       callback: (row: any) => this.onDelete(row),
     },
   ];

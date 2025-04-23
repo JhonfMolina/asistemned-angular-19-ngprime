@@ -14,29 +14,39 @@ import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { StorageService } from '@services/storage.service';
+import { CommonModule } from '@angular/common';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'app-laboratories-list',
-  imports: [TableComponent, Chip],
+  imports: [TableComponent, Chip, Dialog, CommonModule],
   templateUrl: './laboratories-list.component.html',
 })
 export default class LaboratoriesListComponent {
+  visible: boolean = false;
   @ViewChild('statusTemplate') statusTemplate!: TemplateRef<any>;
   private readonly subscription: Subscription[] = [];
 
   laboratories: Laboratories[] = [];
+  selectedLaboratories: Laboratories | null = null;
   columns: any[] = [];
   actions: ActionButton[] = [
     {
+      icon: 'bx bx-search',
+      color: 'info',
+      permission: 'laboratorios.ver',
+      callback: (row: any) => this.onView(row),
+    },
+    {
       icon: 'bx bx-edit',
       color: 'success',
-      permission: '',
+      permission: 'laboratorios.editar',
       callback: (row: any) => this.onEdit(row),
     },
     {
       icon: 'bx bx-trash',
       color: 'danger',
-      permission: '',
+      permission: 'laboratorios.eliminar',
       callback: (row: any) => this.onDelete(row),
     },
   ];
@@ -59,14 +69,19 @@ export default class LaboratoriesListComponent {
     ]);
   }
 
-  onEdit(rowData: any): void {
+  onView(rowData: Laboratories): void {
+    this.selectedLaboratories = rowData;
+    this.visible = true;
+  }
+
+  onEdit(rowData: Laboratories): void {
     this._router.navigate([
       'admin/assistance/laboratories/laboratories-update',
       rowData.id,
     ]);
   }
 
-  onDelete(rowData: any): void {
+  onDelete(rowData: Laboratories): void {
     console.log('Delete:', rowData);
   }
 

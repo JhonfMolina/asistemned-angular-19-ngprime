@@ -10,33 +10,42 @@ import { Pharmacies } from '@interfaces/pharmacies.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
 import { PharmaciesService } from '@services/pharmacies.service';
-import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { StorageService } from '@services/storage.service';
+import { CommonModule } from '@angular/common';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'app-pharmacies-list',
-  imports: [TableComponent, Chip],
+  imports: [TableComponent, Chip, Dialog, CommonModule],
   templateUrl: './pharmacies-list.component.html',
 })
 export default class PharmaciesListComponent {
+  visible: boolean = false;
   @ViewChild('statusTemplate') statusTemplate!: TemplateRef<any>;
   private readonly subscription: Subscription[] = [];
 
   pharmacies: Pharmacies[] = [];
+  selectedPharmacies: Pharmacies | null = null;
   columns: any[] = [];
   actions: ActionButton[] = [
     {
+      icon: 'bx bx-search',
+      color: 'info',
+      permission: 'farmacias.ver',
+      callback: (row: any) => this.onView(row),
+    },
+    {
       icon: 'bx bx-edit',
       color: 'success',
-      permission: '',
+      permission: 'farmacias.editar',
       callback: (row: any) => this.onEdit(row),
     },
     {
       icon: 'bx bx-trash',
       color: 'danger',
-      permission: '',
+      permission: 'farmacias.eliminar',
       callback: (row: any) => this.onDelete(row),
     },
   ];
@@ -55,6 +64,11 @@ export default class PharmaciesListComponent {
 
   onNavigate() {
     this._router.navigate(['admin/assistance/pharmacies/pharmacies-create']);
+  }
+
+  onView(rowData: Pharmacies): void {
+    this.selectedPharmacies = rowData;
+    this.visible = true;
   }
 
   onEdit(rowData: any): void {

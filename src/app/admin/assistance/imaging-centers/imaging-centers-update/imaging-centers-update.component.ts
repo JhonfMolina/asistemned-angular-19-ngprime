@@ -32,7 +32,7 @@ export default class ImagingCentersUpdateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
-      permission: '',
+      permission: 'centro-imagenes.editar',
       callback: (data: any) => {
         this.put(data);
       },

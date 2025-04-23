@@ -1,12 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import ButtonComponent from '@components/button/button.component';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { Pharmacies } from '@interfaces/pharmacies.interfaces';
 import { Department } from '@interfaces/util/department.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { PharmaciesService } from '@services/pharmacies.service';
-import { AuthService } from '@services/auth.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
@@ -14,10 +12,11 @@ import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { StorageService } from '@services/storage.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-pharmacies-create',
-  imports: [DynamicFormComponent, CardModule, ButtonComponent],
+  imports: [DynamicFormComponent, CardModule, ButtonModule],
   templateUrl: './pharmacies-create.component.html',
 })
 export default class PharmaciesCreateComponent {
@@ -34,7 +33,7 @@ export default class PharmaciesCreateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
-      permission: '',
+      permission: 'farmacias.crear',
       callback: (e: any) => {
         this.post(e);
       },

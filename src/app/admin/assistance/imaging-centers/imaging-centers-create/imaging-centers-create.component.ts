@@ -33,7 +33,7 @@ export default class ImagingCentersCreateComponent {
       color: 'primary',
       disabled: false,
       loading: false,
-      permission: '',
+      permission: 'centro-imagenes.crear',
       callback: (data: any) => {
         this.post(data);
       },

@@ -10,4 +10,5 @@ export interface Laboratories {
   telefonos: string;
   descripcion: string;
   estado: string;
+  id?: string;
 }

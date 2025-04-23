@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { Login } from '@interfaces/auth.interface';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
-import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { AuthService } from '@services/auth.service';
 import { StorageService } from '@services/storage.service';
 import { LoadingService } from '@services/util/loading.service';
@@ -11,69 +9,58 @@ import { NotificationService } from '@services/util/notificacion.service';
 import { CardModule } from 'primeng/card';
 
 import { Subscription } from 'rxjs/internal/Subscription';
+import { ValidatorsFormComponent } from '../../shared/components/validators-form/validators-form.component';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { FloatLabel, FloatLabelModule } from 'primeng/floatlabel';
+import { IconField } from 'primeng/iconfield';
+import { InputIcon } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [DynamicFormComponent, CardModule],
+  imports: [
+    CardModule,
+    CommonModule,
+    ValidatorsFormComponent,
+    ReactiveFormsModule,
+    FloatLabel,
+    FloatLabelModule,
+    InputIcon,
+    IconField,
+    InputTextModule,
+    ButtonModule,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export default class LoginComponent {
   private subscription: Subscription[] = [];
-  formActionButton: ActionButton[] = [
-    {
-      label: 'Iniciar Sesión',
-      icon: 'door-open bx-sm',
-      visible: true,
-      width: 'w-full',
-      color: 'primary',
-      disabled: false,
-      loading: false,
-      permission: '',
-      callback: (e: any) => {
-        this.login(e);
-      },
-    },
-  ];
-  formConfig: DynamicForm[] = [
-    {
-      type: 'email',
-      icon: 'envelope',
-      name: 'email',
-      label: 'Email',
-      on_label: 'Email',
-      placeholder: '',
-      validators: {
-        required: true,
-        email: true,
-      },
-      column: 'col-12 md:col-6 lg:col-12',
-    },
-    {
-      type: 'password',
-      icon: 'key',
-      name: 'password',
-      label: 'Password',
-      on_label: 'password',
-      placeholder: '',
-      validators: {
-        required: true,
-        minLength: 6,
-      },
-      column: 'col-12 md:col-6 lg:col-12',
-    },
-  ];
+  formLogin!: FormGroup;
+  loading: boolean = false;
 
   constructor(
     private readonly _storageService: StorageService,
     private readonly _authService: AuthService,
     protected readonly _router: Router,
     private _loadingService: LoadingService,
-    private _notificationService: NotificationService
-  ) {}
+    private _notificationService: NotificationService,
+    private _fb: FormBuilder
+  ) {
+    this.formLogin = this._fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
 
-  login(formData: any) {
-    const formdata: Login = formData;
+  login() {
+    const formdata: Login = this.formLogin.value;
     this.subscription.push(
       this._authService.login(formdata).subscribe({
         next: (res) => {
@@ -116,7 +103,7 @@ export default class LoginComponent {
 
   ngOnInit(): void {
     this._loadingService.loading$.subscribe((loading) => {
-      this.formActionButton[0].loading = loading;
+      this.loading = loading;
     });
   }
 

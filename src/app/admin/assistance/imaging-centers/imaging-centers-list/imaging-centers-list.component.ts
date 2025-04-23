@@ -10,33 +10,42 @@ import { ImagingCenters } from '@interfaces/imaging-centers.interfaces';
 import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { PageEvent } from '@interfaces/util/page-event.interfaces';
 import { ImagingCentersService } from '@services/imaging-centers.service';
-import { AuthService } from '@services/auth.service';
 import { Chip } from 'primeng/chip';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { StorageService } from '@services/storage.service';
+import { CommonModule } from '@angular/common';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'app-imaging-centers-list',
-  imports: [TableComponent, Chip],
+  imports: [TableComponent, Chip, Dialog, CommonModule],
   templateUrl: './imaging-centers-list.component.html',
 })
 export default class ImagingCentersListComponent {
+  visible: boolean = false;
   private readonly subscription: Subscription[] = [];
   @ViewChild('statusTemplate') statusTemplate!: TemplateRef<any>;
 
   imagingCenters: ImagingCenters[] = [];
+  selectedImagingCenters: ImagingCenters | null = null;
   columns: any[] = [];
   actions: ActionButton[] = [
     {
+      icon: 'bx bx-search',
+      color: 'info',
+      permission: 'centro-imagenes.ver',
+      callback: (row: any) => this.onView(row),
+    },
+    {
       icon: 'bx bx-edit',
       color: 'success',
-      permission: '',
+      permission: 'centro-imagenes.editar',
       callback: (row: any) => this.onEdit(row),
     },
     {
       icon: 'bx bx-trash',
       color: 'danger',
-      permission: '',
+      permission: 'centro-imagenes.eliminar',
       callback: (row: any) => this.onDelete(row),
     },
   ];
@@ -59,14 +68,19 @@ export default class ImagingCentersListComponent {
     ]);
   }
 
-  onEdit(rowData: any): void {
+  onView(rowData: ImagingCenters): void {
+    this.selectedImagingCenters = rowData;
+    this.visible = true;
+  }
+
+  onEdit(rowData: ImagingCenters): void {
     this._router.navigate([
       'admin/assistance/imaging-centers/imaging-centers-update',
       rowData.id,
     ]);
   }
 
-  onDelete(rowData: any): void {
+  onDelete(rowData: ImagingCenters): void {
     console.log('Delete:', rowData);
   }
 

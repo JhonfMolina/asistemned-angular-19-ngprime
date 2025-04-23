@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,8 +9,6 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import ButtonComponent from '@components/button/button.component';
-import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
-import { AuthService } from '@services/auth.service';
 import { PermisosService } from '@services/permisos.service';
 import { RolesService } from '@services/roles.service';
 import { LoadingService } from '@services/util/loading.service';
@@ -24,6 +22,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { AccordionModule } from 'primeng/accordion';
 import { StorageService } from '@services/storage.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-roles-create',
@@ -34,6 +33,7 @@ import { StorageService } from '@services/storage.service';
     Checkbox,
     AccordionModule,
     ButtonComponent,
+    ButtonModule,
     InputTextModule,
     ScrollPanelModule,
     FloatLabel,
