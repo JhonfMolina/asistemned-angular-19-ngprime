@@ -36,6 +36,12 @@
               <p-floatlabel variant="on">
                 <p-iconfield>
                   <input
+                    [ngClass]="{
+                      'ng-invalid ng-dirty':
+                        formLogin.get('email')!.invalid &&
+                        (formLogin.get('email')!.dirty ||
+                          formLogin.get('email')!.touched)
+                    }"
                     pInputText
                     id="email"
                     type="email"

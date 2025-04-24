@@ -1,129 +1,115 @@
 import { Component } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
-import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { Register } from '@interfaces/auth.interface';
-import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { AuthService } from '@services/auth.service';
 import { StorageService } from '@services/storage.service';
 import { LoadingService } from '@services/util/loading.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs';
+import { ButtonModule } from 'primeng/button';
+import { FloatLabel, FloatLabelModule } from 'primeng/floatlabel';
+import { IconField } from 'primeng/iconfield';
+import { InputIcon } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { ValidatorsFormComponent } from '@components/validators-form/validators-form.component';
+import { NotificationService } from '@services/util/notificacion.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
-  imports: [DynamicFormComponent, CardModule],
+  imports: [
+    CardModule,
+    CommonModule,
+    ValidatorsFormComponent,
+    ReactiveFormsModule,
+    FloatLabel,
+    FloatLabelModule,
+    InputIcon,
+    IconField,
+    InputTextModule,
+    ButtonModule,
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
 export default class RegisterComponent {
   private subscription: Subscription[] = [];
-  formActionButton: ActionButton[] = [
-    {
-      label: 'Registrarse',
-      visible: true,
-      width: 'w-full',
-      color: 'primary',
-      disabled: false,
-      loading: false,
-      permission: '',
-      callback: (e: any) => {
-        this.register(e);
-      },
-    },
-  ];
-  formConfig: DynamicForm[] = [
-    {
-      type: 'text',
-      icon: 'user',
-      name: 'name',
-      label: 'Nombre completo',
-      on_label: 'name',
-      placeholder: '',
-      validators: {
-        required: true,
-      },
-      column: 'col-12 md:col-6 lg:col-12',
-    },
-    {
-      type: 'number',
-      icon: 'id-card',
-      name: 'identificacion',
-      label: 'Identificacion',
-      on_label: 'identificacion',
-      placeholder: '',
-      validators: {
-        required: true,
-        minLength: 3,
-        maxLength: 20,
-      },
-      column: 'col-12 md:col-6 lg:col-12',
-    },
-    {
-      type: 'email',
-      icon: 'envelope',
-      name: 'email',
-      label: 'Email',
-      on_label: 'Email',
-      placeholder: '',
-      validators: {
-        required: true,
-        email: true,
-      },
-      column: 'col-12 md:col-6 lg:col-12',
-    },
-    {
-      type: 'password',
-      icon: 'key',
-      name: 'password',
-      label: 'Contraseña',
-      on_label: 'password',
-      placeholder: '',
-      validators: {
-        required: true,
-        minLength: 6,
-      },
-      column: 'col-12 md:col-6 lg:col-12',
-    },
-    {
-      type: 'password',
-      icon: 'key',
-      name: 'password_confirmation',
-      label: 'Confirmar contraseña',
-      on_label: 'password_confirmation',
-      placeholder: '',
-      validators: {
-        required: true,
-        minLength: 6,
-      },
-      column: 'col-12 md:col-6 lg:col-12',
-    },
-  ];
+  formRegister!: FormGroup;
+  loading: boolean = false;
 
   constructor(
     private readonly _storageService: StorageService,
     private readonly _authService: AuthService,
     protected readonly _router: Router,
-    private _loadingService: LoadingService
-  ) {}
+    private _loadingService: LoadingService,
+    private _notificationService: NotificationService,
+    private _fb: FormBuilder
+  ) {
+    this.formRegister = this._fb.group({
+      name: ['', [Validators.required]],
+      identificacion: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(20),
+        ],
+      ],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      password_confirmation: [
+        '',
+        [Validators.required, Validators.minLength(6)],
+      ],
+    });
+  }
 
-  register(formData: any) {
-    const formdata: Register = formData;
+  passwordMatchValidator(): boolean | undefined {
+    if (
+      this.formRegister.get('password_confirmation')?.value &&
+      this.formRegister.get('password')?.value
+    ) {
+      const password = this.formRegister.get('password')?.value;
+      const confirmPassword = this.formRegister.get(
+        'password_confirmation'
+      )?.value;
 
-    this.subscription.push(
-      this._authService.register(formdata).subscribe({
-        next: (res) => {
-          this._authService
-            .login({ email: formdata.email, password: formdata.password })
-            .subscribe({
+      if (password !== confirmPassword) {
+        this._notificationService.showError(
+          'Las contraseñas no coinciden',
+          'Por favor verifique las contraseñas ingresadas'
+        );
+        return true;
+      }
+      return false;
+    }
+    return undefined;
+  }
+
+  register() {
+    const formdata: Register = this.formRegister.value;
+
+    if (!this.passwordMatchValidator()) {
+      this.subscription.push(
+        this._authService.register(formdata).subscribe({
+          next: (res) => {
+            this._authService.register(formdata).subscribe({
               next: (loginRes) => {
                 this._storageService.setAuthorizationToken(loginRes);
                 this.getUserProfile();
               },
             });
-        },
-      })
-    );
+          },
+        })
+      );
+    }
   }
 
   private getUserProfile() {
@@ -145,7 +131,7 @@ export default class RegisterComponent {
 
   ngOnInit(): void {
     this._loadingService.loading$.subscribe((loading) => {
-      this.formActionButton[0].loading = loading;
+      this.loading = loading;
     });
   }
 
