@@ -50,7 +50,7 @@ export class SidebarComponent {
         marker: 'administracion',
         menuItems: [
           {
-            path: '/admin/administrative/entities',
+            path: '/admin/administrative/entities/entities-update',
             permiso: 'administracion-entidades',
             title: 'Entidad de Salud',
           },

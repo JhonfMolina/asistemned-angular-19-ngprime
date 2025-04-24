@@ -92,30 +92,34 @@ export default class AdminComponent {
 
   onNavigate() {
     if (this._storageService.getEntityStorage == null) {
-      this.router.navigate(['/admin/administrative/entities']);
+      this.router.navigate(['/admin/administrative/entities/entities-create']);
     } else {
       this.router.navigate(['/admin']);
     }
   }
 
   setPermissions(): void {
-    this.subscription.push(
-      this._usersService
-        .getByIdUserRole({
-          estados: ['activo'],
-          id: this._storageService.getUserProfileStorage.id!,
-          ma_entidad_id: this._storageService.getEntityStorage.id!,
-        })
-        .subscribe((res) => {
-          const userPermissions: Array<string> = [];
-          res.data.acl.forEach((perm) => {
-            JSON.parse(perm.acl_rol_per_acciones).forEach((permiso: string) => {
-              userPermissions.push(`${perm.acl_per_recurso}.${permiso}`);
+    if (this._storageService.getEntityStorage != null) {
+      this.subscription.push(
+        this._usersService
+          .getByIdUserRole({
+            estados: ['activo'],
+            id: this._storageService.getUserProfileStorage.id!,
+            ma_entidad_id: this._storageService.getEntityStorage.id!,
+          })
+          .subscribe((res) => {
+            const userPermissions: Array<string> = [];
+            res.data.acl.forEach((perm) => {
+              JSON.parse(perm.acl_rol_per_acciones).forEach(
+                (permiso: string) => {
+                  userPermissions.push(`${perm.acl_per_recurso}.${permiso}`);
+                }
+              );
             });
-          });
-          this._permissionService.setPermissions(userPermissions);
-        })
-    );
+            this._permissionService.setPermissions(userPermissions);
+          })
+      );
+    }
   }
 
   ngOnInit(): void {
@@ -126,7 +130,7 @@ export default class AdminComponent {
       document.querySelector('html')!.classList.add('my-app-dark');
     }
     if (this._storageService.getEntityStorage == null) {
-      this.router.navigate(['/admin/administrative/entities']);
+      this.router.navigate(['/admin/administrative/entities/entities-create']);
     }
   }
 }

@@ -1,43 +1,40 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, ViewChild } from '@angular/core';
 import { DynamicFormComponent } from '@components/dynamic-form/dynamic-form.component';
 import { Entities } from '@interfaces/entities.interfaces';
+import { ActionButton } from '@interfaces/util/actions.interfaces';
 import { DynamicForm } from '@interfaces/util/dynamic-form.interface';
 import { EntitiesService } from '@services/entities.service';
-import { AuthService } from '@services/auth.service';
+import { StorageService } from '@services/storage.service';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
 import { UtilidadesService } from '@services/util/utilidades.service';
 import { CardModule } from 'primeng/card';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { environment } from '../../../../environments/environment';
-import { Message } from 'primeng/message';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { ActionButton } from '@interfaces/util/actions.interfaces';
-import { StorageService } from '@services/storage.service';
 
 @Component({
-  selector: 'app-entities',
-  imports: [DynamicFormComponent, CardModule, Message, CommonModule],
-  templateUrl: './entities.component.html',
+  selector: 'app-entities-update',
+  imports: [DynamicFormComponent, CardModule, CommonModule],
+  templateUrl: './entities-update.component.html',
+  styleUrl: './entities-update.component.scss',
 })
-export default class EntitiesComponent {
+export default class EntitiesUpdateComponent {
   @ViewChild(DynamicFormComponent) dynamicFormComponent!: DynamicFormComponent;
   private subscription: Subscription[] = [];
   private _storageService = inject(StorageService);
   protected readonly entities = this._storageService.getEntityStorage || null;
   formActionButton: ActionButton[] = [
     {
-      label: this.entities ? 'Actualizar' : 'Guardar',
-      icon: this.entities ? 'bx bx-refresh bx-sm' : 'bx bx-save bx-sm',
+      label: 'Guardar',
+      icon: 'bx bx-save bx-sm',
       visible: true,
       width: 'w-full',
       color: 'primary',
       disabled: false,
       loading: false,
-      permission: this.entities ? 'entidades.editar' : 'entidades.crear',
+      permission: 'entidades.crear',
       callback: (e: any) => {
-        this.action(e);
+        this.put(e);
       },
     },
   ];
@@ -178,9 +175,7 @@ export default class EntitiesComponent {
     private _utilidadesService: UtilidadesService,
     private _notificationService: NotificationService,
     private _entitiesService: EntitiesService,
-    private _loadingService: LoadingService,
-    private _authService: AuthService,
-    private _router: Router
+    private _loadingService: LoadingService
   ) {}
 
   getListadoTipoIdentificacion(): void {
@@ -239,40 +234,6 @@ export default class EntitiesComponent {
           this._storageService.updateLocalStorage({ entidad: res.data });
         })
     );
-  }
-
-  post(data: any): void {
-    const entities: Entities = {
-      ...data,
-      sector: 'SALUD',
-    };
-    this.subscription.push(
-      this._entitiesService
-        .post({ ...entities, modulos: environment.MODULOS_VALIDOS_CREACION })
-        .subscribe((res) => {
-          this._notificationService.showSuccess(res.message);
-          this._storageService.updateLocalStorage({ entidad: res.data });
-          setTimeout(() => {
-            this._notificationService.confirmation({
-              message: '¿Desea crear un medico?',
-              accept: () => {
-                this._router.navigate([
-                  '/admin/assistance/doctors/doctors-create',
-                ]);
-              },
-              reject: () => {
-                window.location.href = '/admin/administrative/entities';
-              },
-            });
-          }, 2000);
-        })
-    );
-  }
-
-  action(e: any) {
-    console.log(e);
-
-    this.entities ? this.put(e) : this.post(e);
   }
 
   ngOnInit(): void {

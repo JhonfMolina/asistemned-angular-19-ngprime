@@ -11,9 +11,7 @@ export default [
   },
   {
     path: 'entities',
-    loadComponent: () => import('./entities/entities.component'),
-    canActivate: [PermissionGuard],
-    data: { permissions: 'entidades.ver' },
+    loadChildren: () => import('./entities/entities.routes'),
     title: 'Entities',
   },
   {

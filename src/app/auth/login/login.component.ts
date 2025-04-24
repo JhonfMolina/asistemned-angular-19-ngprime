@@ -94,7 +94,9 @@ export default class LoginComponent {
         'Explora y disfruta de todas nuestras funcionalidades.'
       );
       if (this._storageService.getEntityStorage == null) {
-        this._router.navigate(['/admin/administrative/entities']);
+        this._router.navigate([
+          '/admin/administrative/entities/entities-create',
+        ]);
       } else {
         this._router.navigate(['/admin']);
       }

@@ -1,7 +1,3 @@
-<p-message styleClass="mb-4" *ngIf="!entities" severity="info"
-  >Recuerde que tiene pendientes configuraciones por realizar, como crear
-  medicos, farmacias y laboratorios.</p-message
->
 <p-card>
   <ng-template #header>
     <div class="flex justify-content-start align-items-center gap-1">
@@ -11,6 +7,6 @@
   <app-dynamic-form
     [formConfig]="formConfig"
     [formBtnConfig]="formActionButton"
-    (onClick)="action($event)"
+    (onClick)="put($event)"
   ></app-dynamic-form>
 </p-card>

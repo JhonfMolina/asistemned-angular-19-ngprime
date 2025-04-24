@@ -48,24 +48,24 @@
         </div>
         <div class="flex justify-content-between align-items-center gap-2">
           <div>
-            <app-button
-              [label]="'Reenviar'"
-              [icon]="'bx bx-refresh'"
-              [variant]="'text'"
-              [color]="'primary'"
+            <p-button
+              label="Reenviar"
+              severity="primary"
+              icon="bx bx-refresh"
               [disabled]="!canResendCode"
+              [loading]="loading"
               (click)="resendCodeAccountVerification()"
-            ></app-button>
+            ></p-button>
           </div>
           <div>
-            <app-button
-              [label]="'Verificar'"
-              [icon]="'bx bx-check'"
-              [color]="'primary'"
-              [loading]="loading"
+            <p-button
+              label="Verificar"
+              severity="primary"
+              icon="bx bx-check"
               [disabled]="!code || code.length < 6 ? true : false"
+              [loading]="loading"
               (click)="accountVerification()"
-            ></app-button>
+            ></p-button>
           </div>
         </div>
         <p *ngIf="!canResendCode" class="text-slave-400 mt-4">

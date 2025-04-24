@@ -8,9 +8,9 @@ import { AuthService } from '@services/auth.service';
 import { Router } from '@angular/router';
 import { LoadingService } from '@services/util/loading.service';
 import { NotificationService } from '@services/util/notificacion.service';
-import ButtonComponent from '@components/button/button.component';
 import { interval } from 'rxjs/internal/observable/interval';
 import { StorageService } from '@services/storage.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-account-verification',
@@ -19,7 +19,7 @@ import { StorageService } from '@services/storage.service';
     InputOtpModule,
     CommonModule,
     CardModule,
-    ButtonComponent,
+    ButtonModule,
   ],
   templateUrl: './account-verification.component.html',
   styleUrl: './account-verification.component.scss',
@@ -99,7 +99,9 @@ export default class AccountVerificationComponent {
               if (this.entitiesId) {
                 this._router.navigate(['/admin']);
               } else {
-                this._router.navigate(['/admin/administrative/entities']);
+                this._router.navigate([
+                  '/admin/administrative/entities/entities-create',
+                ]);
               }
               this._notificationService.showSuccess(
                 `Hola ${this._storageService.getUserProfileStorage.name}!`,

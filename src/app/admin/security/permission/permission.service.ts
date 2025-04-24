@@ -14,13 +14,13 @@ export class PermissionService {
 
   // Verificar si el usuario tiene un permiso
   hasPermission(permission: string): boolean {
-    return this._storageService.getPermissionsUser.includes(permission);
+    return this._storageService.getPermissionsUser?.includes(permission);
   }
 
   // Verificar si el usuario tiene al menos uno de los permisos
   hasAnyPermission(permissions: string[]): boolean {
     return permissions.some((perm) =>
-      this._storageService.getPermissionsUser.includes(perm)
+      this._storageService.getPermissionsUser?.includes(perm)
     );
   }
 }
