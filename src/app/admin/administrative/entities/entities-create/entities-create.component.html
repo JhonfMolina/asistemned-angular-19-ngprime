@@ -3,4 +3,187 @@
   medicos, farmacias y laboratorios.</p-message
 >
 
-hola
+<p-card>
+  <ng-template #header>
+    <div class="flex justify-content-start align-items-center gap-1">
+      <h3 class="text-primary-600 ml-4">Información de la Entidad de Salud</h3>
+    </div>
+  </ng-template>
+
+  <form class="grid align-items-center" [formGroup]="form">
+    <div class="col-12">
+      <p-floatlabel variant="on">
+        <p-select
+          size="small"
+          [ngClass]="{
+            'ng-invalid ng-dirty':
+              form.get('utilidad_tipo_identificacion_id')!.invalid &&
+              (form.get('utilidad_tipo_identificacion_id')!.dirty ||
+                form.get('utilidad_tipo_identificacion_id')!.touched)
+          }"
+          [(ngModel)]="selectedItemsIdentification"
+          [options]="listIdentification"
+          id="tipo_identificacion"
+          formControlName="utilidad_tipo_identificacion_id"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          [showClear]="true"
+          optionValue="id"
+          class="w-full"
+        >
+          <ng-template #selectedItem let-selectedOption>
+            <div>{{ selectedOption.nombre }}</div>
+          </ng-template>
+          <ng-template let-data #item>
+            <div>{{ data.nombre }}</div>
+          </ng-template>
+        </p-select>
+        <label for="tipo_identificacion">Tipo de identificacion</label>
+      </p-floatlabel>
+      <app-validators-form
+        [form]="form.controls"
+        [field]="{ name: 'name' }"
+      ></app-validators-form>
+    </div>
+    <div class="col-12">
+      <p-floatlabel variant="on">
+        <p-iconfield>
+          <input
+            [ngClass]="{
+              'ng-invalid ng-dirty':
+                form.get('identificacion')!.invalid &&
+                (form.get('identificacion')!.dirty ||
+                  form.get('identificacion')!.touched)
+            }"
+            pInputText
+            id="identificacion"
+            type="text"
+            formControlName="identificacion"
+          />
+          <p-inputicon class="bx bxs-id-card" />
+        </p-iconfield>
+        <label for="identificacion">Identificación</label>
+      </p-floatlabel>
+      <app-validators-form
+        [form]="form.controls"
+        [field]="{
+          name: 'identificacion',
+          validators: { minLength: '5' }
+        }"
+      ></app-validators-form>
+    </div>
+    <div class="col-12">
+      <p-floatlabel variant="on">
+        <p-iconfield>
+          <input
+            [ngClass]="{
+              'ng-invalid ng-dirty':
+                form.get('razon_social')!.invalid &&
+                (form.get('razon_social')!.dirty ||
+                  form.get('razon_social')!.touched)
+            }"
+            pInputText
+            id="razon_social"
+            type="text"
+            formControlName="razon_social"
+          />
+          <p-inputicon class="bx bxs-user" />
+        </p-iconfield>
+        <label for="razon_social">Razon social</label>
+      </p-floatlabel>
+      <app-validators-form
+        [form]="form.controls"
+        [field]="{ name: 'razon_social' }"
+      ></app-validators-form>
+    </div>
+
+    <div class="col-12">
+      <p-floatlabel variant="on">
+        <p-iconfield>
+          <input
+            [ngClass]="{
+              'ng-invalid ng-dirty':
+                form.get('telefonos')!.invalid &&
+                (form.get('telefonos')!.dirty || form.get('telefonos')!.touched)
+            }"
+            pInputText
+            id="telefonos"
+            type="text"
+            formControlName="telefonos"
+          />
+          <p-inputicon class="bx bxs-id-card" />
+        </p-iconfield>
+        <label for="telefonos">Contactos</label>
+      </p-floatlabel>
+      <app-validators-form
+        [form]="form.controls"
+        [field]="{
+          name: 'telefonos',
+          validators: { minLength: '5' }
+        }"
+      ></app-validators-form>
+    </div>
+
+    <div class="col-12">
+      <p-floatlabel variant="on">
+        <p-iconfield>
+          <input
+            [ngClass]="{
+              'ng-invalid ng-dirty':
+                form.get('direccion')!.invalid &&
+                (form.get('direccion')!.dirty || form.get('direccion')!.touched)
+            }"
+            pInputText
+            id="direccion"
+            formControlName="direccion"
+          />
+          <p-inputicon class="bx bxs-key" />
+        </p-iconfield>
+        <label for="direccion">Direccion</label>
+      </p-floatlabel>
+      <app-validators-form
+        [form]="form.controls"
+        [field]="{ name: 'direccion', validators: { minLength: '6' } }"
+      ></app-validators-form>
+    </div>
+    <div class="col-12">
+      <p-floatlabel variant="on">
+        <p-iconfield>
+          <input
+            [ngClass]="{
+              'ng-invalid ng-dirty':
+                form.get('password_confirmation')!.invalid &&
+                (form.get('password_confirmation')!.dirty ||
+                  form.get('password_confirmation')!.touched)
+            }"
+            pInputText
+            id="confirmPassword"
+            type="password"
+            formControlName="password_confirmation"
+          />
+          <p-inputicon class="bx bxs-key" />
+        </p-iconfield>
+        <label for="confirmPassword">Confirmar Password</label>
+      </p-floatlabel>
+      <app-validators-form
+        [form]="form.controls"
+        [field]="{
+          name: 'password_confirmation',
+          validators: { minLength: '6' }
+        }"
+      ></app-validators-form>
+    </div>
+    <div class="col-12">
+      <p-button
+        label="Registrarse"
+        severity="primary"
+        icon="bx bx-door-open"
+        styleClass="w-12"
+        [disabled]="form.invalid"
+        [loading]="loading"
+        (click)="post()"
+      ></p-button>
+    </div>
+  </form>
+</p-card>

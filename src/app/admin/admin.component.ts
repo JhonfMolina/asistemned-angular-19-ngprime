@@ -41,7 +41,7 @@ export default class AdminComponent {
     private router: Router,
     private sidebarService: SidebarService,
     private readonly _usersService: UsersService,
-    private readonly _storageService: StorageService,
+    protected readonly _storageService: StorageService,
     private readonly _permissionService: PermissionService,
     private readonly _notificationService: NotificationService,
     private readonly _authService: AuthService

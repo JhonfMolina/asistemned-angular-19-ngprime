@@ -25,14 +25,14 @@ export default class EntitiesUpdateComponent {
   protected readonly entities = this._storageService.getEntityStorage || null;
   formActionButton: ActionButton[] = [
     {
-      label: 'Guardar',
-      icon: 'bx bx-save bx-sm',
+      label: 'Actualizar',
+      icon: 'bx bx-refresh bx-sm',
       visible: true,
       width: 'w-full',
       color: 'primary',
       disabled: false,
       loading: false,
-      permission: 'entidades.crear',
+      permission: 'entidades.editar',
       callback: (e: any) => {
         this.put(e);
       },

@@ -15,6 +15,7 @@
         </a>
 
         <p-button
+          *ngIf="this._storageService.getEntityStorage != null"
           severity="primary"
           variant="text"
           icon="bx bx-menu bx-sm"
