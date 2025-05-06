@@ -25,9 +25,9 @@
           [options]="listIdentification"
           id="tipo_identificacion"
           formControlName="utilidad_tipo_identificacion_id"
-          optionLabel="name"
+          optionLabel="nombre"
           [filter]="true"
-          filterBy="name"
+          filterBy="nombre"
           [showClear]="true"
           optionValue="id"
           class="w-full"
@@ -43,7 +43,7 @@
       </p-floatlabel>
       <app-validators-form
         [form]="form.controls"
-        [field]="{ name: 'name' }"
+        [field]="{ name: 'utilidad_tipo_identificacion_id' }"
       ></app-validators-form>
     </div>
     <div class="col-12">
@@ -69,7 +69,7 @@
         [form]="form.controls"
         [field]="{
           name: 'identificacion',
-          validators: { minLength: '5' }
+          validators: { minLength: '3' }
         }"
       ></app-validators-form>
     </div>
@@ -120,7 +120,6 @@
         [form]="form.controls"
         [field]="{
           name: 'telefonos',
-          validators: { minLength: '5' }
         }"
       ></app-validators-form>
     </div>
@@ -147,38 +146,106 @@
         [field]="{ name: 'direccion', validators: { minLength: '6' } }"
       ></app-validators-form>
     </div>
+
     <div class="col-12">
       <p-floatlabel variant="on">
-        <p-iconfield>
-          <input
-            [ngClass]="{
-              'ng-invalid ng-dirty':
-                form.get('password_confirmation')!.invalid &&
-                (form.get('password_confirmation')!.dirty ||
-                  form.get('password_confirmation')!.touched)
-            }"
-            pInputText
-            id="confirmPassword"
-            type="password"
-            formControlName="password_confirmation"
-          />
-          <p-inputicon class="bx bxs-key" />
-        </p-iconfield>
-        <label for="confirmPassword">Confirmar Password</label>
+        <p-select
+          size="small"
+          [ngClass]="{
+            'ng-invalid ng-dirty':
+              form.get('utilidad_departamento_id')!.invalid &&
+              (form.get('utilidad_departamento_id')!.dirty ||
+                form.get('utilidad_departamento_id')!.touched)
+          }"
+          [(ngModel)]="selectedItemsDepartaments"
+          [options]="listDepartaments"
+          id="departamento_id"
+          formControlName="utilidad_departamento_id"
+          optionLabel="nombre"
+          [filter]="true"
+          filterBy="nombre"
+          [showClear]="true"
+          optionValue="id"
+          class="w-full"
+        >
+          <ng-template #selectedItem let-selectedOption>
+            <div>{{ selectedOption.nombre }}</div>
+          </ng-template>
+          <ng-template let-data #item>
+            <div>{{ data.nombre }}</div>
+          </ng-template>
+        </p-select>
+        <label for="departamento_id">Departamento</label>
       </p-floatlabel>
       <app-validators-form
         [form]="form.controls"
-        [field]="{
-          name: 'password_confirmation',
-          validators: { minLength: '6' }
-        }"
+        [field]="{ name: 'utilidad_departamento_id' }"
+      ></app-validators-form>
+    </div>
+    <div class="col-12">
+      <p-floatlabel variant="on">
+        <p-select
+          size="small"
+          [ngClass]="{
+            'ng-invalid ng-dirty':
+              form.get('utilidad_ciudad_id')!.invalid &&
+              (form.get('utilidad_ciudad_id')!.dirty ||
+                form.get('utilidad_ciudad_id')!.touched)
+          }"
+          [(ngModel)]="selectedItemsCities"
+          [options]="listCities"
+          id="ciudad_id"
+          formControlName="utilidad_ciudad_id"
+          optionLabel="nombre"
+          [filter]="true"
+          filterBy="nombre"
+          [showClear]="true"
+          optionValue="id"
+          class="w-full"
+        >
+          <ng-template #selectedItem let-selectedOption>
+            <div>{{ selectedOption.nombre }}</div>
+          </ng-template>
+          <ng-template let-data #item>
+            <div>{{ data.nombre }}</div>
+          </ng-template>
+        </p-select>
+        <label for="ciudad_id">Ciudad</label>
+      </p-floatlabel>
+      <app-validators-form
+        [form]="form.controls"
+        [field]="{ name: 'utilidad_ciudad_id' }"
+      ></app-validators-form>
+    </div>
+    <div class="col-12">
+      <p-floatlabel variant="on">
+        <textarea
+          [ngClass]="{
+            'ng-invalid ng-dirty':
+              form.get('descripcion')!.invalid &&
+              (form.get('descripcion')!.dirty ||
+                form.get('descripcion')!.touched)
+          }"
+          pTextarea
+          id="descripcion"
+          formControlName="descripcion"
+          rows="5"
+          cols="30"
+          style="resize: none"
+          class="w-full h-full"
+        ></textarea>
+        <label for="descripcion">Descripcion</label>
+      </p-floatlabel>
+      <app-validators-form
+        [form]="form.controls"
+        [field]="{ name: 'descripcion', validators: { minLength: '6' } }"
       ></app-validators-form>
     </div>
     <div class="col-12">
       <p-button
-        label="Registrarse"
+        label="Guardar"
         severity="primary"
-        icon="bx bx-door-open"
+        icon="bx bx-save"
         styleClass="w-12"
         [disabled]="form.invalid"
         [loading]="loading"

@@ -27,6 +27,9 @@ import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
+import { TextareaModule } from 'primeng/textarea';
+import { UsersService } from '@services/users.service';
+import { PermissionService } from '../../../security/permission/permission.service';
 
 @Component({
   selector: 'app-entities-create',
@@ -40,6 +43,7 @@ import { SelectModule } from 'primeng/select';
     SelectModule,
     FloatLabel,
     FloatLabelModule,
+    TextareaModule,
     InputIcon,
     IconField,
     InputTextModule,
@@ -57,35 +61,34 @@ export default class EntitiesCreateComponent {
   loading: boolean = false;
 
   listIdentification: any[] | undefined;
-
   selectedItemsIdentification: string | undefined;
+
+  listDepartaments: any[] | undefined;
+  selectedItemsDepartaments: string | undefined;
+
+  listCities: any[] | undefined;
+  selectedItemsCities: string | undefined;
 
   constructor(
     private _utilidadesService: UtilidadesService,
     private _notificationService: NotificationService,
     private _entitiesService: EntitiesService,
     private _loadingService: LoadingService,
-    private _authService: AuthService,
+    private readonly _usersService: UsersService,
+    private readonly _permissionService: PermissionService,
     private _router: Router,
     private _fb: FormBuilder
   ) {
     this.form = this._fb.group({
       utilidad_tipo_identificacion_id: ['', [Validators.required]],
-      identificacion: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20),
-        ],
-      ],
+      identificacion: ['', [Validators.required, Validators.minLength(3)]],
       razon_social: ['', [Validators.required]],
       telefonos: ['', [Validators.required]],
       direccion: ['', [Validators.required, Validators.minLength(6)]],
-      password_confirmation: [
-        '',
-        [Validators.required, Validators.minLength(6)],
-      ],
+      utilidad_departamento_id: ['', [Validators.required]],
+      utilidad_ciudad_id: ['', [Validators.required]],
+      descripcion: ['', [Validators.required]],
+      sector: ['SALUD'],
     });
   }
 
@@ -94,9 +97,7 @@ export default class EntitiesCreateComponent {
       this._utilidadesService
         .getListadoTipoIdentificacion({ estados: ['activo'] })
         .subscribe((response) => {
-          // this.formConfig.find(
-          //   (field) => field.name === 'utilidad_tipo_identificacion_id'
-          // )!.options = response.data;
+          this.listIdentification = response.data;
         })
     );
   }
@@ -106,9 +107,7 @@ export default class EntitiesCreateComponent {
       this._utilidadesService
         .getListadoDepartamentos({ estados: ['activo'] })
         .subscribe((response) => {
-          // this.formConfig.find(
-          //   (field) => field.name === 'utilidad_departamento_id'
-          // )!.options = response.data;
+          this.listDepartaments = response.data;
         })
     );
   }
@@ -122,9 +121,31 @@ export default class EntitiesCreateComponent {
             utilidad_departamento_id: departmentId,
           })
           .subscribe((response) => {
-            // this.formConfig.find(
-            //   (field) => field.name === 'utilidad_ciudad_id'
-            // )!.options = response.data;
+            this.listCities = response.data;
+          })
+      );
+    }
+  }
+
+  setPermissions(): void {
+    if (this._storageService.getEntityStorage != null) {
+      this.subscription.push(
+        this._usersService
+          .getByIdUserRole({
+            estados: ['activo'],
+            id: this._storageService.getUserProfileStorage.id!,
+            ma_entidad_id: this._storageService.getEntityStorage.id!,
+          })
+          .subscribe((res) => {
+            const userPermissions: Array<string> = [];
+            res.data.acl.forEach((perm) => {
+              JSON.parse(perm.acl_rol_per_acciones).forEach(
+                (permiso: string) => {
+                  userPermissions.push(`${perm.acl_per_recurso}.${permiso}`);
+                }
+              );
+            });
+            this._permissionService.setPermissions(userPermissions);
           })
       );
     }
@@ -138,6 +159,7 @@ export default class EntitiesCreateComponent {
         .subscribe((res) => {
           this._notificationService.showSuccess(res.message);
           this._storageService.updateLocalStorage({ entidad: res.data });
+          this.setPermissions();
           setTimeout(() => {
             this._notificationService.confirmation({
               message: '¿Desea crear un medico?',
@@ -147,7 +169,7 @@ export default class EntitiesCreateComponent {
                 ]);
               },
               reject: () => {
-                window.location.href = '/admin/administrative/entities';
+                window.location.href = '/admin';
               },
             });
           }, 2000);
@@ -156,8 +178,23 @@ export default class EntitiesCreateComponent {
   }
 
   ngOnInit(): void {
+    this._loadingService.loading$.subscribe((loading) => {
+      this.loading = loading;
+    });
+    if (this.entities) {
+      this._router.navigate(['/admin']);
+      return;
+    }
+
     this.getListadoTipoIdentificacion();
     this.getListadoDepartamentos();
+    this.form.controls['utilidad_departamento_id'].valueChanges.subscribe(
+      (value) => {
+        if (value) {
+          this.getListadoCiudadesPorDepartamento(value);
+        }
+      }
+    );
   }
 
   ngOnDestroy(): void {
